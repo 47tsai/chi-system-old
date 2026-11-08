@@ -569,7 +569,7 @@ v1.4 的矛盾在此講清楚：Site Release Tag 指向整體發布基準 commit
 
 | 層 | 是什麼 | 含什麼 | 不含什麼／邊界 |
 | --- | --- | --- | --- |
-| `release.json`（Repo 內發布 manifest） | 發布的身分與內容清單：這次發布是哪一版、由哪些元件的哪些 commit 組成、釘哪一版 chi-system | `site`、`version`、`chiSystemVersion`、`components` 的元件來源 SHA | 不含任何代表自身 commit 的欄位（不得有 `releaseCommit`、`releaseCommitShort`、`deployedAt`）；不含部署時間 |
+| `release.json`（Repo 內發布 manifest） | 發布的身分與內容清單：這次發布是哪一版、由哪些元件的哪些 commit 組成、釘哪一版 chi-system | `site`、`version`、`chiSystemVersion`、`components` 的元件來源 SHA | 不含任何代表自身 commit 的欄位（不得有 `commit`、`commitShort`、`deployedAt`）；不含部署時間 |
 | `version.json`（建置產物） | 對外機器可讀的部署版本資訊：目前線上部署的是哪一版程式、哪個 commit、何時部署 | `site`、`version`、`releaseCommit`、`releaseCommitShort`、`chiSystemVersion`、`deployedAt`、`components`（含各自 `deployedAt`） | 不進 repo、不進 Tag 指向的 commit；只存在於部署產物與線上站點 |
 | 部署紀錄 | 每次實際上線的歷史 | 部署類型、該次實際部署 commit、部署時間、回滾目標與原因（回滾時） | 不構成發布本身；不得代替 Tag 或 `release.json` 作為版本身分 |
 
@@ -582,7 +582,7 @@ v1.4 的矛盾在此講清楚：Site Release Tag 指向整體發布基準 commit
   - `version`：本站 SemVer，格式 `MAJOR.MINOR.PATCH`（不帶 `v` 前綴，呈現時再加）。
   - `chiSystemVersion`：該站目前釘住的 chi-system 版本（只供追溯，不影響本站版本號）；在升級共用件的同一 PR 中更新。
   - `components`：多元件站必填、單一元件站可省略。格式為物件，key 是元件 ID（merch 為 `web`、`api`），value 固定含兩個欄位：`commit`（該元件實際來源 commit 的完整 SHA）、`commitShort`（前 7 字元）。各站不得在 `components` 內自行增刪欄位或改用另一套結構；需要新欄位先改本節。
-- `release.json` **不得有 `releaseCommit`、`releaseCommitShort`、`deployedAt` 欄位**：它不得記錄「包含它自己的那個 commit」的 SHA，也不得記錄部署時間。這是消除循環依賴的關鍵，不得以任何理由加回。
+- `release.json` **不得有 `commit`、`commitShort`、`deployedAt` 欄位**：它不得記錄「包含它自己的那個 commit」的 SHA，也不得記錄部署時間。這是消除循環依賴的關鍵，不得以任何理由加回。
 
 **發布流程（定死，可由 CI 自動完成）：**
 
@@ -596,7 +596,7 @@ v1.4 的矛盾在此講清楚：Site Release Tag 指向整體發布基準 commit
 - 由 CI 在建置或部署階段產生，固定放在各站對外根路徑（可由瀏覽器直接取得，例如 `https://<該站域名>/version.json`），**不提交回 repo、不寫入 Tag 指向的 commit**。欄位固定如下：
   - `site`：自 `release.json` 複製。
   - `version`：自 `release.json` 複製。
-  - `commit`：Tag 對應 commit（整體發布基準 commit）的完整 Git commit SHA，由 CI 於 Tag 觸發時取得並注入。它是發布 manifest 的基準 commit，不是多元件站任一元件的程式碼來源 commit，也不是最近一次部署的實際部署 commit。
+  - `releaseCommit`：Tag 對應的整體發布基準 commit 完整 Git SHA，由 CI 於 Tag 觸發時取得並注入。它是發布 manifest 的基準 commit，不是多元件站任一元件的程式碼來源 commit，也不是最近一次部署的實際部署 commit。
   - `releaseCommitShort`：`releaseCommit` 的前 7 字元。
   - `chiSystemVersion`：自 `release.json` 複製。
   - `deployedAt`：本次部署時間，ISO 8601 並標明 `+08:00`，由 CI 注入；每次重新部署（含資料同步觸發的重新部署與回滾部署）都以該次部署時間重新產生。
@@ -606,7 +606,7 @@ v1.4 的矛盾在此講清楚：Site Release Tag 指向整體發布基準 commit
 
 - `release.json` 的內容在基準 commit 建立之前已完全確定：版本號由發布者依第 2 點決定，`components` 的元件來源 SHA 都是在該 commit 之前就已存在的 commit，`chiSystemVersion` 是已發布的版本號；它不包含任何需要先知道基準 commit 的 SHA 才能填的欄位。
 - 基準 commit 的 SHA 由該 commit 的內容（包含內容已確定的 `release.json`）計算，Tag 再指向該 commit；順序是單向的：內容先確定 → commit 產生 → SHA 存在 → Tag 指向。
-- `version.json` 的 `releaseCommit`、`commitShort` 與 `deployedAt` 在 Tag 建立之後才由 CI 填入，且 `version.json` 不進 repo、不進 Tag 指向的 commit，因此沒有任何檔案需要在自身內容中預先寫入自己的 SHA，也沒有任何步驟的輸入依賴自己的輸出。整個流程（更新 manifest → 提交 → 建 Tag → CI 產生 `version.json` → 部署 → 記部署紀錄）可由 CI 自動完成，不需要人工回填 SHA。
+- `version.json` 的 `releaseCommit`、`releaseCommitShort` 與 `deployedAt` 在 Tag 建立之後才由 CI 填入，且 `version.json` 不進 repo、不進 Tag 指向的 commit，因此沒有任何檔案需要在自身內容中預先寫入自己的 SHA，也沒有任何步驟的輸入依賴自己的輸出。整個流程（更新 manifest → 提交 → 建 Tag → CI 產生 `version.json` → 部署 → 記部署紀錄）可由 CI 自動完成，不需要人工回填 SHA。
 
 **純資料更新時的 `version.json`（v1.5 明定）：**
 
@@ -653,17 +653,17 @@ v1.4 的矛盾在此講清楚：Site Release Tag 指向整體發布基準 commit
 **(a) 遞增 PATCH 回滾（建立新版本，步驟定死）：**
 
   1. 從回滾目標 Tag 的內容建立**新 commit**：新 commit 的程式與資料內容等於目標版內容，僅 `release.json` 的 `version` 更新為新 PATCH 版（本站現行版本 `vX.Y.Z` 的下一個 PATCH，即 `vX.Y.(Z+1)`），其餘 `release.json` 內容（`components` 的元件來源 SHA、`chiSystemVersion`）等於目標版。
-  2. 對新 commit 建立新 Tag（步驟見下一條）；新 commit 即新版本的基準 commit，CI 依第 5 點流程產生新的 `version.json`：其 `version` 為新 PATCH 版、`commit` 為新 Tag 對應 commit、`components` 的元件來源 SHA 與目標版相同（內容等於目標版）。`release.json` 不寫新 commit 的 SHA，不存在回填自身 SHA 的問題。
+  2. 對新 commit 建立新 Tag（步驟見下一條）；新 commit 即新版本的基準 commit，CI 依第 5 點流程產生新的 `version.json`：其 `version` 為新 PATCH 版、`releaseCommit` 為新 Tag 對應的發布基準 commit、`components` 的元件來源 SHA 與目標版相同（內容等於目標版）。`release.json` 不寫新 commit 的 SHA，不存在回填自身 SHA 的問題。
   3. 建立新 Tag `vX.Y.(Z+1)`，指向新 commit；不得指向目標版的基準 commit 本人，也不得重用目標 Tag 或問題版 Tag。
   4. 部署新 Tag 的內容。
   5. 部署紀錄標示本次部署類型為回滾、回滾目標 Tag、回滾原因與時間。
 
 **(b) 不升版回滾（直接重新部署目標版原內容）：**
 
-  - 部署回滾目標 Tag 的原內容；CI 依該 Tag 重新產生的 `version.json` 因此回到目標版的 `version` 與 `commit`（基準 commit），`deployedAt` 為本次回滾部署時間，這是如實呈現內容版本，不是「以舊版本號覆蓋不同內容」，因為部署的正是該 Tag 的原內容。
+  - 部署回滾目標 Tag 的原內容；CI 依該 Tag 重新產生的 `version.json` 因此回到目標版的 `version` 與 `releaseCommit`（發布基準 commit），`deployedAt` 為本次回滾部署時間，這是如實呈現內容版本，不是「以舊版本號覆蓋不同內容」，因為部署的正是該 Tag 的原內容。
   - 部署紀錄必須同時保留：**原發布版本**（出問題、被回滾掉的那一版）、**回滾目標**（目標 Tag）、**回滾原因**與**回滾時間**，且紀錄須能區分這筆是回滾部署、不是目標版的初次發布；缺少任一項即視為紀錄不完整，不得宣稱回滾完成。
 
-- **回滾後四者一致性檢查（v1.4 新增，連動第 18 節）**：回滾完成後必須核對四者互相一致——(i) 線上建置產物 `version.json` 的 `version` 與 `commit`（並與該版 `release.json` 的 `version` 一致）、(ii) 該 `version` 對應 Tag 的指向、(iii) 實際部署內容、(iv) 部署紀錄（類型、目標、原因、時間）。採 (a) 時四者對應新 PATCH 版與新 Tag；採 (b) 時前三者對應目標版、第四者須明確標示為回滾。任一不一致即驗收不通過，須先修正才可宣稱回滾完成。
+- **回滾後四者一致性檢查（v1.4 新增，連動第 18 節）**：回滾完成後必須核對四者互相一致——(i) 線上建置產物 `version.json` 的 `version` 與 `releaseCommit`（並與該版 `release.json` 的 `version` 一致）、(ii) 該 `version` 對應 Tag 的指向、(iii) 實際部署內容、(iv) 部署紀錄（類型、目標、原因、時間）。採 (a) 時四者對應新 PATCH 版與新 Tag；採 (b) 時前三者對應目標版、第四者須明確標示為回滾。任一不一致即驗收不通過，須先修正才可宣稱回滾完成。
 - 回滾完成後以第 18 節清單快速驗收受影響頁面，並在原發布 PR 或紀錄中留言後續處理（修新版再升，或列入待確認）；回滾不解決根因，不得以「已回滾」結案而不留後續。
 
 **對現有六站的影響（只評估，不在本輪實作）**
@@ -771,7 +771,7 @@ chi-system 從空 repo 起步，依序完成，前一步驗收後才進下一步
 - 載入、空、錯誤、成功四種狀態都有實際畫面或可重現的驗證方式。
 - 日期、時間與金額格式符合第 10 節。
 - 發版驗收另外加三項：版本號遞增符合第 13 節規則且附相容聲明；預覽頁各維度覆蓋已依第 13 節驗收紀錄表逐項核對（含不適用項與原因）；升級 PR 已預寫回滾步驟且回滾目標版本（升級前的 tag）仍存在且未被改寫。
-- 各站發布驗收另外加五項：Repo 內 `release.json` 存在、欄位齊全且不含 `commit`、`commitShort`、`deployedAt`，部署產物 `version.json` 存在且欄位齊全、其 `commit` 等於該 `version` 的 Tag 所指向的程式發布（基準）commit（多元件站驗證產生的 `version.json` 的 `components` 來源 SHA 與 `release.json` 的 `components` 一致），頁尾顯示的本站版本與短 SHA 與產生的 `version.json` 一致（第 13 節）；該次發布的 Git Tag 存在、名稱與 `release.json` 的 `version`、產生的 `version.json` 的 `version` 及發布紀錄一致，且 Tag 指向基準 commit、未被覆寫或改指；線上 `version.json` 的回應帶 `no-cache` 或等效短快取（採執行期讀取的站另須實際驗證讀取失敗時頁尾不顯示虛構版本且主要功能不受影響）；部署紀錄同時載明本站版本與所釘 chi-system 版本（兩者分列未混寫）、該次實際部署 commit、部署類型（程式發布／資料同步／回滾），資料同步未誤升版本、未誤建 Tag、未改 `release.json`，且重新產生的 `version.json` 僅 `deployedAt` 更新；回滾部署另須通過第 13 節第 7 點的四者一致性檢查（產生的 `version.json`、Tag、實際部署內容、部署紀錄），並核對回滾紀錄保留原發布版本、回滾目標、原因與時間。
+- 各站發布驗收另外加五項：Repo 內 `release.json` 存在、欄位齊全且不含 `commit`、`commitShort`、`deployedAt`，部署產物 `version.json` 存在且欄位齊全、其 `releaseCommit` 等於該 `version` 的 Tag 所指向的發布基準 commit（多元件站驗證產生的 `version.json` 的 `components` 來源 SHA 與 `release.json` 的 `components` 一致），頁尾顯示的本站版本與短 SHA 與產生的 `version.json` 一致（第 13 節）；該次發布的 Git Tag 存在、名稱與 `release.json` 的 `version`、產生的 `version.json` 的 `version` 及發布紀錄一致，且 Tag 指向基準 commit、未被覆寫或改指；線上 `version.json` 的回應帶 `no-cache` 或等效短快取（採執行期讀取的站另須實際驗證讀取失敗時頁尾不顯示虛構版本且主要功能不受影響）；部署紀錄同時載明本站版本與所釘 chi-system 版本（兩者分列未混寫）、該次實際部署 commit、部署類型（程式發布／資料同步／回滾），資料同步未誤升版本、未誤建 Tag、未改 `release.json`，且重新產生的 `version.json` 僅 `deployedAt` 更新；回滾部署另須通過第 13 節第 7 點的四者一致性檢查（產生的 `version.json`、Tag、實際部署內容、部署紀錄），並核對回滾紀錄保留原發布版本、回滾目標、原因與時間。
 
 ## 19. 變更治理與待確認事項
 
