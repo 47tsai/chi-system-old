@@ -537,7 +537,7 @@ chi-system 有自己的版本（本節前段），六個網站也必須各自有
 - 一次發布只取符合的最高一級遞增，不疊加；判斷不了時先在 PR 中寫明候選級別與理由，經齊確認後定案，不得隨意填寫或為了好看跳號。
 - 純文件、CI 或 repo 內部整理（使用者完全無感且不影響部署內容）不強制遞增版本；一旦部署的程式內容改變，至少遞增 PATCH。注意此處的「部署內容改變」指程式，不含上方的內容／資料更新。
 
-**3. 部署識別（版本號之外的發布與元件 SHA；三層區分，v1.6 修訂欄位語意）**
+**3. 部署識別（版本號之外的發布與元件 SHA；分層識別，v1.6 修訂欄位語意）**
 
 **`version.json` 頂層 `releaseCommit` 的定義（v1.6 更名，避免與程式碼 commit 混淆）**：頂層 `releaseCommit` 是該版本 Site Release Tag 所指向的**整體發布基準 commit**，也就是包含 `release.json` 發布 manifest 的 commit。它識別「這份發布清單」，不是多元件站任一元件的程式碼來源 SHA，也不得稱為「全站程式碼 SHA」。其值由 CI 在建置／部署階段自 Tag 對應 commit 取得並注入產生的 `version.json`，不是任何人事先寫進 repo 的值。頂層短 SHA 欄位為 `releaseCommitShort`，即 `releaseCommit` 的前 7 字元。
 
