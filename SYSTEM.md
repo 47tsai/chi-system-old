@@ -1,6 +1,6 @@
 # SYSTEM.md — Chi 生態系統一規範
 
-版本：1.5（第六輪審查修訂稿）
+版本：1.7（第八輪審查修訂稿）
 基準日：2026-11-08
 狀態：待齊審閱，未生效。審閱通過後才生效，成為 Chi 自有網站的唯一總規範；本修訂稿不自行宣布生效。
 存放位置：`47tsai/chi-system` repo 根目錄（本文件正本）。
@@ -15,6 +15,24 @@ SYSTEM.md 是 Chi 生態系的總規範，回答四件事：
 - AI 和人動任何一個站之前，要遵守的工作方式、遷移順序和驗收標準。
 
 這份規範從需求出發全新制定，不複製舊設計系統的文件或程式碼，也不以任何外部設計系統為範本。舊系統只用來盤點現況（哪些站在線上、各站用什麼技術），不作為新規範的依據。
+
+### 第八輪修訂：差異與技術理由（v1.6 → v1.7，先讀本表，再讀正文）
+
+本輪修正交叉審查表的過時敘述，並重新定義部署追溯資料。部署不一定對應一個新的 Git commit；實際上線物以建置產物 digest 識別，部署事件以 CI Workflow Run／平台 Deployment ID 追溯。只修改 SYSTEM.md 與 DESIGN.md，不修改任何程式碼、CSS、JS、HTML、CI、網站或其他文件；不建立正式 Release Tag，不開始 chi-system 實作或六站遷移。本稿仍為待齊審閱、未生效。
+
+| # | v1.6 問題 | v1.7 修正 | 理由 |
+| --- | --- | --- | --- |
+| 1 | 交叉一致性審查表仍沿用 User Agent 例外的舊說法，且待確認統計不正確 | 更新 WCAG 原始例外與 CHI 內部驗收的區分；修正待確認項目統計為 10 項 | 讓審查表與第 11 節逐準則判定一致 |
+| 2 | 部署紀錄要求記錄實際部署 commit，但 CI 建置產物可能不存在一個能代表實際上線位元組的單一 Git commit | 以元件來源 commit、產物 SHA-256 digest、Workflow Run ID／平台 Deployment ID 分別識別來源、產物與部署事件 | Git commit 識別來源樹，Artifact digest 識別實際部署位元組，Run／Deployment ID 識別部署事件，三者不可混用 |
+
+### 第七輪修訂：差異與技術理由（v1.5 → v1.6，先讀本表，再讀正文）
+
+本輪只修正兩項已確認的規範問題：版本識別欄位語意，以及 WCAG User Agent 例外的逐準則判定。只修改 SYSTEM.md 與 DESIGN.md，不修改任何程式碼、CSS、JS、HTML、CI、網站或其他文件；不建立正式 Release Tag，不開始 chi-system 實作或六站遷移。既有 Repo、域名、站點 ID、排除清單、檔案命名、視覺方向與未定稿數值均不變。本稿仍為待齊審閱、未生效。
+
+| # | v1.5 問題 | v1.6 修正 | 理由 |
+| --- | --- | --- | --- |
+| 1 | `version.json` 頂層 `commit` 被稱為程式碼版本，但實際指向的是 Site Release Tag 的整體發布基準 commit；多元件站的程式碼來源 SHA 另存在 `components`，兩者語意不一致 | 將頂層欄位改名為 `releaseCommit`、`releaseCommitShort`，明確代表 Tag 指向的發布 manifest 基準 commit；各元件的 `components.*.commit`／`commitShort` 保留，專門代表元件來源 commit。部署紀錄另記實際部署的元件 commit（第 13 節） | 欄位名稱必須反映其實際識別對象；避免把發布清單的 SHA 誤認為前端、API 或全站程式碼 SHA |
+| 2 | 第 11 節把 1.4.11 與 2.4.13 的 User Agent 例外概括成「CHI 自訂背景，所以例外原則上不適用」，忽略 2.4.13 的「指示由 UA 決定且作者無法調整」是獨立例外條件 | 分開列出 1.4.11 與 2.4.13 的原始例外條件，要求逐元件、逐準則判斷；自訂背景只可能影響 2.4.13 的第二種例外，不會自動排除第一種。CHI 仍可要求所有元件接受內部驗收，但必須把 WCAG 原始符合性與 CHI 額外要求分開記錄（第 11 節；DESIGN.md 第 7.2 節回指） | 依 WCAG 2.2 正文及 W3C Understanding 文件，例外條件彼此獨立；CHI 可以採更嚴格政策，但不得錯誤描述 WCAG 原始要求 |
 
 ### 第六輪修訂：差異與技術理由（v1.4 → v1.5，先讀本表，再讀正文）
 
@@ -38,7 +56,7 @@ SYSTEM.md 是 Chi 生態系的總規範，回答四件事：
 
 #### SYSTEM.md × DESIGN.md 交叉一致性審查表（第二階段）
 
-審查結論先講：**兩份文件無直接衝突**——沒有同一規則在兩份文件中出現互相否定的定義、數值或例外。審查共提出 8 項待確認，全部列入下表並已於本輪以修訂處理，**仍待齊審閱確認，一律不標示為通過**；其餘檢查項結果為一致（無直接衝突）。
+審查結論先講：**兩份文件無直接衝突**——沒有同一規則在兩份文件中出現互相否定的定義、數值或例外。審查共提出 10 項待確認，全部列入下表並已於本輪以修訂處理，**仍待齊審閱確認，一律不標示為通過**；其餘檢查項結果為一致（無直接衝突）。
 
 | 檢查項目 | 結果 | SYSTEM.md 章節 | DESIGN.md 章節 | 證據 |
 | --- | --- | --- | --- | --- |
@@ -50,19 +68,21 @@ SYSTEM.md 是 Chi 生態系的總規範，回答四件事：
 | Focus 面積驗收的紀錄結構 | 待確認（交叉項 3） | 第 11、18 節 | 第 7.6 節 | 原本 SYSTEM.md 把面積併入 (B)、DESIGN.md 採分離式，屬紀錄結構不一致（非數值衝突）；v1.5 已採分離式改寫第 11、18 節，待齊確認 |
 | 瀏覽器預設 focus 樣式與 focus-ring 的關係 | 待確認（交叉項 4） | 第 11 節 | 第 7.2 節（v2.3 補句） | 原本 DESIGN.md 未述預設樣式下 focus-ring 是否定色；DESIGN.md v2.3 已補明不另定色值、驗收仍依 (A)(B)，待齊確認 |
 | Focus 外框「不得被裁切／遮蔽」的等級標示 | 待確認（交叉項 5） | 第 11 節（2.4.11） | 第 7.6 節（v2.3 明標） | DESIGN.md 原寫法嚴於 AA 2.4.11 的「不被完全遮蔽」但未標等級；v2.3 已明標為 CHI 額外要求、不得寫成 AA，待齊確認 |
-| WCAG 標準要求與 CHI 額外標準的區分 | 一致（無直接衝突） | 第 11 節 | 第 7.2、7.6、8 節 | 兩份均把 (B) 標為 CHI 額外採用的 AAA 要求、把不採用 User Agent 例外標為 CHI 更嚴格標準；DESIGN.md 第 8 節定案條件亦回指 SYSTEM.md 第 11 節，未把 CHI 額外要求寫成 AA |
+| WCAG 標準要求與 CHI 額外標準的區分 | 一致（無直接衝突） | 第 11 節 | 第 7.2、7.6、8 節 | 兩份均把 (B) 標為 CHI 額外採用的 AAA 要求、User Agent 例外依 WCAG 原始條件逐準則、逐元件判定，CHI 內部驗收另行執行並分開記錄；DESIGN.md 第 8 節定案條件亦回指 SYSTEM.md 第 11 節，未把 CHI 額外要求寫成 AA |
 | 響應式斷點與斷點 CI 規則 | 一致（無直接衝突） | 第 4、11 節 | 第 7.4 節 | DESIGN.md 不自存斷點數值、只定窄螢幕表格的分層處理；SYSTEM.md 定 `breakpoints.json` 為唯一來源與 CI 名稱對應檢查；兩者管的層次不同，無重複定義 |
 | 水平捲動用字 | 待確認（交叉項 6） | 第 8、11 節 | 第 7.4 節 | 原本 SYSTEM.md 第 8 節「不得出現水平捲動」字面歧義，與第 11 節及 DESIGN.md 的容器內捲動規則易生誤讀；v1.5 已改為「不得出現整頁水平捲動（容器內捲動見第 11 節）」，待齊確認 |
 | 元件狀態定義（selected / checked 語意） | 一致（無直接衝突） | 第 9、13 節 | 第 7.7 節 | 兩份均採依元件特性定義適用狀態；DESIGN.md 第 7.7 節的 checked／selected 與 `aria-checked`／`aria-selected` 區分，SYSTEM.md 未有相反定義 |
 | 預覽頁互動狀態清單 | 待確認（交叉項 7） | 第 13 節 | 第 7.7 節 | 原本 SYSTEM.md 預覽頁清單漏列 selected / checked；v1.5 已補列並註明適用者須展示，待齊確認 |
 | 設計原則與技術實作規範的責任邊界 | 待確認（交叉項 8） | 開頭分工表、第 4 節 | 全文（自述以 SYSTEM.md 為準） | 原本分工表未區分「細化」與「新增硬性規則」；v1.5 已在分工表補釐清，待齊確認 |
 | 版本制度與設計系統發布制度 | 一致（無直接衝突） | 第 13 節 | 第 8 節 | DESIGN.md 沒有自立版本制度，只把定案驗收回指 SYSTEM.md 第 11 節；SYSTEM.md 的 chi-system 版本線與六站版本線分離，兩份文件無互相矛盾之處 |
-| 同一規則在不同章節的重複定義 | 一致（無直接衝突） | 全文 | 全文 | 除上列 8 項待確認外，未發現同一規則在兩份文件（或同一文件不同章節）有不同定義、數值或例外；數值本體兩份均未定稿，不存在數值互相矛盾的可能 |
+| 發布基準 SHA 與元件程式碼 SHA 的語意 | 待齊確認（v1.6 已修訂） | 第 13 節第 3、5 點 | 第 7.2 節回指 SYSTEM.md | `releaseCommit`／`releaseCommitShort` 專指 Tag 的發布 manifest 基準；`components.*.commit` 專指元件來源；SHA-256 digest 識別實際部署產物；Workflow Run／Deployment ID 識別部署事件，三者不再混稱為 Git commit |
+| WCAG User Agent 例外與 CHI 內部驗收 | 待齊確認（v1.6 已修訂） | 第 11 節 Focus 專段 | 第 7.2、7.6 節 | 1.4.11 與 2.4.13 的例外條件分開判斷；2.4.13 的「UA 決定且作者無法調整」與「指示及背景均未修改」是獨立條件；CHI 內部驗收結果與 WCAG 原始判定分開記錄 |
+| 同一規則在不同章節的重複定義 | 一致（無直接衝突） | 全文 | 全文 | 除上列 10 項待確認外，未發現同一規則在兩份文件（或同一文件不同章節）有不同定義、數值或例外；數值本體兩份均未定稿，不存在數值互相矛盾的可能 |
 
-#### 尚未解決的問題（v1.5 時點，完整清單同步列於第 19 節）
+#### 尚未解決的問題（v1.6 時點，完整清單同步列於第 19 節）
 
-- 本稿（SYSTEM.md v1.5）與 DESIGN.md v2.3 均待齊審閱、未生效。
-- 交叉審查 8 項待確認已全部以本輪修訂處理，仍待齊審閱確認，不得視為已通過；其中完整 Token 角色↔CSS 變數對照表留待 tokens.css 實作時定稿。
+- 本稿（SYSTEM.md v1.6）與 DESIGN.md v2.4 均待齊審閱、未生效。
+- v1.6 已修正發布基準 SHA 欄位語意與 WCAG User Agent 例外判定；修訂內容尚待齊審閱，不得視為已批准。
 - `release.json` ＋ CI 產生 `version.json` 的發布流程只寫入規範，尚未在任何一站實作或驗證，本輪亦未建立任何正式 Release Tag。
 - 其餘待確認事項照舊：auth 原始碼位置、頁尾預設採建置／部署期注入的方案、多元件站（除 merch 外）與其元件 ID、各站 `Cache-Control` 等效做法、斷點 px 值與全部視覺 token 數值未定稿、未列入 DESIGN.md 基礎示例表的元件適用狀態、chi-design-system 封存與 example-site 刪除的執行時機。
 
@@ -427,7 +447,13 @@ Focus 有兩種完全不同的對比量測，驗收時必須分開記錄、分�
 - CHI 的驗收基線是 AA：(A) 未達標即 AA 不通過。
 - CHI **額外採用** (B) 作為本站驗收要求：未達 (B) 時，紀錄寫法固定為「AA 已達標、CHI 額外 focus 要求未達標」，不得寫成「不符合 WCAG AA」，也不得在文件、PR 或對外說明中把 2.4.13 描述成 AA 要求。採用 (B) 的理由是它讓 focus 是否「真的看得出來有變化」可被量測，而不是因為 AA 有此規定。
 - **瀏覽器預設 focus 樣式（v1.3 修正，消除矛盾）**：允許沿用瀏覽器預設 focus 樣式，不強制每站自製一套；沿用預設不是缺陷，未經驗收才是。沿用預設的元件仍必須通過本節的實際驗收——以鍵盤實際走查確認 focus 可見且順序正確，並量測 (A) 相鄰顏色對比與 (B) 狀態變化對比，兩者結果分開記錄在驗收紀錄中並註明屬預設樣式。驗收未達標時，必須改用自訂樣式補足，不得以「這是瀏覽器預設」為由放行。無論沿用預設或自訂，都不得移除 focus 指示（例如只寫 `outline: none` 而無替代指示）。
-- **User Agent 例外與 CHI 的決定（v1.4 新增，區分 WCAG 原始要求與 CHI 額外標準）**：WCAG 2.2 本身對 User Agent（瀏覽器）決定的外觀留有例外，原文條件如下——(i) 1.4.11（AA）：UI 元件的外觀由 user agent 決定、且未被作者修改時，該元件不在 1.4.11 的對比要求範圍內；(ii) 2.4.13（AAA）：focus 指示由 user agent 決定且作者無法調整，或 focus 指示及其背景色皆未被作者修改時，例外適用。**這兩項例外在 CHI 的實際頁面上原則上不適用**：CHI 各站自訂背景色、表面色與元件樣式，等於作者已修改 focus 指示所在的背景，例外條件不成立；因此不得以「這是瀏覽器預設樣式」為由主張 WCAG 豁免、跳過量測。CHI 的決定是：**不採用 User Agent 例外作為免驗收的理由**，沿用預設樣式的元件仍須通過上方 (A) 與 (B) 驗收。此決定是 **CHI 額外採用的更嚴格標準**——WCAG AA 本身在例外條件成立時是允許豁免的——驗收紀錄與對外說明不得把「未通過 CHI 的預設樣式驗收」錯稱為「不符合 WCAG AA」；紀錄寫法比照 (B) 的分級原則，分開標示 AA 判定與 CHI 額外要求判定。依據：W3C WCAG 2.2 準則 1.4.11、2.4.13 及其 Understanding 文件（https://www.w3.org/TR/WCAG22/）。
+- **User Agent 例外與 CHI 的決定（v1.6 修正，逐準則、逐元件判定）**：WCAG 2.2 的 User Agent（瀏覽器）例外須依準則分開判斷，不得用「網站有自訂背景色」概括推論所有例外都不成立：
+  - **1.4.11（AA，Non-text Contrast）**：只有當該 UI 元件的外觀由 User Agent 決定，且作者未修改該元件外觀時，該元件才適用此例外。判斷對象是該元件的實際外觀，不得只因網站其他區域有自訂色彩就直接判定例外成立或不成立。
+  - **2.4.13（AAA，Focus Appearance）**：有兩個彼此獨立的例外條件，符合任一項即可適用：(i) focus 指示由 User Agent 決定，而且作者無法調整；或 (ii) focus 指示與該指示的背景色都未被作者修改。作者修改 focus 指示背景，可能使 (ii) 不成立，但不會自動排除 (i)；若作者確實無法調整該 User Agent focus 指示，仍須依 (i) 個別判斷。
+  - **CHI 內部驗收政策**：不論某元件是否符合 WCAG 的 User Agent 例外，CHI 仍要求所有可鍵盤聚焦的元件接受本節 (A)、(B) 與獨立幾何／面積驗收，不以例外作為跳過內部驗收的理由。這是 CHI 自訂的更嚴格驗收政策，不得改寫成 WCAG 原始要求。
+  - **紀錄與對外宣稱**：每個元件、每項準則分開記錄 (a) WCAG 原始判定（符合、未符合或因 User Agent 例外而不適用），以及 (b) CHI 內部驗收結果。若 WCAG 例外成立而量測未達門檻，不得將該項結果寫成 WCAG AA／AAA 不符合；應明確寫「WCAG 例外適用」及「CHI 額外驗收未通過」。若例外不成立且門檻未達，才依該準則等級記為 WCAG 未符合。不得把 2.4.13 的 AAA 未達標寫成 AA 不符合。
+  - **無法調整的原生元件**：若某元件的 focus 指示確由 User Agent 決定且作者無法調整，並因此無法通過 CHI 的 (B) 或幾何／面積要求，該元件仍不能以例外直接放行；須評估改用可由作者控制、且完整保留鍵盤操作、語意與輔助技術支援的實作，再重新驗收。不得只為通過視覺檢查而破壞原生語意或操作方式。
+  - 依據：W3C WCAG 2.2 正文、Understanding 1.4.11 Non-text Contrast、Understanding 2.4.13 Focus Appearance（https://www.w3.org/TR/WCAG22/、https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast、https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance）。
 
 ### 不得只靠顏色傳達資訊
 
@@ -505,54 +531,58 @@ chi-system 有自己的版本（本節前段），六個網站也必須各自有
 | MINOR | 向後相容的新增或明顯增強：新增功能頁（見下）、新功能上線、既有功能擴充、採用新版 chi-system 且造成使用者可察覺但不破壞既有用法的外觀或行為變化 | nav 新增工具頁；status 新增監控頁面 |
 | PATCH | 向後相容的修正：程式錯誤修正、既有頁面的文案修正、效能或穩定性改善、採用新版 chi-system 但使用者無可察覺差異、依賴安全性更新 | 修 fg 某連結錯誤；h 修主題閃爍 |
 
-- **新增功能頁與一般內容頁的差異（v1.3 釐清）**：新增功能頁指帶來新能力或新資料來源的頁面——新工具、新互動功能、新型態的頁面、新接入的資料來源——屬 MINOR。一般內容頁指在既有頁面型態內增加內容——chi 新增一篇一般文章、在既有分類下新增一筆收藏或連結——屬內容更新，**不遞增 SemVer、不建立 Tag**，只在部署紀錄留下該次實際部署的 commit 與時間（第 3 點），不改寫 `release.json`，也不改變程式發布 commit（CI 重新產生的 `version.json` 的 `commit` 仍為現行 Tag 對應 commit，見第 3、5 點）。判準是「使用者多了一種原本沒有的能力或頁面型態」，不是「多了一頁」：同一型態的內容頁再多，也不累積成 MINOR。
+- **新增功能頁與一般內容頁的差異（v1.3 釐清）**：新增功能頁指帶來新能力或新資料來源的頁面——新工具、新互動功能、新型態的頁面、新接入的資料來源——屬 MINOR。一般內容頁指在既有頁面型態內增加內容——chi 新增一篇一般文章、在既有分類下新增一筆收藏或連結——屬內容更新，**不遞增 SemVer、不建立 Tag**，只在部署紀錄留下該次部署的產物 SHA-256 digest、Workflow Run ID／平台 Deployment ID 與時間（第 3 點），不改寫 `release.json`，也不改變程式發布 commit（CI 重新產生的 `version.json` 的 `releaseCommit` 仍為現行 Tag 對應 commit，見第 3、5 點）。判準是「使用者多了一種原本沒有的能力或頁面型態」，不是「多了一頁」：同一型態的內容頁再多，也不累積成 MINOR。
 - **不自動遞增的例行更新（v1.3 明定）**：一般文章發布、fg 遊戲資料例行同步、status 監控資料例行更新、其他動態資料的例行同步，都屬內容／資料更新，不自動造成任何一級遞增，也不建立 Tag；其識別方式是資料更新時間與來源（第 3 點），不是版本號。這類更新若同時夾帶程式變更，程式變更的部分照常依上表判定級別，不得以「只是例行同步」把程式發布藏進資料更新裡。
 - 遞增與歸零規則（定死）：`MAJOR` 遞增時，`MINOR` 與 `PATCH` 同時歸零（例如 `v1.4.2` 的下一個 MAJOR 是 `v2.0.0`）；`MINOR` 遞增時，`PATCH` 歸零（例如 `v1.4.2` 的下一個 MINOR 是 `v1.5.0`）；`PATCH` 只遞增自己，不歸零、不影響其他兩位（例如 `v1.4.2` 的下一個 PATCH 是 `v1.4.3`）。不得跳號、不得重用已發布的號碼。
 - 一次發布只取符合的最高一級遞增，不疊加；判斷不了時先在 PR 中寫明候選級別與理由，經齊確認後定案，不得隨意填寫或為了好看跳號。
 - 純文件、CI 或 repo 內部整理（使用者完全無感且不影響部署內容）不強制遞增版本；一旦部署的程式內容改變，至少遞增 PATCH。注意此處的「部署內容改變」指程式，不含上方的內容／資料更新。
 
-**3. 部署識別（版本號之外加 commit SHA；三層區分，v1.3 修訂，v1.4 釐清 commit 定義）**
+**3. 部署識別（版本號之外的發布與元件 SHA；三層區分，v1.6 修訂欄位語意）**
 
-**`version.json` 頂層 `commit` 的定義（v1.4 定死、v1.5 補來源，不得再混用）**：頂層 `commit` 是**程式發布 commit**，即該版本 Site Release Tag 所指向的整體發布基準 commit（第 1 點），它是程式版本的身分；其值由 CI 在建置／部署階段自 Tag 對應 commit 取得並注入產生的 `version.json`（第 5 點），不是任何人事先寫進 repo 的值。它**不是**「最近一次部署用了哪個 commit」：實際每次部署用了哪個 commit，由部署紀錄承擔（見下方關係定義）。程式發布部署時，部署紀錄的實際部署 commit 與 `version.json` 的 `commit` 相同；純資料同步部署時，實際部署 commit 可以改變，但 CI 重新產生的 `version.json` 的 `commit` 仍等於現行 Tag 對應 commit、與 Tag 同樣**不變**，僅 `deployedAt` 更新為該次部署時間——程式版本識別不得因純資料同步而改變。
+**`version.json` 頂層 `releaseCommit` 的定義（v1.6 更名，避免與程式碼 commit 混淆）**：頂層 `releaseCommit` 是該版本 Site Release Tag 所指向的**整體發布基準 commit**，也就是包含 `release.json` 發布 manifest 的 commit。它識別「這份發布清單」，不是多元件站任一元件的程式碼來源 SHA，也不得稱為「全站程式碼 SHA」。其值由 CI 在建置／部署階段自 Tag 對應 commit 取得並注入產生的 `version.json`，不是任何人事先寫進 repo 的值。頂層短 SHA 欄位為 `releaseCommitShort`，即 `releaseCommit` 的前 7 字元。
 
-commit SHA 代表的是**程式碼版本**，不等同、也不得被宣稱為該站所有動態資料的版本。一個站同一時刻呈現的內容，是程式、資料與各部署元件的組合，必須分三層識別，不得混成單一 SHA 或單一版本號：
+實際程式碼來源由元件識別：多元件站以 `components` 逐元件記錄來源 commit；單一元件站可省略 `components`，但 `releaseCommit` 仍只代表發布基準 commit。若單一元件站的發布基準 commit 恰與其程式碼來源 commit 相同，這只是兩個識別值恰好相同，不改變欄位語意。**部署產物不是 Git commit**：實際上線的建置產物以 SHA-256 digest 識別；部署事件以 CI Workflow Run ID 及部署平台提供的 Deployment ID（若有）識別。不得把來源 commit、產物 digest 與部署事件 ID 混稱為部署 SHA。
+
+一個站同一時刻呈現的內容，是程式、資料與各部署元件的組合，必須分三層識別，不得混成單一 SHA 或單一版本號：
 
 | 層 | 識別什麼 | 識別方式 | 是否影響 SemVer／Tag |
 | --- | --- | --- | --- |
-| 網站程式發布 | 程式碼的正式發布 | SemVer＋Git Tag＋該 Tag 指向的程式發布（基準）commit（完整 SHA） | 是，依第 2 點遞增並建 Tag |
-| 動態資料更新 | 文章、遊戲清單、監控結果等資料的現況 | 資料更新時間 `updatedAt`（ISO 8601、`+08:00`）與資料來源識別（資料更新 commit、同步批次識別如批次 ID 或資料來源版本，依該站既有方式） | 否，不遞增、不建 Tag、不改 `release.json`；CI 重新產生的 `version.json` 的 `commit` 不變 |
-| 部署紀錄 | 某一次實際上線動作本身 | 部署時間、該次實際部署的 commit、部署者或部署流程、部署類型（程式發布／資料同步／回滾） | 否，紀錄本身不構成發布 |
+| 發布清單 | 本次正式發布的版本與元件組合 | SemVer＋Git Tag＋Tag 指向的發布基準 commit（`releaseCommit`，完整 SHA） | 是，依第 2 點遞增並建 Tag |
+| 程式碼元件 | 各個可獨立建置／部署元件的程式碼來源 | `components` 逐元件記錄來源 commit | 元件變更是否影響本站版本依第 2 點判斷 |
+| 建置產物 | 實際交付與部署的位元組內容 | 每個部署元件的 SHA-256 digest（`sha256:<hex>`） | 否，digest 用於追溯產物，不取代 SemVer／Tag |
+| 部署事件 | 哪一次自動化或平台操作將產物部署到哪個環境 | CI Workflow Run ID／URL、平台 Deployment ID（若有）、環境、結果與時間 | 否，部署事件不構成新版本 |
+| 動態資料更新 | 文章、遊戲清單、監控結果等資料的現況 | 資料更新時間 `updatedAt`（ISO 8601、`+08:00`）與資料來源識別（資料更新 commit、同步批次識別如批次 ID 或資料來源版本，依該站既有方式） | 否，不遞增、不建 Tag、不改 `release.json` |
 
-**五種識別的關係（v1.4 定死）：**
+**識別關係：**
 
-- **Git Tag → 程式發布 commit（唯一指向）**：一個 Site Release Tag 只指向一個基準 commit（第 1 點），該對應一經發布不得改變。
-- **程式發布 commit → 一組元件 commit**：基準 commit 的內容（`release.json`）記錄本次發布各元件的來源 commit 對應清單；追溯任一元件以該清單（即 `release.json` 的 `components`；CI 原樣複製進產生的 `version.json` 的 `components` 並補各自 `deployedAt`）為準。
-- **元件 commit**：各元件實際來源的 commit，逐元件記錄在 `components` 中（見下方多元件部署），與基準 commit 是「清單與被清單列名者」的關係，不得互相冒充。
-- **資料更新 commit → 只對應資料批次**：資料同步的來源 commit 只識別那一批資料，不對應任何 Tag、不構成程式發布，也不得寫進 `release.json`，或 CI 產生的 `version.json` 的 `commit` 或 `components`。
-- **部署紀錄 → 每次實際上線各記一筆**：不論類型是程式發布、資料同步或回滾，每次實際上線都留一筆紀錄，記該次實際部署的 commit 與時間；只有程式發布類型的紀錄才對應新 Tag。
+- **Git Tag → 發布基準 commit**：一個 Site Release Tag 只指向一個基準 commit，該對應一經發布不得改變；此 SHA 在 `version.json` 中命名為 `releaseCommit`。
+- **發布基準 commit → 元件來源清單**：基準 commit 的 `release.json` 記錄本次發布各元件的來源 commit；追溯任一元件以 `components` 為準。
+- **元件來源 commit → 建置產物**：`components` 記錄元件程式碼來源 SHA；建置後對實際部署的產物計算 SHA-256 digest。digest 識別產物位元組，不是 Git commit，也不能由來源 commit SHA 代替。
+- **資料更新 commit → 只對應資料批次**：資料同步的來源 commit 只識別那一批資料，不對應任何 Tag、不構成程式發布，也不得寫進 `release.json` 或 `version.json` 的 `releaseCommit`／`components`。
+- **部署紀錄 → 每次實際上線各記一筆**：不論類型是程式發布、資料同步、元件單獨部署或回滾，每次實際上線都留一筆紀錄；記錄來源 commit（如適用）、實際部署產物的 SHA-256 digest、CI Workflow Run ID／URL、平台 Deployment ID（若有）、目標環境、結果、時間與部署類型。只有正式程式發布類型的紀錄才對應新 Tag。
 
-- 版本號識別的是「發布意圖」：同一個版本號不應對應兩份不同內容，因此每次程式部署必須同時在部署紀錄中記錄該次實際部署的 Git commit SHA（完整 40 字元），讓任何一次上線都能追查到確切程式碼。
-- 例行資料同步只更新第二層：保留資料的 `updatedAt`、來源 commit 與批次識別即可，不必、也不得因此遞增本站 SemVer、建立 Tag，或改寫 `release.json`；該次同步若觸發重新部署，CI 重新產生 `version.json` 時 `version` 與 `commit` 保持與上次發布相同，僅 `deployedAt` 更新為本次部署時間，`components` 的來源 SHA 不變；該次同步實際部署 commit 與時間只記在部署紀錄並註明類型為資料同步，避免事後誤判為程式發布。
-- 部署紀錄（部署流程輸出或該次發布的 PR／紀錄）至少包含：本站版本（資料同步且無新版本時，寫當時現行版本並註明未升版）、該次實際部署的完整 commit SHA（多元件時逐元件，見下）、所釘 chi-system 版本、部署時間（Asia/Taipei）、部署類型。缺 SHA 的程式部署視為不可追溯，不得宣稱完成。
-- 若同一版本號需要緊急熱修，仍須遞增 PATCH 後再部署，不得以同版本號覆蓋部署不同內容。
-- **多元件部署（v1.3 新增，v1.4 修訂頂層 commit 定義，欄位格式在此定死）**：一個站若有多個可獨立部署的元件（例如 merch 的前端與 Worker API 分開建置、分開部署，甚至位在不同 commit），每個元件必須各有自己的 commit 識別，不得用單一 SHA 代表全部元件。格式定為本站 `release.json` 的 `components` 欄位（見第 5 點），CI 產生 `version.json` 時原樣複製並補各元件 `deployedAt`：以元件 ID 為 key（merch 固定用 `web` 指前端、`api` 指 Worker API；其他站新增多元件時，元件 ID 在該站第一次使用前先補進本節，不得各站自創同義不同名），每個元件在 `release.json` 記錄自己的 `commit` 與 `commitShort`（`deployedAt` 不進 `release.json`，只在產生的 `version.json` 中由 CI 補入）。單一元件的站可省略 `components`，此時頂層 `commit`（基準 commit）與該唯一元件的 commit 可以同值，但定義仍分開（第 1 點）。**有 `components` 時，頂層 `commit` 等於基準 commit（即 Tag 指向的 commit），不是任一元件的 commit**；追溯特定元件一律以 `components` 中該元件的紀錄為準，頁尾與對外說明不得把頂層 SHA 呈現為「全站各元件」的 SHA，也不得把頂層 `commit` 寫成 `web` 或 `api` 任一元件的 commit 來冒充全站。多元件站某個元件單獨重新部署（未構成新程式發布）時，該次實際部署的元件 commit 記在部署紀錄，不改寫 `release.json` 的 `components`；`components` 的元件來源 SHA 只隨新程式發布（更新 `release.json` 並建新 Tag）更新。元件的變更是否計入本站版本，依其對使用者的影響按第 2 點判定（例如 merch 的 API 變更影響使用者行為即計入），不另立元件自己的 SemVer 線。
+- 版本號識別的是「發布清單」：同一個版本號不應對應兩份不同發布清單，因此每次程式發布都必須記錄 Tag、發布基準 commit 與各元件來源 SHA。
+- 例行資料同步只更新資料層：保留資料的 `updatedAt`、來源 commit 與批次識別即可，不得因此遞增本站 SemVer、建立 Tag，或改寫 `release.json`；該次同步若觸發重新部署，CI 重新產生 `version.json` 時 `version`、`releaseCommit` 與 `components` 的來源 SHA 保持與上次發布相同，僅頂層及實際有重新部署之元件的 `deployedAt` 更新；該次資料產物與部署包的 SHA-256 digest、Workflow Run ID／Deployment ID 及時間記在部署紀錄，類型標示為資料同步。
+- 部署紀錄至少包含：本站版本（資料同步且無新版本時，寫當時現行版本並註明未升版）、`releaseCommit`、各部署元件的來源 commit（若可識別）、實際部署產物的 SHA-256 digest（多元件時逐元件）、CI Workflow Run ID／URL、平台 Deployment ID（若有）、目標環境、部署結果、所釘 chi-system 版本、部署時間（Asia/Taipei）、部署類型。缺少發布基準 SHA、可取得的來源 commit 或實際產物 digest 的程式部署視為不可追溯，不得宣稱完成。
+- 若同一版本號需要緊急熱修，仍須遞增 PATCH 後再部署，不得以同版本號覆蓋不同發布清單。
+- **多元件部署**：一個站若有多個可獨立部署的元件（例如 merch 的前端與 Worker API 分開建置、分開部署，甚至位在不同 commit），每個元件必須各有自己的來源 commit 識別。格式定為本站 `release.json` 的 `components` 欄位；以元件 ID 為 key（merch 固定用 `web` 指前端、`api` 指 Worker API；其他站新增多元件時，元件 ID 在該站第一次使用前先補進本節），每個元件在 `release.json` 記錄自己的 `commit` 與 `commitShort`，產生的 `version.json` 再由 CI 補入各元件該次部署的 `deployedAt`。單一元件站可省略 `components`；此時仍須在部署紀錄記錄實際部署的元件 SHA。多元件站的 `releaseCommit` 是發布清單基準，不是任一元件的來源 SHA；追溯特定元件一律以 `components` 與部署紀錄為準。元件變更是否計入本站版本，依其對使用者的影響按第 2 點判定，不另立元件自己的 SemVer 線。
 
 **4. 網站呈現**
 
-- 每站共用頁尾固定顯示本站版本，格式為 `v<MAJOR>.<MINOR>.<PATCH>`，並附短版 commit SHA（前 7 字元），例如頁尾呈現「本站版本＋短 SHA」兩個元素；短 SHA 是程式發布（基準）commit 的短 SHA，只供人眼辨識，追查時以 `version.json` 的完整 SHA 為準。多元件站頁尾顯示的同樣是基準 commit 的短 SHA，其餘元件只在 `version.json` 的 `components` 與部署紀錄中追溯，頁尾不得因此宣稱該 SHA 代表全部元件。
+- 每站共用頁尾固定顯示本站版本，格式為 `v<MAJOR>.<MINOR>.<PATCH>`，並附發布基準短 SHA（前 7 字元），例如頁尾呈現「本站版本＋短 SHA」兩個元素；短 SHA 是發布基準 commit 的短 SHA，只供人眼辨識，追查時以 `version.json` 的完整 SHA 為準。多元件站頁尾顯示的同樣是基準 commit 的短 SHA，其餘元件只在 `version.json` 的 `components` 與部署紀錄中追溯，頁尾不得因此宣稱該 SHA 代表全部元件。
 - 頁尾的版本呈現預設由建置／部署流程注入（見第 5 點的方案比較與選定），注入值與 CI 產生的 `version.json` 相同來源（同一次部署、同一個 Tag 與同一份 `release.json`），不得另寫一份，也不得手寫死在 HTML 裡——寫死必然在下一次發布忘記更新，呈現的版本就會是錯的。
 - 採用執行期讀取的例外站（見第 5 點），頁尾讀取 `version.json` 失敗時依第 5 點的失敗處理辦理：不顯示版本，不得顯示虛構或上一個已知版本冒充現行版本，也不得因讀取失敗阻擋或破壞頁面主要功能。
 - 頁尾同時呈現 chi-system 版本時，依第 1 點分列標明，不得與本站版本並排成一串無歸屬的數字。
 
 **5. 版本來源：`release.json`（Repo 內 manifest）＋ CI 產生的 `version.json`（建置產物）（v1.5 重訂，消除 SHA 循環依賴）**
 
-v1.4 的矛盾在此講清楚：Site Release Tag 指向整體發布基準 commit、`version.json` 的 `commit` 須等於該 commit 的 SHA、而 `version.json` 又被要求包含在該 commit 內。Git commit SHA 由 commit 內容計算，任何檔案都不能在自身所屬的 commit 內容中，預先寫入該 commit 自己的 SHA，因此 v1.4 的模型在技術上不可執行。v1.5 改為下列三層模型，本點為唯一做法：
+v1.4 的矛盾在此講清楚：Site Release Tag 指向整體發布基準 commit、`version.json` 的 `releaseCommit` 須等於該 commit 的 SHA、而 `version.json` 又被要求包含在該 commit 內。Git commit SHA 由 commit 內容計算，任何檔案都不能在自身所屬的 commit 內容中，預先寫入該 commit 自己的 SHA，因此 v1.4 的模型在技術上不可執行。v1.5 改為下列三層模型，本點為唯一做法：
 
 | 層 | 是什麼 | 含什麼 | 不含什麼／邊界 |
 | --- | --- | --- | --- |
 | `release.json`（Repo 內發布 manifest） | 發布的身分與內容清單：這次發布是哪一版、由哪些元件的哪些 commit 組成、釘哪一版 chi-system | `site`、`version`、`chiSystemVersion`、`components` 的元件來源 SHA | 不含任何代表自身 commit 的欄位（不得有 `commit`、`commitShort`、`deployedAt`）；不含部署時間 |
-| `version.json`（建置產物） | 對外機器可讀的部署版本資訊：目前線上部署的是哪一版程式、哪個 commit、何時部署 | `site`、`version`、`commit`、`commitShort`、`chiSystemVersion`、`deployedAt`、`components`（含各自 `deployedAt`） | 不進 repo、不進 Tag 指向的 commit；只存在於部署產物與線上站點 |
-| 部署紀錄 | 每次實際上線的歷史 | 部署類型、該次實際部署 commit、部署時間、回滾目標與原因（回滾時） | 不構成發布本身；不得代替 Tag 或 `release.json` 作為版本身分 |
+| `version.json`（建置產物） | 對外機器可讀的部署版本資訊：目前線上部署的是哪一版程式、哪個 commit、何時部署 | `site`、`version`、`releaseCommit`、`releaseCommitShort`、`chiSystemVersion`、`deployedAt`、`components`（含各自 `deployedAt`） | 不進 repo、不進 Tag 指向的 commit；只存在於部署產物與線上站點 |
+| 部署紀錄 | 每次實際上線的歷史 | 部署類型、來源 commit（若適用）、實際產物 SHA-256 digest、Workflow Run ID／URL、平台 Deployment ID（若有）、環境、結果、部署時間、回滾目標與原因（回滾時） | 不構成發布本身；不得代替 Tag 或 `release.json` 作為版本身分 |
 
 先前評估過的另外兩種做法，結論不變：版本寫死在 HTML／頁尾不採用（每站多頁、易漏改、無法被程式讀取核對，版本呈現與實際部署必然漂移）；各站版本寫進共用的 `sites.json` 不採用（`sites.json` 是 chi-system 的六站 registry（第 8 節），各站發布節奏獨立，任何一站發版都要改 chi-system 並發新版，直接違反下方第 6 點的分離原則）。
 
@@ -570,15 +600,15 @@ v1.4 的矛盾在此講清楚：Site Release Tag 指向整體發布基準 commit
 1. 發布者依第 2 點原則決定新版本號，更新 `release.json`（`version`，必要時一併更新 `components` 的元件來源 SHA 與 `chiSystemVersion`），並把這次更新提交為一個 commit。
 2. 對該 commit 建立 Site Release Tag `vMAJOR.MINOR.PATCH`；Tag 名（即 `release.json` 的 `version` 加 `v` 前綴）必須與 `release.json` 的 `version` 一致。該 commit 即整體發布基準 commit，Tag 的唯一指向意義維持第 1 點定義不變。
 3. CI 在 Tag 觸發時取得 Tag 對應 commit 的完整 SHA，於建置或部署階段產生對外的 `version.json`（欄位見下），並驗證 Tag 名、`release.json` 的 `version`、產生的 `version.json` 的 `version` 三者一致，否則部署失敗。
-4. 部署產物上線；部署紀錄記一筆程式發布（該次實際部署 commit 與部署時間）。
+4. 部署產物上線；部署紀錄記一筆程式發布（元件來源 commit、實際產物 SHA-256 digest、Workflow Run ID／平台 Deployment ID、部署環境、結果與部署時間）。
 
 **`version.json`（建置產物，欄位在此定死）：**
 
 - 由 CI 在建置或部署階段產生，固定放在各站對外根路徑（可由瀏覽器直接取得，例如 `https://<該站域名>/version.json`），**不提交回 repo、不寫入 Tag 指向的 commit**。欄位固定如下：
   - `site`：自 `release.json` 複製。
   - `version`：自 `release.json` 複製。
-  - `commit`：Tag 對應 commit（整體發布基準 commit）的完整 Git commit SHA，由 CI 於 Tag 觸發時取得並注入。它是程式發布 commit（第 3 點定義），不是最近一次部署的 commit。
-  - `commitShort`：`commit` 的前 7 字元。
+  - `releaseCommit`：Tag 對應的整體發布基準 commit 完整 Git SHA，由 CI 於 Tag 觸發時取得並注入。它是發布 manifest 的基準 commit，不是多元件站任一元件的程式碼來源 commit，也不是最近一次部署的實際部署 commit。
+  - `releaseCommitShort`：`releaseCommit` 的前 7 字元。
   - `chiSystemVersion`：自 `release.json` 複製。
   - `deployedAt`：本次部署時間，ISO 8601 並標明 `+08:00`，由 CI 注入；每次重新部署（含資料同步觸發的重新部署與回滾部署）都以該次部署時間重新產生。
   - `components`：自 `release.json` 複製各元件的來源 `commit` 與 `commitShort`，並由 CI 補入各元件該次部署的 `deployedAt`；單一元件站省略 `release.json` 的 `components` 時，本欄位一併省略。
@@ -587,14 +617,14 @@ v1.4 的矛盾在此講清楚：Site Release Tag 指向整體發布基準 commit
 
 - `release.json` 的內容在基準 commit 建立之前已完全確定：版本號由發布者依第 2 點決定，`components` 的元件來源 SHA 都是在該 commit 之前就已存在的 commit，`chiSystemVersion` 是已發布的版本號；它不包含任何需要先知道基準 commit 的 SHA 才能填的欄位。
 - 基準 commit 的 SHA 由該 commit 的內容（包含內容已確定的 `release.json`）計算，Tag 再指向該 commit；順序是單向的：內容先確定 → commit 產生 → SHA 存在 → Tag 指向。
-- `version.json` 的 `commit`、`commitShort` 與 `deployedAt` 在 Tag 建立之後才由 CI 填入，且 `version.json` 不進 repo、不進 Tag 指向的 commit，因此沒有任何檔案需要在自身內容中預先寫入自己的 SHA，也沒有任何步驟的輸入依賴自己的輸出。整個流程（更新 manifest → 提交 → 建 Tag → CI 產生 `version.json` → 部署 → 記部署紀錄）可由 CI 自動完成，不需要人工回填 SHA。
+- `version.json` 的 `releaseCommit`、`releaseCommitShort` 與 `deployedAt` 在 Tag 建立之後才由 CI 填入，且 `version.json` 不進 repo、不進 Tag 指向的 commit，因此沒有任何檔案需要在自身內容中預先寫入自己的 SHA，也沒有任何步驟的輸入依賴自己的輸出。整個流程（更新 manifest → 提交 → 建 Tag → CI 產生 `version.json` → 部署 → 記部署紀錄）可由 CI 自動完成，不需要人工回填 SHA。
 
 **純資料更新時的 `version.json`（v1.5 明定）：**
 
-- 純資料更新不動 `release.json`、不建 Tag、不改變程式版本識別（第 2、3 點）。若資料同步觸發重新部署，CI 重新產生 `version.json` 時，`version` 與 `commit` 保持與上次發布相同（`commit` 仍為現行 Tag 對應 commit），`components` 的來源 SHA 不變，僅 `deployedAt` 更新為本次部署時間。資料更新的來源 commit、批次識別與 `updatedAt` 由資料更新識別及部署紀錄承擔，不寫進 `release.json`，也不寫進產生的 `version.json` 的 `commit` 或 `components`。
+- 純資料更新不動 `release.json`、不建 Tag、不改變程式版本識別（第 2、3 點）。若資料同步觸發重新部署，CI 重新產生 `version.json` 時，`version` 與 `releaseCommit` 保持與上次發布相同（`releaseCommit` 仍為現行 Tag 對應的發布基準 commit），`components` 的來源 SHA 不變，僅 `deployedAt` 更新為本次部署時間。資料更新的來源 commit、批次識別與 `updatedAt` 由資料更新識別及部署紀錄承擔，不寫進 `release.json`，也不寫進產生的 `version.json` 的 `releaseCommit` 或 `components`。
 
 - 不引入新依賴：產生 `version.json` 只用各站既有建置／部署流程與 Git 本身（例如讀取 Tag 對應 commit）即可完成；六站現有技術棧（原生、Astro、Vite、Python 產生器）都能在不新增套件下做到。做不到自動化的站，部署時以人工依同一規則產生部署產物中的該檔並在紀錄中註明，仍不得改回寫死 HTML，也不得把產生的 `version.json` 提交回 repo 冒充 manifest。
-- 一致性檢查（v1.5 修訂）：各站 CI 或部署後檢查須驗證**部署產物** `version.json` 存在、欄位齊全、`version` 與 Tag 名及 `release.json` 的 `version` 一致、`commit` 等於該 Tag 對應的基準 commit（不得改以「最近一次部署的 commit」驗證；多元件站另逐元件驗證產生的 `version.json` 的 `components` 來源 SHA 與 `release.json` 的 `components` 一致）；頁尾顯示的版本與產生的 `version.json` 不一致即驗收不通過（第 18 節）。
+- 一致性檢查（v1.5 修訂）：各站 CI 或部署後檢查須驗證**部署產物** `version.json` 存在、欄位齊全、`version` 與 Tag 名及 `release.json` 的 `version` 一致、`releaseCommit` 等於該 Tag 對應的發布基準 commit（不得改以「最近一次部署的 commit」驗證；多元件站另逐元件驗證產生的 `version.json` 的 `components` 來源 SHA 與 `release.json` 的 `components` 一致）；頁尾顯示的版本與產生的 `version.json` 不一致即驗收不通過（第 18 節）。
 
 **快取策略（v1.3 新增，v1.5 對象改為建置產物）**
 
@@ -634,17 +664,17 @@ v1.4 的矛盾在此講清楚：Site Release Tag 指向整體發布基準 commit
 **(a) 遞增 PATCH 回滾（建立新版本，步驟定死）：**
 
   1. 從回滾目標 Tag 的內容建立**新 commit**：新 commit 的程式與資料內容等於目標版內容，僅 `release.json` 的 `version` 更新為新 PATCH 版（本站現行版本 `vX.Y.Z` 的下一個 PATCH，即 `vX.Y.(Z+1)`），其餘 `release.json` 內容（`components` 的元件來源 SHA、`chiSystemVersion`）等於目標版。
-  2. 對新 commit 建立新 Tag（步驟見下一條）；新 commit 即新版本的基準 commit，CI 依第 5 點流程產生新的 `version.json`：其 `version` 為新 PATCH 版、`commit` 為新 Tag 對應 commit、`components` 的元件來源 SHA 與目標版相同（內容等於目標版）。`release.json` 不寫新 commit 的 SHA，不存在回填自身 SHA 的問題。
+  2. 對新 commit 建立新 Tag（步驟見下一條）；新 commit 即新版本的基準 commit，CI 依第 5 點流程產生新的 `version.json`：其 `version` 為新 PATCH 版、`releaseCommit` 為新 Tag 對應的發布基準 commit、`components` 的元件來源 SHA 與目標版相同（內容等於目標版）。`release.json` 不寫新 commit 的 SHA，不存在回填自身 SHA 的問題。
   3. 建立新 Tag `vX.Y.(Z+1)`，指向新 commit；不得指向目標版的基準 commit 本人，也不得重用目標 Tag 或問題版 Tag。
   4. 部署新 Tag 的內容。
   5. 部署紀錄標示本次部署類型為回滾、回滾目標 Tag、回滾原因與時間。
 
 **(b) 不升版回滾（直接重新部署目標版原內容）：**
 
-  - 部署回滾目標 Tag 的原內容；CI 依該 Tag 重新產生的 `version.json` 因此回到目標版的 `version` 與 `commit`（基準 commit），`deployedAt` 為本次回滾部署時間，這是如實呈現內容版本，不是「以舊版本號覆蓋不同內容」，因為部署的正是該 Tag 的原內容。
+  - 部署回滾目標 Tag 的原內容；CI 依該 Tag 重新產生的 `version.json` 因此回到目標版的 `version` 與 `releaseCommit`（發布基準 commit），`deployedAt` 為本次回滾部署時間，這是如實呈現內容版本，不是「以舊版本號覆蓋不同內容」，因為部署的正是該 Tag 的原內容。
   - 部署紀錄必須同時保留：**原發布版本**（出問題、被回滾掉的那一版）、**回滾目標**（目標 Tag）、**回滾原因**與**回滾時間**，且紀錄須能區分這筆是回滾部署、不是目標版的初次發布；缺少任一項即視為紀錄不完整，不得宣稱回滾完成。
 
-- **回滾後四者一致性檢查（v1.4 新增，連動第 18 節）**：回滾完成後必須核對四者互相一致——(i) 線上建置產物 `version.json` 的 `version` 與 `commit`（並與該版 `release.json` 的 `version` 一致）、(ii) 該 `version` 對應 Tag 的指向、(iii) 實際部署內容、(iv) 部署紀錄（類型、目標、原因、時間）。採 (a) 時四者對應新 PATCH 版與新 Tag；採 (b) 時前三者對應目標版、第四者須明確標示為回滾。任一不一致即驗收不通過，須先修正才可宣稱回滾完成。
+- **回滾後四者一致性檢查（v1.4 新增，連動第 18 節）**：回滾完成後必須核對四者互相一致——(i) 線上建置產物 `version.json` 的 `version` 與 `releaseCommit`（並與該版 `release.json` 的 `version` 一致）、(ii) 該 `version` 對應 Tag 的指向、(iii) 實際部署內容、(iv) 部署紀錄（類型、目標、原因、時間）。採 (a) 時四者對應新 PATCH 版與新 Tag；採 (b) 時前三者對應目標版、第四者須明確標示為回滾。任一不一致即驗收不通過，須先修正才可宣稱回滾完成。
 - 回滾完成後以第 18 節清單快速驗收受影響頁面，並在原發布 PR 或紀錄中留言後續處理（修新版再升，或列入待確認）；回滾不解決根因，不得以「已回滾」結案而不留後續。
 
 **對現有六站的影響（只評估，不在本輪實作）**
@@ -653,8 +683,8 @@ v1.4 的矛盾在此講清楚：Site Release Tag 指向整體發布基準 commit
 | --- | --- |
 | nav | 原生站：repo 根目錄建立 `release.json`，既有產生／部署步驟由 CI 依 Tag 產生 `version.json`，頁尾加版本呈現；無新依賴 |
 | status | 本來就是 Python 產生靜態站：repo 根目錄建立 `release.json`，產生器在部署時依 Tag 產生 `version.json` 最直接；監控資料的例行更新屬資料更新層（保留資料 `updatedAt`），不遞增版本、不建 Tag，與程式發布分開記錄 |
-| fg | 靜態站＋資料同步：須分清「程式發布」才遞增本站版本並建 Tag（發布清單寫 `release.json`）；例行資料同步（遊戲資料更新）不是發布，不遞增版本、不建 Tag、不改 `release.json`，CI 重新產生的 `version.json` 的 `commit` 保持不變、僅 `deployedAt` 更新；該次同步的來源 commit、批次識別與時間只記在資料更新識別與部署紀錄（類型註明資料同步），資料本身保留 `updatedAt` 與來源識別，避免誤判 |
-| merch | Vite 建置：repo 根目錄建立 `release.json`，建置時由 CI 依 Tag 產生 `version.json`，其頂層 `commit` 為發布基準 commit（Tag 指向）；本站是多元件部署，前端與 Worker API 的實際來源 commit 先記錄在 `release.json` 的 `components`（`web`、`api`），CI 複製進產生的 `version.json` 並補各自 `deployedAt`，不得以頂層或任一元件的 SHA 冒充全部元件；Worker API 的變更若影響使用者，依第 2 點計入本站版本，不另立 API 版本線 |
+| fg | 靜態站＋資料同步：須分清「程式發布」才遞增本站版本並建 Tag（發布清單寫 `release.json`）；例行資料同步（遊戲資料更新）不是發布，不遞增版本、不建 Tag、不改 `release.json`，CI 重新產生的 `version.json` 的 `releaseCommit` 保持不變、僅 `deployedAt` 更新；該次同步的來源 commit、批次識別與時間只記在資料更新識別與部署紀錄（類型註明資料同步），資料本身保留 `updatedAt` 與來源識別，避免誤判 |
+| merch | Vite 建置：repo 根目錄建立 `release.json`，建置時由 CI 依 Tag 產生 `version.json`，其頂層 `releaseCommit` 為發布基準 commit（Tag 指向）；本站是多元件部署，前端與 Worker API 的實際來源 commit 先記錄在 `release.json` 的 `components`（`web`、`api`），CI 複製進產生的 `version.json` 並補各自 `deployedAt`，不得以頂層或任一元件的 SHA 冒充全部元件；Worker API 的變更若影響使用者，依第 2 點計入本站版本，不另立 API 版本線 |
 | h | Astro：repo 根目錄建立 `release.json`，建置期由 CI 依 Tag 產生 `version.json` 並注入頁尾（同源），與其引用 `theme.js` 的升級分開判斷 |
 | chi | Astro＋Tailwind、規模最大：repo 根目錄建立 `release.json`，頁尾呈現改為建置期注入（值與 CI 產生的 `version.json` 同源）；一般文章發布屬內容更新，不遞增 SemVer、不建 Tag、不改 `release.json`，只在部署紀錄留下 commit 與時間；只有新增功能頁才依第 2 點遞增 MINOR |
 
@@ -744,7 +774,7 @@ chi-system 從空 repo 起步，依序完成，前一步驗收後才進下一步
 - CI 全綠，含共用件版本／hash 檢查，以及第 4 節的斷點檢查（`@media` 內無 CSS 變數、無未核准斷點值、無 `--chi-breakpoint-*` 定義，且每個斷點用途 `@media` 的緊鄰上一行都有符合固定格式 `/* chi-breakpoint: <名稱> */` 的註解、其名稱與 px 值在 `breakpoints.json` 中的對應一致，無註解、格式不符或名稱與數值不符即不通過）。
 - 正式站實際開啟正常，淺色、深色、系統三態都看過，切換無閃爍。
 - 手機寬度無水平捲動，header、導覽與主要操作可用；每個斷點邊界寬度前後都查過，版面切換有實際發生。
-- 鍵盤可操作全部互動元素，focus 樣式可見且對比達第 11 節門檻，圖示按鈕有 `aria-label`；`color-scheme` 已依第 11 節同時完成 meta 宣告與 CSS 依實際主題設定，原生表單控制項跟隨實際主題；沿用瀏覽器預設 focus 樣式的元件不得以 User Agent 例外免驗收（第 11 節 CHI 額外標準）。
+- 鍵盤可操作全部互動元素，focus 樣式可見且對比達第 11 節門檻，圖示按鈕有 `aria-label`；`color-scheme` 已依第 11 節同時完成 meta 宣告與 CSS 依實際主題設定，原生表單控制項跟隨實際主題；User Agent 例外須依 1.4.11 與 2.4.13 各自條件逐元件判定，並分開記錄 WCAG 原始符合性與 CHI 內部驗收結果，不得以例外跳過 CHI 內部量測，也不得把「CHI 額外驗收未通過」誤報為 WCAG 不符合。
 - 對比實測達標並留紀錄：一般文字（含 placeholder）至少 4.5:1、大文字至少 3:1、非文字（元件邊界、傳達資訊的圖示與圖表）至少 3:1，淺色與深色兩套配對都要測，不得只測一套或只測主色；focus 另依第 11 節分開記錄 (A) 相鄰顏色對比（AA）與 (B) 狀態變化對比（CHI 額外採用），不得合併成單一數字；focus 面積另依第 11 節列為獨立幾何／面積驗收，分開記錄、分開判定，不得併入 (B)，也不得以顏色調整抵銷面積不足。
 - 不只靠顏色：狀態、連結、表單錯誤、圖表系列與選中狀態在去掉顏色後仍可辨認（各項判準見第 11 節），並已在預覽頁的對應區塊或該站畫面實際查過。
 - 頁面無遠端字型、無圖示 CDN、無熱連結浮動分支的資產。
@@ -752,14 +782,14 @@ chi-system 從空 repo 起步，依序完成，前一步驗收後才進下一步
 - 載入、空、錯誤、成功四種狀態都有實際畫面或可重現的驗證方式。
 - 日期、時間與金額格式符合第 10 節。
 - 發版驗收另外加三項：版本號遞增符合第 13 節規則且附相容聲明；預覽頁各維度覆蓋已依第 13 節驗收紀錄表逐項核對（含不適用項與原因）；升級 PR 已預寫回滾步驟且回滾目標版本（升級前的 tag）仍存在且未被改寫。
-- 各站發布驗收另外加五項：Repo 內 `release.json` 存在、欄位齊全且不含 `commit`、`commitShort`、`deployedAt`，部署產物 `version.json` 存在且欄位齊全、其 `commit` 等於該 `version` 的 Tag 所指向的程式發布（基準）commit（多元件站驗證產生的 `version.json` 的 `components` 來源 SHA 與 `release.json` 的 `components` 一致），頁尾顯示的本站版本與短 SHA 與產生的 `version.json` 一致（第 13 節）；該次發布的 Git Tag 存在、名稱與 `release.json` 的 `version`、產生的 `version.json` 的 `version` 及發布紀錄一致，且 Tag 指向基準 commit、未被覆寫或改指；線上 `version.json` 的回應帶 `no-cache` 或等效短快取（採執行期讀取的站另須實際驗證讀取失敗時頁尾不顯示虛構版本且主要功能不受影響）；部署紀錄同時載明本站版本與所釘 chi-system 版本（兩者分列未混寫）、該次實際部署 commit、部署類型（程式發布／資料同步／回滾），資料同步未誤升版本、未誤建 Tag、未改 `release.json`，且重新產生的 `version.json` 僅 `deployedAt` 更新；回滾部署另須通過第 13 節第 7 點的四者一致性檢查（產生的 `version.json`、Tag、實際部署內容、部署紀錄），並核對回滾紀錄保留原發布版本、回滾目標、原因與時間。
+- 各站發布驗收另外加五項：Repo 內 `release.json` 存在、欄位齊全且不含 `commit`、`commitShort`、`deployedAt`，部署產物 `version.json` 存在且欄位齊全、其 `releaseCommit` 等於該 `version` 的 Tag 所指向的發布基準 commit（多元件站驗證產生的 `version.json` 的 `components` 來源 SHA 與 `release.json` 的 `components` 一致），頁尾顯示的本站版本與短 SHA 與產生的 `version.json` 一致（第 13 節）；該次發布的 Git Tag 存在、名稱與 `release.json` 的 `version`、產生的 `version.json` 的 `version` 及發布紀錄一致，且 Tag 指向基準 commit、未被覆寫或改指；線上 `version.json` 的回應帶 `no-cache` 或等效短快取（採執行期讀取的站另須實際驗證讀取失敗時頁尾不顯示虛構版本且主要功能不受影響）；部署紀錄同時載明本站版本與所釘 chi-system 版本（兩者分列未混寫）、各元件來源 commit（若適用）、實際部署產物 SHA-256 digest、Workflow Run ID／平台 Deployment ID（若有）、部署環境與結果、部署類型（程式發布／資料同步／回滾），資料同步未誤升版本、未誤建 Tag、未改 `release.json`，且重新產生的 `version.json` 僅 `deployedAt` 更新；回滾部署另須通過第 13 節第 7 點的四者一致性檢查（產生的 `version.json`、Tag、實際部署產物 digest、部署紀錄），並核對回滾紀錄保留原發布版本、回滾目標、原因與時間。
 
 ## 19. 變更治理與待確認事項
 
 - 命名（第 1 節）已凍結，不重開討論；其餘章節要改，一次 PR 只改一個主題，經齊確認後合併，並在 PR 中說明影響哪些站。
 - 文件與實作不一致、以及聲稱「歷史實作本來就這樣」的情形，一律依本文件開頭「文件與實作不一致時的處理原則」辦理：規範優先、先記錄、暫停受影響部分、經齊確認才決定改哪一邊；本節是唯一的規範變更入口，任何繞過本節直接改文件遷就實作、或直接改實作偏離文件的變更，審閱時應退回。
 - 臨時例外依開頭原則第 5 點登記在本節或對應 PR：寫明範圍、理由與失效條件，到期未回歸規範者列為未結缺陷，不得無限期展延而不記錄。
-- 本文件的版本隨內容變更遞增；各站在下一次發布時對齊最新版規範與所釘的 chi-system 版本。本版（1.5）為第六輪審查修訂稿，仍待齊審閱，未經確認不生效力。
+- 本文件的版本隨內容變更遞增；各站在下一次發布時對齊最新版規範與所釘的 chi-system 版本。本版（1.6）為第七輪審查修訂稿，仍待齊審閱，未經確認不生效力。
 - 待確認事項（未定案前不得自行假設）：
   - auth.chi.qzz.io 的原始碼位置不在目前已知 repo 清單內，待齊補充；補充前本文件對 auth 只規範各站的接入行為，不描述其實作。
   - chi-design-system 最終處置是封存（第 17 節已定），example-site 是刪除；執行時機仍須逐項確認。
@@ -768,6 +798,6 @@ chi-system 從空 repo 起步，依序完成，前一步驗收後才進下一步
   - 各站託管平台能否對 `/version.json` 設定 `Cache-Control`、或需何種 CDN 等效做法，尚未逐站確認，留待各站遷移時確認。
   - 斷點實際 px 值與全部視覺 token 數值（含 DESIGN.md 第 8 節待定項目、Focus Appearance 的外框寬度與偏移）仍未定稿，依規劃於 `breakpoints.json` 與 `tokens.css` 實作時定稿；本輪未自行定稿任何數值。
   - 未列入 DESIGN.md 基礎狀態示例表的元件（日期選擇、檔案上傳、滑桿等），實際使用前仍須逐一另行定義適用狀態，本文件不預先假設。
-  - DESIGN.md 已升為 v2.3 初稿（僅補第 7.2、7.6 節兩句釐清，理由見開頭第六輪修訂表第 13 項），同樣待齊審閱、未生效。
-  - 交叉一致性審查的 8 項待確認已於 v1.5／v2.3 以修訂處理（清單見開頭交叉審查表），仍待齊審閱確認，不得視為已通過；其中完整 Token 角色與 CSS 變數對照表留待 `tokens.css` 實作時定稿，本輪只定對照原則與 `--chi-color-focus-ring` 一個變數名。
+  - DESIGN.md 已升為 v2.5 初稿（承接 v2.4，延續 WCAG User Agent 例外逐準則、逐元件判定，並回指 SYSTEM.md v1.7），同樣待齊審閱、未生效。
+  - 交叉一致性審查表列出的 10 項待確認仍待齊審閱，不得視為已通過；其中完整 Token 角色與 CSS 變數對照表留待 `tokens.css` 實作時定稿，本輪只定對照原則與 `--chi-color-focus-ring` 一個變數名。
   - `release.json` ＋ CI 產生 `version.json` 的發布流程只寫入規範，尚未在任何一站實作或以實際 CI 驗證，本輪亦未建立任何正式 Release Tag；各站第一次依新模型發布時，須以實際部署結果回頭核對第 13、18 節的檢查是否可執行。
