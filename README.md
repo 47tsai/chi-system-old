@@ -6,8 +6,8 @@ Chi 生態系共用設計系統的 canonical 來源：總規範與共用件都�
 
 ## 狀態
 
-- `SYSTEM.md` v1.12 與 `DESIGN.md` v2.9：皆為審查稿，**待齊審閱、未生效**。
-- 本 repo 目前只有規範文件與工作規則；共用件（`sites.json`、`icons.svg`、`theme.js`、`tokens.css` 等）依 `SYSTEM.md` 第 15 節順序建立，尚未開始。
+- `SYSTEM.md` v1.18 與 `DESIGN.md` v2.12：皆為審查稿，**待齊審閱、未生效**。
+- 共用件已依 `SYSTEM.md` 第 15 節完成至第 7 步 `template/`：`sites.json`、`logo/`、`breakpoints.json`、`icons.svg`、`theme.js`、`tokens.css`、`components.css`、`navigation.css`、`header.html`、`example.html`、`template/`。第 8 步預覽頁、版本發佈／hash 檢查／CI 尚未開始。
 
 ## 內容
 
@@ -17,13 +17,24 @@ Chi 生態系共用設計系統的 canonical 來源：總規範與共用件都�
 | `DESIGN.md` | 設計語言：Clean／Neutral／Functional／Comfortable，語意層級、理由與示例 |
 | `AGENTS.md` | 在這個 repo 工作的方式：決策來源、推送流程、版本規則、禁區 |
 | `README.md` | 本文件 |
+| `sites.json` | 納入統一的六站 registry（站點 ID、站名、網址、描述、圖示、識別色） |
+| `logo/` | 各站 logo（向量正本 `logo.svg`＋六站 × 白／黑 C 的 PNG） |
+| `breakpoints.json` | 斷點唯一正式來源（768／1024） |
+| `icons.svg` | Lucide 圖示 sprite（87 個 symbol） |
+| `theme.js` | 三態主題切換（`chi-theme-mode`） |
+| `tokens.css` | 視覺 token 唯一來源（淺深兩套） |
+| `components.css` | 元件樣式（按鈕、表單、卡片、表格、徽章、對話框、資料狀態） |
+| `navigation.css` | header、跨站導覽、頁尾樣式 |
+| `header.html` | header 模板（四段結構） |
+| `example.html` | 元件與 header 範例頁 |
+| `template/` | 新站模板（起始頁、四種資料狀態範例頁、`release.json` 範本、使用說明） |
 
 ## 建置順序（摘要，完整版見 `SYSTEM.md` 第 15 節）
 
-1. 規範文件、`AGENTS.md`、`README.md`（本階段）
-2. `sites.json`、`logo/`、`breakpoints.json`
-3. `icons.svg` → `theme.js` → `tokens.css` → `components.css`／`navigation.css`／header 模板
-4. `template/` → 預覽頁、版本發佈／hash 檢查／CI
+1. 規範文件、`AGENTS.md`、`README.md`（已完成）
+2. `sites.json`、`logo/`、`breakpoints.json`（已完成）
+3. `icons.svg` → `theme.js` → `tokens.css` → `components.css`／`navigation.css`／header 模板（已完成）
+4. `template/`（已完成）→ 預覽頁、版本發佈／hash 檢查／CI（下一步）
 5. 以上完成後，才開始逐站遷移：nav → status → fg → merch → h → chi
 
 ## 工作方式（摘要，完整版見 `AGENTS.md`）
@@ -31,7 +42,7 @@ Chi 生態系共用設計系統的 canonical 來源：總規範與共用件都�
 - 直接提交 `main`，不建立 PR；每個 commit 一個主題，並寫明改動、風險、驗收方式與回滾方式。
 - 推送前必須重新核對遠端 HEAD 與同步紀錄一致，否則先合併再推，不得覆寫他人已發布的改動。
 - 不可逆操作（部署正式環境、刪除 repo 或資料、撤銷憑證、服務下線）逐項經齊確認。
-- 斷點 px 值與全部視覺 token 數值尚未定稿，不得自行填入。
+- 斷點 px 值與全部視覺 token 數值已定案（斷點見 `breakpoints.json`，其餘見 `tokens.css`），不得自行改動已定案的數值。
 
 ## 相關連結
 

@@ -1,6 +1,6 @@
 # SYSTEM.md — Chi 生態系統一規範
 
-版本：1.17（第十八輪審查修訂稿）
+版本：1.18（第十九輪審查修訂稿）
 基準日：2026-11-08
 狀態：待齊審閱，未生效。審閱通過後才生效，成為 Chi 自有網站的唯一總規範；本修訂稿不自行宣布生效。
 存放位置：`47tsai/chi-system` repo 根目錄（本文件正本）。
@@ -16,9 +16,19 @@ SYSTEM.md 是 Chi 生態系的總規範，回答四件事：
 
 這份規範從需求出發全新制定，不複製舊設計系統的文件或程式碼，也不以任何外部設計系統為範本。舊系統只用來盤點現況（哪些站在線上、各站用什麼技術），不作為新規範的依據。
 
+### 第十九輪修訂：差異與技術理由（v1.17 → v1.18，先讀本表，再讀正文）
+
+本輪完成第 15 節第 7 步（`template/`：新站唯一起點，含四種資料狀態的範例頁），並更新 repo `README.md` 的過時狀態（原寫 v1.12／v2.9、共用件尚未開始）。只修改 SYSTEM.md、AGENTS.md、README.md，並新增 `template/index.html`、`template/states.html`、`template/release.json`、`template/README.md`；不修改任何 CSS、JS、既有共用件、CI、網站或其他文件；不建立正式 Release Tag，不開始第 8 步以後的工作。本稿仍為待齊審閱、未生效。
+
+| # | v1.17 問題 | v1.18 修正 | 理由 |
+| --- | --- | --- | --- |
+| 1 | 第 15 節第 7 步未完成，無新站唯一起點 | 建立 `template/`：`index.html` 起始頁（header 四段、主內容、頁尾，全部用共用件）、`states.html` 四種資料狀態範例頁（載入、空、錯誤、成功，演示切換 script 明標範例專用）、`release.json` 範本（`site`、`version`、`chiSystemVersion`，不含 `commit`／`commitShort`／`deployedAt`）、`README.md` 使用說明（複製、換站內容、改釘版引用、填 `release.json`、接 CI 產生 `version.json`、預覽方式） | 新站從第一天適用本文件：從 `template/` 起步，使用 canonical 共用件（第 1 節）；四種資料狀態是每站共同清單的必備項（第 16 節） |
+| 2 | 模板內的共用件引用方式未定 | 模板內用 `../` 相對路徑（只供在 chi-system 內預覽），README 明定正式站改為釘版引用（複製共用件進本站、釘住 Tag 版本號），不得熱連結 chi-system 的 `main` 分支 | 第 6、13 節：共用資產一律本地或釘版發佈，不得依賴遠端即時資源或浮動分支 |
+| 3 | repo `README.md` 仍寫 v1.12／v2.9、共用件尚未開始，與現況不符 | 更新狀態為 SYSTEM.md v1.18／DESIGN.md v2.12、共用件已完成至第 7 步；內容表補齊已建立的共用件；建置順序摘要標示各步完成狀態；工作方式改為斷點與 token 數值已定案 | README 是 repo 門面，狀態與現況不符會誤導協作者；本輪只更新狀態描述，不改任何規則 |
+
 ### 第十八輪修訂：差異與技術理由（v1.16 → v1.17，先讀本表，再讀正文）
 
-本輪完成第 15 節第 6 步（`components.css`、`navigation.css`、`header.html`），並新增 `example.html` 範例頁。只修改 SYSTEM.md、DESIGN.md、AGENTS.md，並新增 `components.css`、`navigation.css`、`header.html`、`example.html`；不修改任何程式碼、CSS、JS、HTML、CI、網站或其他文件；不建立正式 Release Tag，不開始第 7 步以後的工作。本稿仍為待齊審閱、未生效。
+本輪完成第 15 節第 7 步（`template/`：新站唯一起點，含四種資料狀態的範例頁），並更新 repo `README.md` 的過時狀態（原寫 v1.12／v2.9、共用件尚未開始）。只修改 SYSTEM.md、AGENTS.md、README.md，並新增 `template/index.html`、`template/states.html`、`template/release.json`、`template/README.md`；不修改任何 CSS、JS、既有共用件、CI、網站或其他文件；不建立正式 Release Tag，不開始第 8 步以後的工作。本稿仍為待齊審閱、未生效。
 
 | # | v1.16 問題 | v1.17 修正 | 理由 |
 | --- | --- | --- | --- |
@@ -904,7 +914,7 @@ chi-system 從空 repo 起步，依序完成，前一步驗收後才進下一步
 - 命名（第 1 節）已凍結，不重開討論；其餘章節要改，一次直接提交只改一個主題，經齊確認後提交至 `main`，並在 commit／變更紀錄中說明影響哪些站。
 - 文件與實作不一致、以及聲稱「歷史實作本來就這樣」的情形，一律依本文件開頭「文件與實作不一致時的處理原則」辦理：規範優先、先記錄、暫停受影響部分、經齊確認才決定改哪一邊；本節是唯一的規範變更入口，任何繞過本節直接改文件遷就實作、或直接改實作偏離文件的變更，審閱時應退回。
 - 臨時例外依開頭原則第 5 點登記在本節或對應變更紀錄：寫明範圍、理由與失效條件，到期未回歸規範者列為未結缺陷，不得無限期展延而不記錄。
-- 本文件的版本隨內容變更遞增；各站在下一次發布時對齊最新版規範與所釘的 chi-system 版本。本版（1.17）為第十八輪審查修訂稿，仍待齊審閱，未經確認不生效力。
+- 本文件的版本隨內容變更遞增；各站在下一次發布時對齊最新版規範與所釘的 chi-system 版本。本版（1.18）為第十九輪審查修訂稿，仍待齊審閱，未經確認不生效力。
 - 待確認事項（未定案前不得自行假設）：
   - auth.chi.qzz.io 的原始碼位置不在目前已知 repo 清單內，待齊補充；補充前本文件對 auth 只規範各站的接入行為，不描述其實作。
   - chi-design-system 最終處置是封存（第 17 節已定），example-site 是刪除；執行時機仍須逐項確認。
@@ -914,6 +924,6 @@ chi-system 從空 repo 起步，依序完成，前一步驗收後才進下一步
   - 其餘視覺 token 數值已於 v1.16 定案（DESIGN.md 第 8 節待定項目全部結案、Focus Appearance 外框寬度 2px、偏移 2px），數值唯一來源為 `tokens.css`；斷點 px 值與六站識別色已於 v1.14 定案（斷點見 `breakpoints.json`，識別色見 `sites.json` 與 COLOR-REGISTRY.md），不再列為待定。
   - 未列入 DESIGN.md 基礎狀態示例表的元件（日期選擇、檔案上傳、滑桿等），實際使用前仍須逐一另行定義適用狀態，本文件不預先假設。
   - DESIGN.md v2.12（記錄 DESIGN.md 第 7.7 節基礎示例表的外觀細節已落到 `components.css`／`navigation.css`），同樣待齊審閱、未生效；本輪與 v1.17 一併推送。
-  - `sites.json`、`breakpoints.json`、`logo/` 已建立（第 15 節第 2 步完成）：`sites.json` 只收 6 站，含各站識別色（`brand`＋`colorId`）、簡短描述、導覽圖示（`icon`）與是否納入導覽（`inNav`）；`breakpoints.json` 為斷點唯一正式來源（`chi-breakpoint-md` 768、`chi-breakpoint-lg` 1024）；`logo/` 為向量正本 `logo.svg` 加六站 × 白／黑 C 的 PNG（站點 ID 命名）。`icons.svg` 已建立（第 15 節第 3 步完成）：Lucide 1.70.0，87 個 symbol，命名用 Lucide 原名。`theme.js` 已建立（第 15 節第 4 步完成）：三態 system／light／dark、key 為 `chi-theme-mode`、預設 system。`tokens.css` 已建立（第 15 節第 5 步完成）：視覺 token 唯一來源，淺深兩套配對，全部 56 組對比直接讀檔驗算通過。`components.css`、`navigation.css`、`header.html` 已建立（第 15 節第 6 步完成，本輪）：元件樣式、header 與跨站導覽、頁尾與 header 模板；元件展示頁以瀏覽器實測淺深兩套、截圖核對。
+  - `sites.json`、`breakpoints.json`、`logo/` 已建立（第 15 節第 2 步完成）：`sites.json` 只收 6 站，含各站識別色（`brand`＋`colorId`）、簡短描述、導覽圖示（`icon`）與是否納入導覽（`inNav`）；`breakpoints.json` 為斷點唯一正式來源（`chi-breakpoint-md` 768、`chi-breakpoint-lg` 1024）；`logo/` 為向量正本 `logo.svg` 加六站 × 白／黑 C 的 PNG（站點 ID 命名）。`icons.svg` 已建立（第 15 節第 3 步完成）：Lucide 1.70.0，87 個 symbol，命名用 Lucide 原名。`theme.js` 已建立（第 15 節第 4 步完成）：三態 system／light／dark、key 為 `chi-theme-mode`、預設 system。`tokens.css` 已建立（第 15 節第 5 步完成）：視覺 token 唯一來源，淺深兩套配對，全部 56 組對比直接讀檔驗算通過。`components.css`、`navigation.css`、`header.html` 已建立（第 15 節第 6 步完成）：元件樣式、header 與跨站導覽、頁尾與 header 模板；元件展示頁以瀏覽器實測淺深兩套、截圖核對。`template/` 已建立（第 15 節第 7 步完成，本輪）：新站唯一起點，含 `index.html` 起始頁、`states.html` 四種資料狀態範例頁、`release.json` 範本與 `README.md` 使用說明；共用件在模板內以相對路徑引用（repo 內預覽用），正式站改為釘版引用。
   - 交叉一致性審查表共 18 列檢查項，原列 10 項待確認皆已核對為定義一致，剩餘待確認 0 項；完整 Token 角色與 CSS 變數對照表已隨 `tokens.css` 交付（本輪），對照表即檔案本身，不另存副本。
   - `release.json` ＋ CI 產生 `version.json` 的發布流程只寫入規範，尚未在任何一站實作或以實際 CI 驗證，本輪亦未建立任何正式 Release Tag；各站第一次依新模型發布時，須以實際部署結果回頭核對第 13、18 節的檢查是否可執行。

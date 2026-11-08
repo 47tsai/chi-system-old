@@ -1,0 +1,131 @@
+<!doctype html>
+<!-- chi-system template/index.html — 新站起始頁（SYSTEM.md 第 15 節第 7 步）
+  用法：把整個 template/ 複製為新站的起點，再依 README.md 調整。
+  - 站名、站 ID、本站導覽、logo 都還是佔位值，務必換成本站的內容。
+  - 共用件（theme.js、tokens.css、components.css、navigation.css、icons.svg、logo/）
+    在此用 ../ 相對路徑，只供在 chi-system 內預覽；正式站改為釘版引用（見 README.md），
+    不得熱連結 chi-system 的 main 分支。
+  - 頁尾版本識別（.chi-footer__meta）由建置期注入，與本站 version.json 同源，不得手寫死。
+  - 四種資料狀態的範例見同目錄的 states.html。
+-->
+<html lang="zh-Hant" data-chi-theme="light" data-chi-theme-mode="system">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>站名</title>
+  <script src="../theme.js"></script>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../components.css">
+  <link rel="stylesheet" href="../navigation.css">
+</head>
+<body>
+  <div class="chi-page">
+    <header class="chi-header">
+      <div class="chi-header__inner">
+        <!-- 1. Logo + 站名，點擊回該站首頁 -->
+        <a class="chi-header__brand" href="/">
+          <img class="chi-header__logo chi-header__logo--light" src="../logo/chi-b.png" alt="站名" width="32" height="32">
+          <img class="chi-header__logo chi-header__logo--dark" src="../logo/chi-w.png" alt="站名" width="32" height="32">
+          <span>站名</span>
+        </a>
+
+        <!-- 2. 本站主要導覽：目前頁加 aria-current="page" -->
+        <nav class="chi-header__nav" aria-label="本站導覽">
+          <a class="chi-nav-link" href="/" aria-current="page">首頁</a>
+          <a class="chi-nav-link" href="/list">清單</a>
+          <a class="chi-nav-link" href="/about">關於</a>
+        </nav>
+
+        <!-- 3. 跨站導覽入口：由 sites.json 產生（以下六站為範例內容） -->
+        <details class="chi-header__sites">
+          <summary class="chi-sites__button" aria-label="其他 Chi 網站">
+            <svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#layout-grid"></use></svg>
+            <span>其他站</span>
+          </summary>
+          <div class="chi-sites__panel">
+            <a class="chi-sites__item" href="https://chi.qzz.io">
+              <svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#house"></use></svg>
+              <span><span class="chi-sites__name">Chi</span><br><span class="chi-sites__desc">個人站</span></span>
+            </a>
+            <a class="chi-sites__item" href="https://fg.chi.qzz.io">
+              <svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#gamepad-2"></use></svg>
+              <span><span class="chi-sites__name">Free Game</span><br><span class="chi-sites__desc">免費遊戲資訊</span></span>
+            </a>
+            <a class="chi-sites__item" href="https://merch.chi.qzz.io">
+              <svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#shopping-bag"></use></svg>
+              <span><span class="chi-sites__name">收藏</span><br><span class="chi-sites__desc">模型與收藏紀錄</span></span>
+            </a>
+            <a class="chi-sites__item" href="https://nav.chi.qzz.io">
+              <svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#compass"></use></svg>
+              <span><span class="chi-sites__name">導覽</span><br><span class="chi-sites__desc">常用連結導覽</span></span>
+            </a>
+            <a class="chi-sites__item" href="https://h.chi.qzz.io">
+              <svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#wrench"></use></svg>
+              <span><span class="chi-sites__name">工具</span><br><span class="chi-sites__desc">實用小工具</span></span>
+            </a>
+            <a class="chi-sites__item" href="https://status.chi.qzz.io">
+              <svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#activity"></use></svg>
+              <span><span class="chi-sites__name">狀態</span><br><span class="chi-sites__desc">服務狀態</span></span>
+            </a>
+          </div>
+        </details>
+
+        <!-- 4. 主題切換按鈕（三態） -->
+        <button class="chi-header__theme" type="button" data-chi-theme-toggle aria-label="切換主題（目前：跟隨系統）">
+          <svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#sun-moon"></use></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="chi-main">
+      <div class="chi-container">
+        <h1>歡迎使用 chi-system 模板</h1>
+        <p>這是新站的起點。把站名、導覽、logo 與內容換成本站的，再依 README.md 接上版本與部署流程。</p>
+
+        <section class="chi-card">
+          <h2>從這裡開始</h2>
+          <p>共用件（token、元件、導覽、主題、圖示）只有一份，全部來自 chi-system；本站只寫自己的內容與邏輯。</p>
+          <div>
+            <a class="chi-btn chi-btn--primary" href="./states.html">看資料狀態範例</a>
+            <a class="chi-btn chi-btn--secondary" href="https://github.com/47tsai/chi-system">chi-system repo</a>
+          </div>
+        </section>
+
+        <section>
+          <h2>清單範例</h2>
+          <ul class="chi-list">
+            <li class="chi-list__item" aria-selected="true">
+              <span>已選取的列</span>
+              <span class="chi-badge chi-badge--success"><span class="chi-badge__dot" aria-hidden="true"></span>成功</span>
+            </li>
+            <li class="chi-list__item">
+              <span>一般列</span>
+              <span class="chi-badge chi-badge--info"><span class="chi-badge__dot" aria-hidden="true"></span>資訊</span>
+            </li>
+            <li class="chi-list__item">
+              <span>一般列</span>
+              <span class="chi-badge chi-badge--warning"><span class="chi-badge__dot" aria-hidden="true"></span>異常</span>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </main>
+
+    <footer class="chi-footer">
+      <div class="chi-footer__inner">
+        <ul class="chi-footer__sites">
+          <li><a href="https://chi.qzz.io">Chi</a></li>
+          <li><a href="https://fg.chi.qzz.io">Free Game</a></li>
+          <li><a href="https://merch.chi.qzz.io">收藏</a></li>
+          <li><a href="https://nav.chi.qzz.io">導覽</a></li>
+          <li><a href="https://h.chi.qzz.io">工具</a></li>
+          <li><a href="https://status.chi.qzz.io">狀態</a></li>
+        </ul>
+        <!-- 頁尾版本識別：由建置期注入，與本站 version.json 同源（第 13 節）。以下為佔位值。 -->
+        <p class="chi-footer__meta">站名 · 版本 0.0.0 · 0000000</p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
