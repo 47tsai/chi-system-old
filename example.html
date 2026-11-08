@@ -1,0 +1,251 @@
+<!doctype html>
+<!-- chi-system example.html — 元件與 header 範例頁（第 15 節第 6 步）
+  展示 tokens.css、components.css、navigation.css、theme.js、icons.svg 與 logo 的實際效果。
+  用 ?theme=dark / ?theme=light 可直接看深色／淺色（例如 example.html?theme=dark）。
+  本頁是第 8 步預覽頁的前身：預覽頁完成後，本頁可併入預覽頁或保留為快速範例。
+  檔案皆以相對路徑引用 repo 內的共用件，檢視時請用 GitHub Pages 或本機伺服器開啟，
+  直接以 file:// 開啟時部分引用（例如 icons.svg 的 <use>）可能因瀏覽器限制無法顯示。
+-->
+<html lang="zh-Hant" data-chi-theme="light" data-chi-theme-mode="system">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>範例 — chi-system</title>
+  <script>
+    try {
+      var q = new URLSearchParams(location.search).get('theme');
+      if (q === 'dark' || q === 'light') localStorage.setItem('chi-theme-mode', q);
+    } catch (e) {}
+  </script>
+  <script src="./theme.js"></script>
+  <link rel="stylesheet" href="./tokens.css">
+  <link rel="stylesheet" href="./components.css">
+  <link rel="stylesheet" href="./navigation.css">
+  <style>
+    .demo-section { margin: 32px 0; }
+    .demo-section > h2 { font-size: 20px; margin: 0 0 16px; }
+    .demo-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 12px 0; }
+    .demo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  </style>
+</head>
+<body>
+  <div class="chi-page">
+    <header class="chi-header">
+      <div class="chi-header__inner">
+        <a class="chi-header__brand" href="/">
+          <img class="chi-header__logo chi-header__logo--light" src="./logo/chi-b.png" alt="Chi" width="32" height="32">
+          <img class="chi-header__logo chi-header__logo--dark" src="./logo/chi-w.png" alt="Chi" width="32" height="32">
+          <span>Chi</span>
+        </a>
+        <nav class="chi-header__nav" aria-label="本站導覽">
+          <a class="chi-nav-link" href="/" aria-current="page">首頁</a>
+          <a class="chi-nav-link" href="/list">清單</a>
+          <a class="chi-nav-link" href="/about">關於</a>
+        </nav>
+        <details class="chi-header__sites">
+          <summary class="chi-sites__button" aria-label="其他 Chi 網站">
+            <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#layout-grid"></use></svg>
+            <span>其他站</span>
+          </summary>
+          <div class="chi-sites__panel">
+            <a class="chi-sites__item" href="https://chi.qzz.io" aria-current="page">
+              <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#house"></use></svg>
+              <span><span class="chi-sites__name">Chi</span><br><span class="chi-sites__desc">個人站</span></span>
+            </a>
+            <a class="chi-sites__item" href="https://fg.chi.qzz.io">
+              <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#gamepad-2"></use></svg>
+              <span><span class="chi-sites__name">Free Game</span><br><span class="chi-sites__desc">免費遊戲資訊</span></span>
+            </a>
+            <a class="chi-sites__item" href="https://merch.chi.qzz.io">
+              <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#shopping-bag"></use></svg>
+              <span><span class="chi-sites__name">收藏</span><br><span class="chi-sites__desc">模型與收藏紀錄</span></span>
+            </a>
+            <a class="chi-sites__item" href="https://nav.chi.qzz.io">
+              <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#compass"></use></svg>
+              <span><span class="chi-sites__name">導覽</span><br><span class="chi-sites__desc">常用連結導覽</span></span>
+            </a>
+            <a class="chi-sites__item" href="https://h.chi.qzz.io">
+              <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#wrench"></use></svg>
+              <span><span class="chi-sites__name">工具</span><br><span class="chi-sites__desc">實用小工具</span></span>
+            </a>
+            <a class="chi-sites__item" href="https://status.chi.qzz.io">
+              <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#activity"></use></svg>
+              <span><span class="chi-sites__name">狀態</span><br><span class="chi-sites__desc">服務狀態監控</span></span>
+            </a>
+          </div>
+        </details>
+        <button class="chi-header__theme" type="button" data-chi-theme-toggle aria-label="目前色彩模式：跟隨系統，點擊切換">
+          <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#sun-moon"></use></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="chi-main">
+      <div class="chi-container">
+        <h1 style="font-size:28px">範例</h1>
+        <p>chi-system 元件與 header 的實際效果。淺色與深色兩套皆可看（網址加 <code>?theme=dark</code> 看深色）。</p>
+
+        <section class="demo-section">
+          <h2>按鈕</h2>
+          <div class="demo-row">
+            <button class="chi-btn chi-btn--primary" type="button">主要操作</button>
+            <button class="chi-btn chi-btn--secondary" type="button">次要操作</button>
+            <button class="chi-btn chi-btn--ghost" type="button">幽靈操作</button>
+            <button class="chi-btn chi-btn--danger" type="button">危險操作</button>
+            <button class="chi-btn chi-btn--primary chi-btn--sm" type="button">小按鈕</button>
+            <button class="chi-btn chi-btn--primary" type="button" disabled>停用</button>
+          </div>
+        </section>
+
+        <section class="demo-section">
+          <h2>表單</h2>
+          <div class="demo-row" style="align-items:flex-start">
+            <div class="chi-field" style="flex:1;min-width:220px">
+              <label class="chi-field__label" for="f-name">名稱</label>
+              <input class="chi-input" id="f-name" type="text" placeholder="請輸入名稱">
+              <p class="chi-field__hint">說明文字：這是提示。</p>
+            </div>
+            <div class="chi-field chi-field--error" style="flex:1;min-width:220px">
+              <label class="chi-field__label" for="f-mail">電子郵件</label>
+              <input class="chi-input" id="f-mail" type="email" value="not-an-email">
+              <p class="chi-field__error"><svg class="chi-icon chi-icon--sm" aria-hidden="true"><use href="./icons.svg#circle-x"></use></svg>格式不正確，請檢查後再試。</p>
+            </div>
+          </div>
+          <div class="demo-row" style="align-items:flex-start">
+            <div class="chi-field" style="flex:1;min-width:220px">
+              <label class="chi-field__label" for="f-sel">選單</label>
+              <div class="chi-select-wrap">
+                <select class="chi-select" id="f-sel">
+                  <option>選項一</option>
+                  <option>選項二</option>
+                  <option>選項三</option>
+                </select>
+                <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#chevron-down"></use></svg>
+              </div>
+            </div>
+            <div class="chi-field" style="flex:1;min-width:220px">
+              <label class="chi-field__label" for="f-note">備註</label>
+              <textarea class="chi-textarea" id="f-note" placeholder="多行輸入"></textarea>
+            </div>
+          </div>
+          <div class="demo-row">
+            <label class="chi-check"><input class="chi-check__input" type="checkbox" checked>已勾選</label>
+            <label class="chi-check"><input class="chi-check__input" type="checkbox">未勾選</label>
+            <label class="chi-check"><input class="chi-check__input" type="checkbox" disabled>停用</label>
+            <label class="chi-radio"><input class="chi-radio__input" type="radio" name="r" checked>選項 A</label>
+            <label class="chi-radio"><input class="chi-radio__input" type="radio" name="r">選項 B</label>
+            <label class="chi-switch"><input class="chi-switch__input" type="checkbox" checked>開啟</label>
+            <label class="chi-switch"><input class="chi-switch__input" type="checkbox">關閉</label>
+          </div>
+        </section>
+
+        <section class="demo-section">
+          <h2>分頁</h2>
+          <div class="chi-tabs" role="tablist">
+            <button class="chi-tab" role="tab" aria-selected="true" type="button">全部</button>
+            <button class="chi-tab" role="tab" aria-selected="false" type="button">進行中</button>
+            <button class="chi-tab" role="tab" aria-selected="false" type="button">已完成</button>
+          </div>
+        </section>
+
+        <section class="demo-section">
+          <h2>卡片與徽章</h2>
+          <div class="demo-grid">
+            <article class="chi-card">
+              <h3 class="chi-card__title">一般卡片</h3>
+              <p class="chi-card__body">卡片內文。徽章：
+                <span class="chi-badge chi-badge--success"><span class="chi-badge__dot"></span>成功</span>
+                <span class="chi-badge chi-badge--warning"><span class="chi-badge__dot"></span>異常</span>
+                <span class="chi-badge chi-badge--danger"><span class="chi-badge__dot"></span>錯誤</span>
+                <span class="chi-badge chi-badge--info"><span class="chi-badge__dot"></span>資訊</span>
+              </p>
+              <div class="chi-card__actions">
+                <button class="chi-btn chi-btn--primary chi-btn--sm" type="button">查看</button>
+                <button class="chi-btn chi-btn--ghost chi-btn--sm" type="button">更多</button>
+              </div>
+            </article>
+            <a class="chi-card chi-card--clickable" href="#">
+              <h3 class="chi-card__title">可點卡片</h3>
+              <p class="chi-card__body">整張可點，hover 有回饋。</p>
+            </a>
+          </div>
+        </section>
+
+        <section class="demo-section">
+          <h2>清單與表格</h2>
+          <ul class="chi-list">
+            <li class="chi-list__item" aria-selected="true">已選取的列</li>
+            <li class="chi-list__item">一般列</li>
+            <li class="chi-list__item">一般列</li>
+          </ul>
+          <div class="chi-table-wrap" style="margin-top:16px">
+            <table class="chi-table">
+              <thead><tr><th>名稱</th><th>狀態</th><th>更新時間</th></tr></thead>
+              <tbody>
+                <tr aria-selected="true"><td>項目一</td><td>正常</td><td>2026-11-09 07:00</td></tr>
+                <tr><td>項目二</td><td>正常</td><td>2026-11-09 06:50</td></tr>
+                <tr><td>項目三</td><td>異常</td><td>2026-11-09 06:40</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="demo-section">
+          <h2>資料狀態</h2>
+          <div class="demo-grid">
+            <div class="chi-state">
+              <div class="chi-spinner" role="status" aria-label="載入中" style="margin:0 auto 16px"></div>
+              <h3 class="chi-state__title">載入中</h3>
+              <p class="chi-state__desc">正在取得資料，請稍候。</p>
+            </div>
+            <div class="chi-state">
+              <svg class="chi-state__icon" aria-hidden="true"><use href="./icons.svg#inbox"></use></svg>
+              <h3 class="chi-state__title">目前沒有資料</h3>
+              <p class="chi-state__desc">還沒有任何項目，先新增第一筆吧。</p>
+              <div class="chi-state__action"><button class="chi-btn chi-btn--primary" type="button">新增項目</button></div>
+            </div>
+            <div class="chi-state">
+              <svg class="chi-state__icon" aria-hidden="true"><use href="./icons.svg#circle-x"></use></svg>
+              <h3 class="chi-state__title">載入失敗</h3>
+              <p class="chi-state__desc">網路發生問題，請檢查連線後再試一次。</p>
+              <div class="chi-state__action"><button class="chi-btn chi-btn--secondary" type="button">再試一次</button></div>
+            </div>
+            <div class="chi-state">
+              <svg class="chi-state__icon" aria-hidden="true"><use href="./icons.svg#circle-check"></use></svg>
+              <h3 class="chi-state__title">已完成</h3>
+              <p class="chi-state__desc">操作已完成。</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="demo-section">
+          <h2>對話框（靜態展示）</h2>
+          <dialog class="chi-dialog" open>
+            <h3 class="chi-dialog__title">確認刪除</h3>
+            <p class="chi-dialog__body">確定要刪除這個項目嗎？這個操作無法復原。</p>
+            <div class="chi-dialog__actions">
+              <button class="chi-btn chi-btn--ghost" type="button">取消</button>
+              <button class="chi-btn chi-btn--danger" type="button">刪除</button>
+            </div>
+          </dialog>
+        </section>
+      </div>
+    </main>
+
+    <footer class="chi-footer">
+      <div class="chi-footer__inner">
+        <ul class="chi-footer__sites">
+          <li><a href="https://chi.qzz.io">Chi</a></li>
+          <li><a href="https://fg.chi.qzz.io">Free Game</a></li>
+          <li><a href="https://merch.chi.qzz.io">收藏</a></li>
+          <li><a href="https://nav.chi.qzz.io">導覽</a></li>
+          <li><a href="https://h.chi.qzz.io">工具</a></li>
+          <li><a href="https://status.chi.qzz.io">狀態</a></li>
+        </ul>
+        <p class="chi-footer__meta">Chi · 版本 0.0.0 · 0000000</p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

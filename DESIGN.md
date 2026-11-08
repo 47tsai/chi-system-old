@@ -1,8 +1,8 @@
-# DESIGN.md — CHI 設計語言（v2.11 初稿）
+# DESIGN.md — CHI 設計語言（v2.12 初稿）
 
-狀態：v2.11 初稿，待齊審閱，未生效。
+狀態：v2.12 初稿，待齊審閱，未生效。
 
-v2.11 修訂說明：本版落實齊已確認的 tokens.css 定案（齊 2026-11-09 確認，採 Muse 推薦值）：第 8 節待定項目全部定案，數值寫入 `tokens.css`，本文件只留摘要與理由，不另存數值副本；新增 `info` 語意色（Spectrum blue-900，見第 7.2 節「語意色數值」）；色溫定為中性偏冷；accent 定案（淺色 `#2563EB`、深色 `#6B9BFF`），品牌藍 `#4A88FC` 不作連結文字與白字按鈕（對比未達 AA，見 SYSTEM.md v1.16 第 4 節）；語意色淡背景定稿，淡背景上的文字用加深 15% 的 `-strong` 變體（淺色，見第 7.2 節使用規則）。WCAG User Agent 例外仍依 SYSTEM.md 第 11 節逐準則、逐元件處理；CHI 內部驗收政策與 WCAG 原始符合性分開記錄。部署追溯規範唯一依據為 SYSTEM.md 第 13 節。另註：v2.4 不曾存在（v2.3 後直接為 v2.5），留作紀錄，不回改。本文件只處理視覺設計的理由、原則與語意層級；範圍、命名、站點、流程與驗收門檻以 SYSTEM.md 為準，兩者衝突時以 SYSTEM.md 為準。
+v2.12 修訂說明：本版記錄第 7.7 節基礎示例表的外觀細節已落到 `components.css`／`navigation.css`（按鈕四級、表單欄位、Checkbox、Radio、Switch、Select、Tabs、卡片、清單／表格、徽章、對話框、四種資料狀態、header 四段、跨站導覽、頁尾），數值一律引用 `tokens.css` 的變數；其餘設計原則與數值不變（第 8 節待定項目已於 v2.11 定案，`info` 語意色見第 7.2 節）。WCAG User Agent 例外仍依 SYSTEM.md 第 11 節逐準則、逐元件處理；CHI 內部驗收政策與 WCAG 原始符合性分開記錄。部署追溯規範唯一依據為 SYSTEM.md 第 13 節。另註：v2.4 不曾存在（v2.3 後直接為 v2.5），留作紀錄，不回改。本文件只處理視覺設計的理由、原則與語意層級；範圍、命名、站點、流程與驗收門檻以 SYSTEM.md 為準，兩者衝突時以 SYSTEM.md 為準。
 
 品牌主色、Light / Dark 色票、字型、字級、圓角、間距、陰影、元件尺寸與 Focus Appearance 已於本版定案，數值見 `tokens.css`（第 8 節）；語意色見第 7.2 節。
 
@@ -249,7 +249,7 @@ Focus Appearance 涵蓋以下視覺條件，具體數值已於 v2.11 定案（�
 
 ### 7.7 元件語意與狀態
 
-以下元件在六站以同一語意出現，外觀細節（尺寸、圓角、色值）待定：
+以下元件在六站以同一語意出現，外觀細節（尺寸、圓角、色值）已於 v2.12 落到 `components.css`／`navigation.css`，引用 `tokens.css` 的變數：
 
 - **按鈕**：primary（每個操作情境至多一個，accent 或經定案的主要操作色；不同情境各自的 primary 不算競爭，同一情境內不得有兩個互相競爭的 primary）、secondary（表面色 + 邊框）、ghost（透明底、hover 才現底色）、danger（危險操作專用，與 primary 並存時不得同級搶眼）。（來源：三者 §4 的四級按鈕分工）
 - **輸入**：文字輸入、Checkbox、Radio、Switch 與 Select 分開定義（見下方對照表）；共通原則是標籤在上、說明與錯誤在下；錯誤同時有文字與圖示，不只把邊框變色。（來源：Cal.com、Linear §4 的輸入結構，錯誤呈現依 SYSTEM.md 的 AA 原則補強）
@@ -324,4 +324,4 @@ selected / checked 欄的語意說明：此欄是視覺狀態的統稱，實際�
 
 ---
 
-本稿到此為止：未修改任何站的 CSS，未開始六站遷移。第 8 節已定案，數值在 `tokens.css`；下一步為 SYSTEM.md 第 15 節第 6 步 `components.css`。
+本稿到此為止：未修改任何站的 CSS，未開始六站遷移。第 8 節已定案，數值在 `tokens.css`；第 7.7 節外觀細節已落到 `components.css`／`navigation.css`；下一步為 SYSTEM.md 第 15 節第 7 步 `template/`。
