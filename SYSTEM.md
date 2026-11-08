@@ -607,7 +607,7 @@ v1.4 的矛盾在此講清楚：Site Release Tag 指向整體發布基準 commit
 - 由 CI 在建置或部署階段產生，固定放在各站對外根路徑（可由瀏覽器直接取得，例如 `https://<該站域名>/version.json`），**不提交回 repo、不寫入 Tag 指向的 commit**。欄位固定如下：
   - `site`：自 `release.json` 複製。
   - `version`：自 `release.json` 複製。
-  - `releaseCommit`：Tag 對應的整體發布基準 commit 完整 Git SHA，由 CI 於 Tag 觸發時取得並注入。它是發布 manifest 的基準 commit，不是多元件站任一元件的程式碼來源 commit，也不是最近一次部署的實際部署 commit。
+  - `releaseCommit`：Tag 對應的整體發布基準 commit 完整 Git SHA，由 CI 於 Tag 觸發時取得並注入。它是發布 manifest 的基準 commit，不是多元件站任一元件的程式碼來源 commit，也不是實際部署產物的 SHA-256 digest。
   - `releaseCommitShort`：`releaseCommit` 的前 7 字元。
   - `chiSystemVersion`：自 `release.json` 複製。
   - `deployedAt`：本次部署時間，ISO 8601 並標明 `+08:00`，由 CI 注入；每次重新部署（含資料同步觸發的重新部署與回滾部署）都以該次部署時間重新產生。
@@ -674,7 +674,7 @@ v1.4 的矛盾在此講清楚：Site Release Tag 指向整體發布基準 commit
   - 部署回滾目標 Tag 的原內容；CI 依該 Tag 重新產生的 `version.json` 因此回到目標版的 `version` 與 `releaseCommit`（發布基準 commit），`deployedAt` 為本次回滾部署時間，這是如實呈現內容版本，不是「以舊版本號覆蓋不同內容」，因為部署的正是該 Tag 的原內容。
   - 部署紀錄必須同時保留：**原發布版本**（出問題、被回滾掉的那一版）、**回滾目標**（目標 Tag）、**回滾原因**與**回滾時間**，且紀錄須能區分這筆是回滾部署、不是目標版的初次發布；缺少任一項即視為紀錄不完整，不得宣稱回滾完成。
 
-- **回滾後四者一致性檢查（v1.4 新增，連動第 18 節）**：回滾完成後必須核對四者互相一致——(i) 線上建置產物 `version.json` 的 `version` 與 `releaseCommit`（並與該版 `release.json` 的 `version` 一致）、(ii) 該 `version` 對應 Tag 的指向、(iii) 實際部署內容、(iv) 部署紀錄（類型、目標、原因、時間）。採 (a) 時四者對應新 PATCH 版與新 Tag；採 (b) 時前三者對應目標版、第四者須明確標示為回滾。任一不一致即驗收不通過，須先修正才可宣稱回滾完成。
+- **回滾後四者一致性檢查（v1.4 新增，連動第 18 節）**：回滾完成後必須核對四者互相一致——(i) 線上建置產物 `version.json` 的 `version` 與 `releaseCommit`（並與該版 `release.json` 的 `version` 一致）、(ii) 該 `version` 對應 Tag 的指向、(iii) 實際部署產物的 SHA-256 digest、(iv) 部署紀錄（類型、目標、原因、時間）。採 (a) 時四者對應新 PATCH 版與新 Tag；採 (b) 時前三者對應目標版、第四者須明確標示為回滾。任一不一致即驗收不通過，須先修正才可宣稱回滾完成。
 - 回滾完成後以第 18 節清單快速驗收受影響頁面，並在原發布 PR 或紀錄中留言後續處理（修新版再升，或列入待確認）；回滾不解決根因，不得以「已回滾」結案而不留後續。
 
 **對現有六站的影響（只評估，不在本輪實作）**
