@@ -1,13 +1,13 @@
 # CHI 產品識別色庫（Product Color Registry）
 
-- **版本：** v1.0 草稿
+- **版本：** v1.1 草稿
 - **狀態：** 待齊審閱，未生效
 - **基準日：** 2026-11-08
 - **來源：** Adobe Spectrum 品牌頁（https://spectrum.adobe.com/foundations/brand#color ，2026-11-08 核對）為主；其餘來源見各筆 Source 欄。
 
 ## 1. 用途與規則
 
-1. 本文件是**候選色庫**，只負責收集與展示顏色，**不分配網站、不預設用途**。候選色庫與網站配色分離。
+1. 本文件是**候選色庫**，只負責收集與展示顏色，**不預設用途**。候選色庫與網站配色分離：分配結果以 `sites.json` 為準，本文件只同步記錄各色的 Status 與 Assigned to，不另存一份分配表。
 2. 現有網站要選識別色時，從 Status 為 `Available` 的顏色挑；未來新增網站直接挑尚未使用的顏色，不需要每次重新研究配色。
 3. 顏色被某站選用後，該筆 Status 改為 `Assigned`，Assigned to 填站點 ID；不得刪除已分配的紀錄，改狀態即可。
 4. `Reserved` 為生態系保留色（例如品牌主色），不開放各站挑選。
@@ -20,11 +20,11 @@
 
 | ID | Name | HEX | Source | Status | Assigned to | Notes |
 |---|---|---|---|---|---|---|
-| color-orange | Orange（Illustrator） | `#FF9A00` | Adobe Spectrum 品牌頁 | Available | — | Spectrum 2 對應值 `#FD9A00`，見備註 1 |
+| color-orange | Orange（Illustrator） | `#FF9A00` | Adobe Spectrum 品牌頁 | Assigned | fg | Spectrum 2 對應值 `#FD9A00`，見備註 1 |
 | color-celery | Celery（Dimension） | `#99E83F` | Adobe Spectrum 品牌頁 | Available | — | |
 | color-cyan | Cyan（Photoshop / Lightroom） | `#31A8FF` | Adobe Spectrum 品牌頁 | Available | — | |
 | color-indigo | Indigo（After Effects） | `#9999FF` | Adobe Spectrum 品牌頁 | Available | — | |
-| color-fuchsia | Fuchsia（XD） | `#FF61F6` | Adobe Spectrum 品牌頁 | Available | — | |
+| color-fuchsia | Fuchsia（XD） | `#FF61F6` | Adobe Spectrum 品牌頁 | Assigned | h | |
 | color-magenta | Magenta（InDesign） | `#FF3366` | Adobe Spectrum 品牌頁 | Available | — | Spectrum 2 對應值 `#FC487B`，見備註 1 |
 
 ### B. Creative Cloud 品牌色（深色變體）
@@ -43,8 +43,8 @@
 | ID | Name | HEX | Source | Status | Assigned to | Notes |
 |---|---|---|---|---|---|---|
 | color-acrobat-red | Acrobat Red | `#B30B00` | Adobe Spectrum 品牌頁 | Available | — | |
-| color-dc-purple | Purple | `#584CCC` | Adobe Spectrum 品牌頁 | Available | — | |
-| color-dc-teal | Teal | `#008CAD` | Adobe Spectrum 品牌頁 | Available | — | |
+| color-dc-purple | Purple | `#584CCC` | Adobe Spectrum 品牌頁 | Assigned | merch | |
+| color-dc-teal | Teal | `#008CAD` | Adobe Spectrum 品牌頁 | Assigned | nav | |
 | color-dc-coral | Coral | `#F75C46` | Adobe Spectrum 品牌頁 | Available | — | |
 | color-dc-magenta | Magenta | `#AD0955` | Adobe Spectrum 品牌頁 | Available | — | 與 A 節 Magenta 不同色 |
 | color-dc-blue | Blue | `#0054B6` | Adobe Spectrum 品牌頁 | Available | — | |
@@ -59,7 +59,7 @@
 | ID | Name | HEX | Source | Status | Assigned to | Notes |
 |---|---|---|---|---|---|---|
 | color-ec-insights | Insights | `#9755E6` | Adobe Spectrum 品牌頁 | Available | — | Foundational（冷色） |
-| color-ec-content | Content Management | `#8CDC47` | Adobe Spectrum 品牌頁 | Available | — | Foundational（冷色） |
+| color-ec-content | Content Management | `#8CDC47` | Adobe Spectrum 品牌頁 | Assigned | status | Foundational（冷色） |
 | color-ec-data | Data Management | `#16878C` | Adobe Spectrum 品牌頁 | Available | — | Foundational（冷色） |
 | color-ec-configuration | Setup and Configuration | `#DEDEF9` | Adobe Spectrum 品牌頁 | Available | — | Foundational（冷色）；與 Express Light 同一 HEX，已合併，見備註 3 |
 | color-ec-marketing | Marketing | `#D83791` | Adobe Spectrum 品牌頁 | Available | — | Functional（暖色） |
@@ -92,7 +92,8 @@
 ## 3. 統計
 
 - 候選色共 **36 筆**，去重後 **35 個不同 HEX**（`#DEDEF9` 出現兩次，已合併為一筆）。
-- Status：Available 35 筆、Reserved 1 筆、Assigned 0 筆。
+- Status：Available 30 筆、Assigned 5 筆（fg、merch、nav、h、status）、Reserved 1 筆（chi 品牌藍）。
+- 分配結果以 `sites.json` 為準：chi `#4A88FC`、fg `#FF9A00`、merch `#584CCC`、nav `#008CAD`、h `#FF61F6`、status `#8CDC47`（齊 2026-11-08 確認，採 Muse 推薦值）。
 - 來源分類：Creative Cloud 12 筆、Document Cloud 9 筆、Experience Cloud 7 筆、Express 與品牌基礎色 6 筆、其他 Adobe 產品 1 筆、CHI 原生 1 筆。
 
 ## 4. 備註
@@ -114,12 +115,13 @@
 - [ ] C 節 Pink `#FFDBD9` 與初稿 `#FFD8D9` 差一位數，待再確認。
 - [ ] E 節 Adobe Red `#FA0F00` 待官方頁再確認色碼。
 - [ ] F 節 Premiere Pro `#EA77FF` 待官方頁再確認。
-- [ ] 舊提案三色（nav `#0D9488`、status `#16A34A`、merch `#6541B8`）是否納入候選庫，待齊決定。
 - [ ] 是否納入 Google、Microsoft 等其他設計系統的色彩作為下一批種子，待齊決定。
-- [ ] 本文件 v1.0 待齊審閱，未生效；六站識別色分配另行決定，不在本文件內分配。
+- [ ] 本文件 v1.1 待齊審閱，未生效。
+- 已結案：舊提案三色（nav `#0D9488`、status `#16A34A`、merch `#6541B8`）不納入候選庫（齊 2026-11-08 確認舊提案是錯誤的，不採用）；六站識別色分配已定案（見第 3 節，齊 2026-11-08 確認）。
 
 ## 7. 修訂紀錄
 
 | 版本 | 日期 | 內容 |
 |---|---|---|
 | v1.0 | 2026-11-08 | 初稿：以 Adobe Spectrum 品牌頁為來源建立候選色庫，36 筆、去重後 35 色，皆未分配。 |
+| v1.1 | 2026-11-08 | 六站識別色分配定案（齊確認，採 Muse 推薦值）：五色改 Assigned（fg、merch、nav、h、status），分配結果以 `sites.json` 為準；舊提案三色確認不納入，結案。 |
