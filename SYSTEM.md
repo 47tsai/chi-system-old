@@ -18,7 +18,7 @@ SYSTEM.md 是 Chi 生態系的總規範，回答四件事：
 
 ### 第二十一輪修訂：差異與技術理由（v1.19 → v1.20，先讀本表，再讀正文）
 
-本輪完成 SYSTEM.md／DESIGN.md 與實作、操作文件的交叉核對，修正已定案事項仍殘留「待定」的文字，並把 sites.json 導覽生成流程正式納入建置規範與 CI。只修改 SYSTEM.md、DESIGN.md、README.md、RELEASE.md、AGENTS.md；不修改 tokens.css、components.css、navigation.css、theme.js、任何正式網站或其他共用件；不建立正式 Release Tag，不開始六站遷移。本稿仍為待齊審閱、未生效。
+本輪完成 SYSTEM.md／DESIGN.md 與實作、操作文件的交叉核對，修正已定案事項仍殘留「待定」的文字，並把 sites.json 導覽生成流程正式納入建置規範與 CI。修改 SYSTEM.md、DESIGN.md、README.md、RELEASE.md、AGENTS.md 與 `scripts/generate-navigation.mjs`（補上 registry 僅含六站的範圍檢查）；不修改 tokens.css、components.css、navigation.css、theme.js 或任何正式網站；不建立正式 Release Tag，不開始六站遷移。本稿仍為待齊審閱、未生效。
 
 | # | 發現 | 修正 | 理由 |
 | --- | --- | --- | --- |
