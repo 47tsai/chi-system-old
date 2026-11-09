@@ -26,7 +26,7 @@ Chi 生態系共用設計系統的 canonical 來源：總規範與共用件都�
 | `components.css` | 元件樣式（按鈕、表單、卡片、表格、徽章、對話框、資料狀態） |
 | `navigation.css` | header、副導覽列、頁尾樣式 |
 | `header.html` | header＋副導覽列模板 |
-| `sidebar.css` | 側邊欄版式樣式（固定左側、收合圖示列、抽屜／底部列） |
+| `sidebar.css` | 側邊欄版式樣式（固定左側、可收合圖示列、手機抽屜） |
 | `sidebar.js` | 側邊欄邏輯（收合持久化、抽屜開關） |
 | `sidebar.html` | 側邊欄版式模板 |
 | `example.html` | 元件與 header 範例頁 |
