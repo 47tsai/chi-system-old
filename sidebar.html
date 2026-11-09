@@ -3,8 +3,8 @@
   用法：導覽量大的站複製此檔為本站頁面的起點，再依本站調整。
   - 側邊欄版式與 header＋副導覽列版式二選一，不得並存；本站導覽連結換成你站的內容。
     跨站導覽不在側邊欄內，跨站連結在頁尾清單（由 sites.json 產生，不得手寫站點 URL 清單）。
-  - 收合開關在頁面標頭（panel-left 圖示）：桌面版收合為圖示列、手機版開抽屜；
-    平板圖示列不可展開，開關隱藏。手機版預設為抽屜；導覽為少數固定連結時，
+  - 收合開關在側邊欄頂列右側（panel-left 圖示）：桌面版收合為圖示列；手機版在頁面標頭
+    另有一顆開關開抽屜；平板圖示列不可展開，開關隱藏。手機版預設為抽屜；導覽為少數固定連結時，
     在 <aside> 加 chi-sidebar--bottombar 改為底部列。
   - sidebar.js 須同步引入 <head>，<script> 標籤帶 data-chi-sidebar-key="chi-<站點>-sidebar-collapsed"。
   - logo 檔名依站點 ID（見 logo/README.md）；淺色用黑 C（-b.png）、深色用白 C（-w.png），
@@ -31,15 +31,20 @@
 <body>
   <div class="chi-page--sidebar">
     <aside class="chi-sidebar" data-chi-sidebar-key="chi-<站點>-sidebar-collapsed">
-      <!-- 品牌：logo＋站名＋副標，點擊回該站首頁 -->
-      <a class="chi-sidebar__brand" href="#/">
-        <img class="chi-sidebar__logo chi-sidebar__logo--light" src="./logo/chi-b.png" alt="Chi" width="32" height="32">
-        <img class="chi-sidebar__logo chi-sidebar__logo--dark" src="./logo/chi-w.png" alt="Chi" width="32" height="32">
-        <span class="chi-sidebar__brand-copy">
-          <span class="chi-sidebar__brand-name">站名</span>
-          <span class="chi-sidebar__brand-sub">副標</span>
-        </span>
-      </a>
+      <!-- 頂列：品牌（logo＋站名＋副標，點擊回該站首頁）＋收合開關（在欄上） -->
+      <div class="chi-sidebar__top">
+        <a class="chi-sidebar__brand" href="#/">
+          <img class="chi-sidebar__logo chi-sidebar__logo--light" src="./logo/chi-b.png" alt="Chi" width="32" height="32">
+          <img class="chi-sidebar__logo chi-sidebar__logo--dark" src="./logo/chi-w.png" alt="Chi" width="32" height="32">
+          <span class="chi-sidebar__brand-copy">
+            <span class="chi-sidebar__brand-name">站名</span>
+            <span class="chi-sidebar__brand-sub">副標</span>
+          </span>
+        </a>
+        <button class="chi-sidebar__trigger" type="button" data-chi-sidebar-toggle aria-expanded="true" aria-label="收合側邊欄" title="收合側邊欄">
+          <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#panel-left"></use></svg>
+        </button>
+      </div>
 
       <!-- 本站導覽：分組＋連結，目前頁加 aria-current="page"；title 是圖示列的懸停提示 -->
       <nav class="chi-sidebar__nav" aria-label="本站導覽">
@@ -66,7 +71,8 @@
 
     <div class="chi-content">
       <header class="chi-page-header">
-        <button class="chi-sidebar__trigger" type="button" data-chi-sidebar-toggle aria-expanded="true" aria-label="收合側邊欄" title="收合側邊欄">
+        <!-- 手機版開抽屜的開關（<768px 才顯示）；桌面版收合開關在側邊欄頂列 -->
+        <button class="chi-sidebar__trigger" type="button" data-chi-sidebar-toggle aria-expanded="true" aria-label="開啟導覽選單" title="開啟導覽選單">
           <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#panel-left"></use></svg>
         </button>
         <div>

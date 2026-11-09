@@ -3,8 +3,8 @@
  * 作法取自 shadcn/ui sidebar（預設參考）與 Material 3 navigation rail：
  * - 版面是 flex 橫列，側邊欄在文件流內（sticky 置頂、100dvh），不是 fixed＋margin-left；
  *   寬度變化時內容以 flex 自然跟隨，不動畫 margin。
- * - 收合開關（SidebarTrigger）放在頁面標頭，不在側邊欄內；同一顆按鈕在手機版開抽屜，
- *   桌面版收合為圖示列；平板圖示列不可展開，開關隱藏。
+ * - 收合開關（SidebarTrigger）在側邊欄頂列右側（品牌列內，flex 排版，不用 absolute 定位）；
+ *   桌面版收合為圖示列；手機版在頁面標頭另有一顆開關開抽屜；平板圖示列不可展開，開關隱藏。
  * - 寬度：展開 256px（--chi-layout-sidebar-width），圖示列 72px
  *   （--chi-layout-sidebar-collapsed-width），皆為 8px 間距基準的定值。
  * - 圖示列只留圖示，連結加 title 作懸停提示，目前頁保留 accent 標記與底色，絕不丟失目前頁。
@@ -29,7 +29,7 @@
   flex-direction: column;
 }
 
-/* 頁面標頭：每頁自己的標題與操作（不是站點 header）；收合開關放這裡 */
+/* 頁面標頭：每頁自己的標題與操作（不是站點 header）；手機版開抽屜的開關放這裡（<768px 才顯示） */
 .chi-page-header {
   display: flex;
   align-items: flex-start;
@@ -59,7 +59,8 @@
   gap: var(--chi-space-2);
 }
 
-/* 收合開關：ghost 圖示鈕（panel-left），放頁面標頭；手機版開抽屜、桌面版收合 */
+/* 收合開關：ghost 圖示鈕（panel-left）。欄內那顆在桌面版收合，頁面標頭那顆只在手機版開抽屜；
+   兩顆用同一屬性（data-chi-sidebar-toggle），由 sidebar.js 一併綁定 */
 .chi-sidebar__trigger {
   flex: none;
   display: inline-flex;
@@ -87,6 +88,11 @@
   outline-offset: var(--chi-focus-offset);
 }
 
+/* 欄內開關在手機版隱藏：抽屜藏在畫面外，欄內的按鈕按不到，開抽屜用頁面標頭那顆 */
+.chi-sidebar .chi-sidebar__trigger {
+  display: none;
+}
+
 /* ---------- 側邊欄本體 ---------- */
 
 .chi-sidebar {
@@ -105,14 +111,24 @@
   transition: width var(--chi-duration);
 }
 
+/* 頂列：品牌＋收合開關，橫列（flex 排版，不用 absolute 定位）；下間距由此列留 */
+.chi-sidebar__top {
+  display: flex;
+  align-items: center;
+  gap: var(--chi-space-2);
+  flex: none;
+  padding-bottom: var(--chi-space-5);
+}
+
 /* 品牌：logo＋站名＋副標，點擊回該站首頁 */
 .chi-sidebar__brand {
   display: flex;
   align-items: center;
   gap: var(--chi-space-3);
-  flex: none;
+  flex: 1 1 auto;
+  min-width: 0;
   min-height: 48px;
-  padding: var(--chi-space-1) var(--chi-space-2) var(--chi-space-5);
+  padding: var(--chi-space-1) var(--chi-space-2);
   color: var(--chi-color-text-primary);
   text-decoration: none;
 }
@@ -304,7 +320,7 @@ html.chi-sidebar-open {
     transform: none;
   }
 
-  .chi-sidebar--bottombar .chi-sidebar__brand,
+  .chi-sidebar--bottombar .chi-sidebar__top,
   .chi-sidebar--bottombar .chi-sidebar__group-label,
   .chi-sidebar--bottombar .chi-sidebar__footer {
     display: none;
@@ -428,12 +444,26 @@ html.chi-sidebar-open {
     justify-content: flex-start;
   }
 
-  .chi-sidebar__trigger {
+  /* 桌面版：欄內開關顯示，頁面標頭的開關隱藏（手機版才用） */
+  .chi-sidebar .chi-sidebar__trigger {
     display: inline-flex;
   }
 
+  .chi-page-header .chi-sidebar__trigger {
+    display: none;
+  }
+
   /* 收合：72px 圖示列（與平板圖示列同貌；狀態由 sidebar.js 持久化，首次繪製前
-     由 <html> 的 data-chi-sidebar-collapsed 屬性套用，不閃爍） */
+     由 <html> 的 data-chi-sidebar-collapsed 屬性套用，不閃爍）
+     頂列改為直列：logo 在上、開關在下，皆置中（橫列放不下 32px logo＋44px 開關） */
+  html[data-chi-sidebar-collapsed="1"] .chi-sidebar__top {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  html[data-chi-sidebar-collapsed="1"] .chi-sidebar__brand {
+    flex: none;
+  }
   html[data-chi-sidebar-collapsed="1"] .chi-sidebar {
     width: var(--chi-layout-sidebar-collapsed-width);
     padding-inline: var(--chi-space-3);

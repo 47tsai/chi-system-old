@@ -6,7 +6,7 @@ Chi 生態系共用設計系統的 canonical 來源：總規範與共用件都�
 
 ## 狀態
 
-- `SYSTEM.md` v1.24 與 `DESIGN.md` v2.18：皆為審查稿，**待齊審閱、未生效**。
+- `SYSTEM.md` v1.25 與 `DESIGN.md` v2.19：皆為審查稿，**待齊審閱、未生效**。
 - 共用件已依 `SYSTEM.md` 第 15 節完成至第 8 步預覽頁、版本發佈／hash 檢查／CI：`sites.json`、`logo/`、`breakpoints.json`、`icons.svg`、`theme.js`、`tokens.css`、`components.css`、`navigation.css`、`header.html`、`sidebar.css`、`sidebar.js`、`sidebar.html`、`example.html`、`template/`、`preview.html`、`RELEASE.md`、`scripts/`、`hashes.json`、`.github/workflows/check.yml`。第 9 步逐站遷移尚未開始；尚未建立任何正式 Release Tag。
 
 ## 內容

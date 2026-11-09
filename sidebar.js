@@ -1,10 +1,11 @@
 /* chi-system sidebar.js — 側邊欄邏輯唯一來源（SYSTEM.md 第 8 節、第 15 節第 6 步）
  *
- * 作法取自 shadcn/ui sidebar：收合開關（SidebarTrigger）放在頁面標頭，不在側邊欄內；
- * 同一顆按鈕在手機版開抽屜、桌面版收合為圖示列；Cmd／Ctrl＋B 也可切換。
+ * 作法取自 shadcn/ui sidebar：收合開關（SidebarTrigger）在側邊欄頂列右側（品牌列內）；
+ * 桌面版點按收合為圖示列；手機版側邊欄藏在畫面外，另在頁面標頭放同一屬性
+ * （data-chi-sidebar-toggle）的開關開抽屜；兩顆按鈕由本檔一併綁定。Cmd／Ctrl＋B 也可切換。
  * 用法：在每頁 <head> 以同步方式引入，放在 theme.js 之後、樣式表之前。
  * <script> 標籤須帶本站的收合 key，例如：
- *   <script src="./sidebar.js" data-chi-sidebar-key="chi-merch-sidebar-collapsed"></script>
+ *   <script src="./sidebar.js" data-chi-sidebar-key="chi-<站點>-sidebar-collapsed"></script>
  * 收合狀態在首次繪製前寫入 <html> 的 data-chi-sidebar-collapsed 屬性，不會閃爍；
  * 按鈕綁定在 DOMContentLoaded 後進行。若該站無法同步引入，改把下方 <head> 內嵌
  * 片段貼進 <head>（把 key 換成本站的），它只做讀取與套用，不綁按鈕：
@@ -15,8 +16,8 @@
  *   為抽屜或底部列，皆不讀收合狀態。CSS 以媒體查詢守住範圍，此檔不判斷寬度來套用收合。
  * - 收合狀態 key 為 chi-<站點>-sidebar-collapsed，值 "1" 為收合、"0" 或無值為展開；
  *   未設定 data-chi-sidebar-key 時只切換當次，不寫入 localStorage。
- * - 抽屜：頁面標頭的開關按鈕 [data-chi-sidebar-toggle] 開，遮罩 [data-chi-sidebar-scrim]
- *   點按與 Escape 關；開啟時鎖住背景捲動，關閉時焦點回到開關按鈕；視窗放大到 >=768px
+ * - 抽屜：手機版頁面標頭的開關按鈕 [data-chi-sidebar-toggle] 開，遮罩 [data-chi-sidebar-scrim]
+ *   點按與 Escape 關；開啟時鎖住背景捲動，關閉時焦點回到開抽屜的按鈕；視窗放大到 >=768px
  *   時自動關抽屜。底部列版式（.chi-sidebar--bottombar）不用抽屜，開關不綁定抽屜。
  * - 對外 API（供框架薄包裝與除錯用）：window.ChiSidebar = { isCollapsed, setCollapsed,
  *   toggleCollapsed, openMobile, closeMobile }；收合改變時在 window 派發
@@ -55,7 +56,7 @@
   }
 
   var sidebar = null;
-  var trigger = null;
+  var triggers = [];
   var scrim = null;
   var lastTrigger = null;
 
@@ -71,19 +72,25 @@
     return !!sidebar && sidebar.classList.contains('chi-sidebar--bottombar');
   }
 
+  // 兩顆開關（側邊欄頂列一顆、手機版頁面標頭一顆）用同一屬性，一起更新標籤；
+  // 同一時間只顯示其中一顆，標籤邏輯相同。
   function updateTriggerLabel() {
-    if (!trigger) return;
+    if (!triggers.length) return;
+    var open, collapsed, label, title, expanded;
     if (isMobile()) {
-      var open = !!sidebar && sidebar.classList.contains('mobile-open');
-      trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
-      trigger.setAttribute('aria-label', open ? '關閉導覽選單' : '開啟導覽選單');
-      trigger.setAttribute('title', open ? '關閉導覽選單' : '開啟導覽選單');
+      open = !!sidebar && sidebar.classList.contains('mobile-open');
+      label = open ? '關閉導覽選單' : '開啟導覽選單';
+      expanded = open ? 'true' : 'false';
     } else {
-      var collapsed = isCollapsed();
-      trigger.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
-      trigger.setAttribute('aria-label', collapsed ? '展開側邊欄' : '收合側邊欄');
-      trigger.setAttribute('title', collapsed ? '展開側邊欄' : '收合側邊欄');
+      collapsed = isCollapsed();
+      label = collapsed ? '展開側邊欄' : '收合側邊欄';
+      expanded = collapsed ? 'false' : 'true';
     }
+    triggers.forEach(function (trigger) {
+      trigger.setAttribute('aria-expanded', expanded);
+      trigger.setAttribute('aria-label', label);
+      trigger.setAttribute('title', label);
+    });
   }
 
   function setCollapsed(collapsed) {
@@ -143,10 +150,10 @@
     if (!key) {
       key = sidebar.getAttribute('data-chi-sidebar-key');
     }
-    trigger = document.querySelector('[data-chi-sidebar-toggle]');
-    if (trigger) {
+    triggers = Array.prototype.slice.call(document.querySelectorAll('[data-chi-sidebar-toggle]'));
+    triggers.forEach(function (trigger) {
       trigger.addEventListener('click', onTriggerClick);
-    }
+    });
     updateTriggerLabel();
     if (!isBottombar()) {
       scrim = document.querySelector('[data-chi-sidebar-scrim]');

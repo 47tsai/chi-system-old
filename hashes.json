@@ -21,9 +21,9 @@
     "logo/status-w.png": "sha256:1ba5ad8dab608105bcb48ea4979f9864ca3b537bf4d62b905170600e256e4cd6",
     "logo/white-b.png": "sha256:5166e1d550540a8cf39329f6099f98e4ce571500f7188e4ece843d453e290ded",
     "navigation.css": "sha256:187bd3ef530a8a72310909dd5f18689a360dd338d55db38c7efc474fd96a052a",
-    "sidebar.css": "sha256:3297489d77e751fd83c7c50d4f56600ad4a3545801d0d9dd488f4df55e503fef",
-    "sidebar.html": "sha256:8c8ee4c1a9320ce8bcd692ebf305b46828dbda7fa1105116cbd71c10c928c217",
-    "sidebar.js": "sha256:a24b015f72bb297ca1af6d565307d7cfb6cac5fe8fc7843f2d9be57288783be2",
+    "sidebar.css": "sha256:1de645dfbba45eec7f3c2a671ffccce742f23cf7a7f76f1e9f29741c1bef145e",
+    "sidebar.html": "sha256:0576c265fe0ebdbcbe534cfbf58b0ff3628809c39eab11b767ae005f0a720d1f",
+    "sidebar.js": "sha256:c08536b2345f1b47c018da5569351941fd6f91e694d8388f0ee8a65f0a7ae4f6",
     "sites.json": "sha256:eb21bb6f9ae04e99dbebb7ef967de1828578a5045e699e01fca82cbece4658d3",
     "theme.js": "sha256:f748221294ba43923287d0930382badcd03869a943f0834d91a37c25e9ed1995",
     "tokens.css": "sha256:444f8ddeeaf553b01d8d936207fe4351142978fa2fb870344844a30d6eea279e"
