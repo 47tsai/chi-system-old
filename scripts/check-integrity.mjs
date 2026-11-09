@@ -15,7 +15,8 @@
 //   (4) HTML 內所有相對路徑檔案引用皆存在；
 //   (5) hashes.json 所列共用件的 SHA-256 與檔案現況一致（驗證模式）。
 // 共用件清單（hashes.json 的範圍）：tokens.css、components.css、navigation.css、
-// theme.js、icons.svg、sites.json、breakpoints.json、header.html、logo/ 全部檔案。
+// sidebar.css、theme.js、sidebar.js、icons.svg、sites.json、breakpoints.json、
+// header.html、sidebar.html、logo/ 全部檔案。
 // 範例頁與模板（example.html、preview.html、template/）不是各站釘版的共用件，
 // 不列入 hashes.json，但仍參與 (2)(3)(4) 的引用檢查。
 // 檢查失敗不得以手動改副本繞過：共用件改了卻未重新產生 hashes.json，CI 即失敗。
@@ -29,12 +30,12 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const writeMode = process.argv.includes('--write');
 
 const SHARED = [
-  'tokens.css', 'components.css', 'navigation.css', 'theme.js',
-  'icons.svg', 'sites.json', 'breakpoints.json', 'header.html',
+  'tokens.css', 'components.css', 'navigation.css', 'sidebar.css', 'theme.js', 'sidebar.js',
+  'icons.svg', 'sites.json', 'breakpoints.json', 'header.html', 'sidebar.html',
   ...readdirSync(join(root, 'logo')).filter((f) => !f.startsWith('.')).map((f) => `logo/${f}`),
 ].sort();
-const HTML_FILES = ['example.html', 'header.html', 'preview.html', 'template/index.html', 'template/states.html'];
-const CSS_FILES = ['tokens.css', 'components.css', 'navigation.css'];
+const HTML_FILES = ['example.html', 'header.html', 'sidebar.html', 'preview.html', 'template/index.html', 'template/sidebar.html', 'template/states.html'];
+const CSS_FILES = ['tokens.css', 'components.css', 'navigation.css', 'sidebar.css'];
 
 const failures = [];
 const fail = (msg) => failures.push(msg);

@@ -135,6 +135,8 @@
   /* 版面（與寬度相關但非媒體查詢條件者，仍為一般 token，第 4 節） */
   --chi-layout-header-height: 60px;
   --chi-layout-content-max: 1080px;
+  --chi-layout-sidebar-width: 248px;
+  --chi-layout-sidebar-collapsed-width: 76px;
 
   /* 元件尺寸：舒適模式；觸控目標下限 44px，緊湊只縮間距與列高、不縮觸控目標 */
   --chi-size-control: 40px;

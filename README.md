@@ -6,8 +6,8 @@ Chi 生態系共用設計系統的 canonical 來源：總規範與共用件都�
 
 ## 狀態
 
-- `SYSTEM.md` v1.21 與 `DESIGN.md` v2.15：皆為審查稿，**待齊審閱、未生效**。
-- 共用件已依 `SYSTEM.md` 第 15 節完成至第 8 步預覽頁、版本發佈／hash 檢查／CI：`sites.json`、`logo/`、`breakpoints.json`、`icons.svg`、`theme.js`、`tokens.css`、`components.css`、`navigation.css`、`header.html`、`example.html`、`template/`、`preview.html`、`RELEASE.md`、`scripts/`、`hashes.json`、`.github/workflows/check.yml`。第 9 步逐站遷移尚未開始；尚未建立任何正式 Release Tag。
+- `SYSTEM.md` v1.22 與 `DESIGN.md` v2.16：皆為審查稿，**待齊審閱、未生效**。
+- 共用件已依 `SYSTEM.md` 第 15 節完成至第 8 步預覽頁、版本發佈／hash 檢查／CI：`sites.json`、`logo/`、`breakpoints.json`、`icons.svg`、`theme.js`、`tokens.css`、`components.css`、`navigation.css`、`header.html`、`sidebar.css`、`sidebar.js`、`sidebar.html`、`example.html`、`template/`、`preview.html`、`RELEASE.md`、`scripts/`、`hashes.json`、`.github/workflows/check.yml`。第 9 步逐站遷移尚未開始；尚未建立任何正式 Release Tag。
 
 ## 內容
 
@@ -26,8 +26,11 @@ Chi 生態系共用設計系統的 canonical 來源：總規範與共用件都�
 | `components.css` | 元件樣式（按鈕、表單、卡片、表格、徽章、對話框、資料狀態） |
 | `navigation.css` | header、副導覽列、頁尾樣式 |
 | `header.html` | header＋副導覽列模板 |
+| `sidebar.css` | 側邊欄版式樣式（固定左側、收合圖示列、抽屜／底部列） |
+| `sidebar.js` | 側邊欄邏輯（收合持久化、抽屜開關） |
+| `sidebar.html` | 側邊欄版式模板 |
 | `example.html` | 元件與 header 範例頁 |
-| `template/` | 新站模板（起始頁、四種資料狀態範例頁、`release.json` 範本、使用說明） |
+| `template/` | 新站模板（起始頁、側邊欄版式起始頁、四種資料狀態範例頁、`release.json` 範本、使用說明） |
 | `preview.html` | 預覽頁：發版驗收（token、元件、主題、寬度、資料狀態、灰階檢查、驗收紀錄表） |
 | `RELEASE.md` | 版本發佈流程：版本判定、相容聲明、發佈步驟、各站驗證、回滾 |
 | `scripts/` | 檢查腳本：斷點檢查、sites.json 導覽生成／一致性檢查、共用件一致性與 hash 檢查 |
@@ -38,7 +41,7 @@ Chi 生態系共用設計系統的 canonical 來源：總規範與共用件都�
 
 1. 規範文件、`AGENTS.md`、`README.md`（已完成）
 2. `sites.json`、`logo/`、`breakpoints.json`（已完成）
-3. `icons.svg` → `theme.js` → `tokens.css` → `components.css`／`navigation.css`／header 模板（已完成）
+3. `icons.svg` → `theme.js` → `tokens.css` → `components.css`／`navigation.css`／`sidebar.css`／`sidebar.js`／header、側邊欄模板（已完成）
 4. `template/`（已完成）→ 預覽頁、版本發佈／hash 檢查／CI（已完成）
 5. 以上完成後，才開始逐站遷移：nav → status → fg → merch → h → chi
 

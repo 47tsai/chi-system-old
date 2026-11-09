@@ -16,7 +16,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const cssFiles = ['tokens.css', 'components.css', 'navigation.css'];
+const cssFiles = ['tokens.css', 'components.css', 'navigation.css', 'sidebar.css'];
 
 const bp = JSON.parse(readFileSync(join(root, 'breakpoints.json'), 'utf8'));
 const approved = new Map(); // px -> name

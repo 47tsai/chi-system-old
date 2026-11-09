@@ -1,6 +1,6 @@
 # SYSTEM.md — Chi 生態系統一規範
 
-版本：1.21（第二十二輪審查修訂稿）
+版本：1.22（第二十三輪審查修訂稿）
 基準日：2026-11-09
 狀態：待齊審閱，未生效。審閱通過後才生效，成為 Chi 自有網站的唯一總規範；本修訂稿不自行宣布生效。
 存放位置：`47tsai/chi-system` repo 根目錄（本文件正本）。
@@ -15,6 +15,16 @@ SYSTEM.md 是 Chi 生態系的總規範，回答四件事：
 - AI 和人動任何一個站之前，要遵守的工作方式、遷移順序和驗收標準。
 
 這份規範從需求出發全新制定，不複製舊設計系統的文件或程式碼，也不以任何外部設計系統為範本。舊系統只用來盤點現況（哪些站在線上、各站用什麼技術），不作為新規範的依據。
+
+### 第二十三輪修訂：差異與技術理由（v1.21 → v1.22，先讀本表，再讀正文）
+
+本輪依齊的指示新增側邊欄版式：導覽量大的站（merch 的 7 個區段、nav 的動態分類）用固定左側邊欄，不用 header＋副導覽列；一站只用一種版式。新增共用件 `sidebar.css`、`sidebar.js`、`sidebar.html` 與 `template/sidebar.html`，並把側邊欄納入斷點檢查與一致性／hash 檢查；同時修正 `template/states.html`、`preview.html`、`example.html` 手寫頁尾站點清單與 sites.json 不一致（舊站名、缺 data-site-id、缺結尾斜線）的問題。只修改 SYSTEM.md、DESIGN.md、README.md、template/README.md，並新增／修改上述共用件與檢查腳本；重新產生 `hashes.json`；不修改任何網站、RELEASE.md、AGENTS.md、generate-navigation.mjs 或 CI 設定；不建立正式 Release Tag（規範仍待齊審閱，首次正式版號待齊定案），不開始第 9 步逐站遷移。本稿仍為待齊審閱、未生效。
+
+| # | v1.21 問題 | v1.22 修正 | 理由 |
+| --- | --- | --- | --- |
+| 1 | 只有 header＋副導覽列一種版式；導覽量大的站（merch、nav）現行皆用左側邊欄，規範無對應版式，遷移時無法可依 | 新增側邊欄版式（第 8 節）：固定左側 248px、品牌在側邊欄內、無頂部站點 header；可收合為 76px 圖示列（key `chi-<站點>-sidebar-collapsed`）；平板 768–1023px 強制圖示列；手機版依導覽量二選一（固定連結少用底部列、動態多用抽屜） | merch 與 nav 實證皆用側邊欄，規格直接取兩站共通做法（248px、76px 收合、品牌在欄內）；版式二選一避免一站混用兩種導覽 |
+| 2 | `template/states.html`、`preview.html`、`example.html` 的手寫頁尾站點清單仍是舊站名（收藏／導覽／工具／狀態）、無 data-site-id、網址無結尾斜線，與 sites.json 產生結果不一致 | 三份頁尾清單改為與產生結果一致（Chi 主站／Chi Merch／Chi Nav／Chi Tools／Chi Status、data-site-id、結尾斜線） | 手寫副本必須與產生結果一致，否則示範頁本身就在示範錯誤的站名 |
+| 3 | 斷點檢查與一致性檢查只掃三份共用 CSS，未涵蓋側邊欄 | `check-breakpoints.mjs` 納入 `sidebar.css`；`check-integrity.mjs` 的共用件清單與檢查檔納入 `sidebar.css`／`sidebar.js`／`sidebar.html`／`template/sidebar.html` | 新增共用件不進檢查等於沒有守門；側邊欄的 @media 只准用 768／1024，與既有規則一致 |
 
 ### 第二十二輪修訂：差異與技術理由（v1.20 → v1.21，先讀本表，再讀正文）
 
@@ -547,12 +557,22 @@ SYSTEM.md 是規範的唯一準則。文件與實作不一致時，**以文件�
 - 沒有導覽的站（例如單頁站）直接省略副導覽列整段，不留空列。
 - 副導覽列只顯示圖示＋站名，不顯示 `sites.json` 的簡短描述；描述欄位保留作 registry 詮釋資料。
 
+### 側邊欄版式（.chi-sidebar）
+
+- 導覽量大的站用側邊欄版式，不用 header＋副導覽列；一站只用一種版式，不得兩種並存。適用判斷：本站導覽連結多到橫列放不下、或為動態分類（例如 nav 的網站分類、merch 的 7 個區段）；導覽少的站用 header＋副導覽列。遷移時 merch、nav 用側邊欄版式，其餘四站用 header＋副導覽列。
+- 側邊欄固定在左側，寬 248px（`--chi-layout-sidebar-width`）；品牌（logo＋站名＋副標）放側邊欄內，不另設頂部站點 header；主內容區另設頁面標頭（頁面標題＋操作，不是站點 header）。本站導覽在側邊欄內直列，連結複用 `.chi-nav-link`；跨站連結不在側邊欄內，仍在頁尾清單（由生成腳本產生）。寬度取 merch 的 248px（8px 基準的倍數）；nav 現行 252px，遷移時改為 248px。
+- 收合：桌面（>=1024px）可收合為 76px 圖示列（`--chi-layout-sidebar-collapsed-width`），收合鈕在側邊欄右上角；狀態寫入 localStorage，key 為 `chi-<站點>-sidebar-collapsed`，值 "1" 為收合。收合邏輯唯一來源為 `sidebar.js`，各站不得另寫；首次繪製前套用，不閃爍。
+- 平板（768–1023px）：強制 76px 圖示列，收合鈕隱藏，不讀收合狀態。
+- 手機（<768px）：二選一。導覽為少數固定連結時用底部列（在 `<aside>` 加 `chi-sidebar--bottombar`）：側邊欄變固定底部導覽列，橫向捲動，品牌、收合鈕與底部隱藏。導覽為動態分類或數量不定時用抽屜（預設）：側邊欄藏到左邊外面，頁面標頭內的漢堡按鈕開啟，遮罩點按與 Escape 關閉。
+- 主內容區左邊距跟隨側邊欄寬度（展開 248px、收合／圖示列 76px、手機 0）；底部列版式另留底邊距，免得內容被底列蓋住。
+
 ### 站點清單只有一份：sites.json（僅 6 站）
 
 - `sites.json` 是納入統一之站點的唯一 registry，**只收錄第 2 節的 6 個站**（`chi`、`fg`、`merch`、`nav`、`h`、`status`），欄位固定為：站點 ID、站名、網址、簡短描述、圖示 symbol 名稱、是否納入跨站導覽、品牌色（`brand`）、色庫 ID（`colorId`）。其中 `brand` 與 `colorId` 為六站識別色分配的落實欄位（v1.14 定案）：分配結果以本檔為準，COLOR-REGISTRY.md 只同步記錄各色的 Status。
 - 它不是全生態系的站點總冊：第 1 節另外 6 個排除站的 ID 不寫入本檔（理由見第 1 節分層表）。任何程式或文件不得宣稱 `sites.json` 列出了全部 12 站，也不得為了「完整」把排除站補進來——那會讓導覽產生程式把排除站當成統一站處理。
 - 各站的跨站導覽、站點切換與頁尾連結一律由這一份產生；任何站的程式碼裡不得再出現手寫的站點 URL 清單。
 - 跨站組與頁尾清單的實際 HTML 由 `scripts/generate-navigation.mjs` 依本檔產生（`header.html` 與 `template/index.html`），CI 以 `--check` 核對一致性；改 `sites.json` 後須執行該腳本重新產生，不得手改產生區段。
+- 側邊欄版式的本站導覽是本站自己的連結，不由 `sites.json` 產生；跨站連結仍在頁尾清單。
 - 在這 6 站範圍內新增、改名或下線站點，只改 `sites.json` 並發新版，各站再升級引用；把排除站改列為納入站不屬此例，須走第 1 節的三步程序。
 - status 的監控清單是該站自己的資料，不與 `sites.json` 合併；status 出現在 `sites.json` 只代表它本身是六站之一，不代表它的監控對象被收錄。
 
@@ -565,6 +585,7 @@ SYSTEM.md 是規範的唯一準則。文件與實作不一致時，**以文件�
 ## 9. 元件與資料狀態
 
 - 元件樣式只有一份：chi-system 的 `components.css`。元件至少涵蓋：按鈕、卡片、表單欄位、表格、徽章、對話框、導覽元件。需要新元件時，先在 chi-system 補齊並在模板或預覽頁附範例，再給各站引用，不得只在單一站長出另一套。
+- 側邊欄版式用 `sidebar.css`／`sidebar.js`／`sidebar.html`（第 8 節）；收合狀態 key 為 `chi-<站點>-sidebar-collapsed`，值 "1" 為收合。
 - 按鈕文字太長會在手機版 header 溢出時，用 `.chi-btn__full`／`.chi-btn__short` 兩段文字（手機版顯示短文字，桌面以上顯示完整文字），不用各站自寫。
 - 同一個動作在全站用同一個元件、同一個用詞。
 - 介面、文案、文件與程式註解不使用 Emoji，狀態用圖示加文字表達。
@@ -867,7 +888,7 @@ v1.4 的矛盾在此講清楚：Site Release Tag 指向整體發布基準 commit
   - **互動狀態**：每個可互動元件展示它適用的狀態——預設、hover、focus-visible、active、disabled、selected / checked（適用者須展示，與 DESIGN.md 第 7.7 節的六態對齊，v1.5 補列），以及該元件實際有的 loading／error 狀態；focus 展示須能用鍵盤實際走到，不得只放靜態截圖示意。不適用的狀態在紀錄中註明。
   - **主題**：三態（system／light／dark）都可切換檢視，且淺色與深色畫面可並列或一鍵對照，切換無閃爍、無未套用 token 的殘留舊色。每個元件至少在淺色與深色各檢視一次，不要求每個狀態都重複兩套。
   - **響應式**：可在手機、平板、桌面三種寬度下檢視同一組元件與 header，寬度切換點須與 `breakpoints.json` 一致，用來當場驗證斷點有實際生效。元件以代表性版面位置驗三種寬度即可，不要求所有狀態逐寬度重驗。
-  - **版面與資料狀態**：完整 header＋副導覽列結構與頁尾各一份，含跨站導覽實際由 `sites.json` 產生的結果；載入、空、錯誤、成功四種資料狀態，各在至少一個實際會載入資料的元件／頁面情境中展示，不要求每個元件都演四種狀態。
+  - **版面與資料狀態**：完整 header＋副導覽列（或側邊欄版式，見第 8 節）結構與頁尾各一份，含跨站導覽實際由 `sites.json` 產生的結果；載入、空、錯誤、成功四種資料狀態，各在至少一個實際會載入資料的元件／頁面情境中展示，不要求每個元件都演四種狀態。
   - **只靠顏色檢查**：至少一區專門展示狀態、錯誤與圖表在去掉顏色後（灰階檢視或等效方式）仍可辨認，對應第 11 節「不得只靠顏色」驗收。
 - **可追溯的驗收紀錄**：每次發版在該次發布紀錄中附一張驗收紀錄表，欄位至少含：元件、檢視過的狀態、主題（淺／深）、寬度、資料狀態、不適用項與原因、結果（通過／未通過）、檢視者與日期。紀錄表是發版門檻的一部分：沒有紀錄、或紀錄顯示有維度項目未覆蓋，該版本不得發佈。
 - 預覽頁使用假資料即可，但元件、token 與行為必須是正本實作，不得另做一份「預覽專用」的近似樣式，否則驗收失去意義。
@@ -894,9 +915,9 @@ chi-system 從空 repo 起步，依序完成，前一步驗收後才進下一步
 3. 建立 `icons.svg`，收齊六站需要的圖示，命名用 Lucide 原名。
 4. 實作 `theme.js`（三態、統一 key、防閃爍），預設為 `system`。
 5. 建立 `tokens.css`，依第 4 節標準做法填入數值並定稿，淺色與深色兩套配對都要完成。
-6. 實作 `components.css`、`navigation.css` 與 header 模板。
-7. 建立 `template/`：新站唯一起點，含四種資料狀態的範例頁。
-8. 建立符合第 13 節維度覆蓋要求的預覽頁與驗收紀錄表格式（各維度完整覆蓋、依元件適用性安排組合，不做笛卡兒積全組合），以及符合第 13 節語意化版本、相容聲明與回滾要求的版本發佈流程與檢查腳本（含 sites.json 導覽生成／一致性、斷點、一致性／hash），並在本 repo 的 CI 啟用；同時啟用第 4 節的斷點檢查（拒絕 `@media` 內使用 CSS 變數、CI 直接讀 `breakpoints.json` 比對核准斷點值，並逐一解析每個 `@media` 緊鄰上一行的 `/* chi-breakpoint: <名稱> */` 註解、驗證名稱與數值的對應一致，無註解或格式不符即失敗），做不到機器檢查的部分先以人工搜尋紀錄代替。
+6. 實作 `components.css`、`navigation.css`、`sidebar.css`、`sidebar.js` 與 header、側邊欄模板。
+7. 建立 `template/`：新站唯一起點，含四種資料狀態的範例頁與側邊欄版式起始頁。
+8. 建立符合第 13 節維度覆蓋要求的預覽頁與驗收紀錄表格式（各維度完整覆蓋、依元件適用性安排組合，不做笛卡兒積全組合），以及符合第 13 節語意化版本、相容聲明與回滾要求的版本發佈流程與檢查腳本（含 sites.json 導覽生成／一致性、斷點、一致性／hash；後兩者涵蓋側邊欄共用件），並在本 repo 的 CI 啟用；同時啟用第 4 節的斷點檢查（拒絕 `@media` 內使用 CSS 變數、CI 直接讀 `breakpoints.json` 比對核准斷點值，並逐一解析每個 `@media` 緊鄰上一行的 `/* chi-breakpoint: <名稱> */` 註解、驗證名稱與數值的對應一致，無註解或格式不符即失敗），做不到機器檢查的部分先以人工搜尋紀錄代替。
 9. 以上完成後，才開始第 16 節的逐站遷移。
 
 ## 16. 逐站遷移
@@ -914,9 +935,9 @@ chi-system 從空 repo 起步，依序完成，前一步驗收後才進下一步
 
 ### 每站共同清單
 
-- 引用 chi-system 釘版的 token、元件、導覽樣式、theme.js、icons.svg 與 sites.json 產生的導覽。
+- 引用 chi-system 釘版的 token、元件、導覽樣式、theme.js、icons.svg 與 sites.json 產生的導覽；側邊欄版式另加 sidebar.css／sidebar.js／sidebar.html。
 - 刪除本站自寫的顏色變數、主題邏輯與舊主題 key、其他圖示來源（品牌資產依第 6 節例外保留）、手寫站點清單、熱連結資產、寫死的 token 數值（唯一例外：第 4 節允許在 `@media` 條件中出現的核准斷點字面值，須在緊鄰上一行附固定格式註解 `/* chi-breakpoint: <名稱> */`）。
-- header 與副導覽列改為第 8 節的結構，頁尾補齊站名、跨站導覽與本站版本識別（第 13 節）。
+- header 與副導覽列（或側邊欄版式，見第 8 節）改為第 8 節的結構，頁尾補齊站名、跨站導覽與本站版本識別（第 13 節）。
 - 在本站 repo 根目錄建立 `release.json` 並接入既有建置／部署流程，由 CI 依 Tag 產生 `version.json`（第 13 節），本站版本從 `v1.0.0` 起算，並在第一次正式發布時建立 `v1.0.0` Tag；此為該站第一次正式版本，不追溯舊部署。
 - 補齊四種資料狀態（載入、空、錯誤、成功）。
 - CI 啟用共用件版本／hash 檢查。
@@ -956,7 +977,7 @@ chi-system 從空 repo 起步，依序完成，前一步驗收後才進下一步
 - 命名（第 1 節）已凍結，不重開討論；其餘章節要改，一次直接提交只改一個主題，經齊確認後提交至 `main`，並在 commit／變更紀錄中說明影響哪些站。
 - 文件與實作不一致、以及聲稱「歷史實作本來就這樣」的情形，一律依本文件開頭「文件與實作不一致時的處理原則」辦理：規範優先、先記錄、暫停受影響部分、經齊確認才決定改哪一邊；本節是唯一的規範變更入口，任何繞過本節直接改文件遷就實作、或直接改實作偏離文件的變更，審閱時應退回。
 - 臨時例外依開頭原則第 5 點登記在本節或對應變更紀錄：寫明範圍、理由與失效條件，到期未回歸規範者列為未結缺陷，不得無限期展延而不記錄。
-- 本文件的版本隨內容變更遞增；各站在下一次發布時對齊最新版規範與所釘的 chi-system 版本。本版（1.21）為第二十二輪審查修訂稿，仍待齊審閱，未經確認不生效力。
+- 本文件的版本隨內容變更遞增；各站在下一次發布時對齊最新版規範與所釘的 chi-system 版本。本版（1.22）為第二十三輪審查修訂稿，仍待齊審閱，未經確認不生效力。
 - 待確認事項（未定案前不得自行假設）：
   - auth.chi.qzz.io 的原始碼位置不在目前已知 repo 清單內，待齊補充；補充前本文件對 auth 只規範各站的接入行為，不描述其實作。
   - chi-design-system 最終處置是封存（第 17 節已定），example-site 是刪除；執行時機仍須逐項確認。
@@ -965,7 +986,7 @@ chi-system 從空 repo 起步，依序完成，前一步驗收後才進下一步
   - 各站託管平台能否對 `/version.json` 設定 `Cache-Control`、或需何種 CDN 等效做法，尚未逐站確認，留待各站遷移時確認。
   - 其餘視覺 token 數值已於 v1.16 定案（DESIGN.md 第 8 節待定項目全部結案、Focus Appearance 外框寬度 2px、偏移 2px），數值唯一來源為 `tokens.css`；斷點 px 值與六站識別色已於 v1.14 定案（斷點見 `breakpoints.json`，識別色見 `sites.json` 與 COLOR-REGISTRY.md），不再列為待定。
   - 未列入 DESIGN.md 基礎狀態示例表的元件（日期選擇、檔案上傳、滑桿等），實際使用前仍須逐一另行定義適用狀態，本文件不預先假設。
-  - DESIGN.md v2.15（配合 SYSTEM.md v1.21 的 header 結構調整：導覽移至副導覽列），同樣待齊審閱、未生效。
-  - `sites.json`、`breakpoints.json`、`logo/` 已建立（第 15 節第 2 步完成）：`sites.json` 只收 6 站，含各站識別色（`brand`＋`colorId`）、簡短描述、導覽圖示（`icon`）與是否納入導覽（`inNav`）；`breakpoints.json` 為斷點唯一正式來源（`chi-breakpoint-md` 768、`chi-breakpoint-lg` 1024）；`logo/` 為向量正本 `logo.svg` 加六站 × 白／黑 C 的 PNG（站點 ID 命名）。`icons.svg` 已建立（第 15 節第 3 步完成）：Lucide 1.70.0，87 個 symbol，命名用 Lucide 原名。`theme.js` 已建立（第 15 節第 4 步完成）：三態 system／light／dark、key 為 `chi-theme-mode`、預設 system。`tokens.css` 已建立（第 15 節第 5 步完成）：視覺 token 唯一來源，淺深兩套配對，全部 56 組對比直接讀檔驗算通過。`components.css`、`navigation.css`、`header.html` 已建立（第 15 節第 6 步完成）：元件樣式、header 與跨站導覽、頁尾與 header 模板；元件展示頁以瀏覽器實測淺深兩套、截圖核對。`template/` 已建立（第 15 節第 7 步完成）：新站唯一起點，含 `index.html` 起始頁、`states.html` 四種資料狀態範例頁、`release.json` 範本與 `README.md` 使用說明；共用件在模板內以相對路徑引用（repo 內預覽用），正式站改為釘版引用。`preview.html`、`RELEASE.md`、`scripts/check-breakpoints.mjs`、`scripts/check-integrity.mjs`、`scripts/generate-navigation.mjs`、`hashes.json`、`.github/workflows/check.yml` 已建立（第 15 節第 8 步完成）：預覽頁（第 13 節維度覆蓋＋驗收紀錄表格式）、發佈流程文件、sites.json 導覽生成／一致性檢查、斷點檢查與共用件一致性／hash 檢查、共用件 SHA-256 清單、CI；三支檢查腳本皆已由 GitHub Actions 實際執行，最近一次 check 全部通過。本輪未建立任何正式 Release Tag（規範仍待齊審閱，首次正式版號待齊定案）。
+  - DESIGN.md v2.16（配合 SYSTEM.md v1.22 的側邊欄版式：新增側邊欄視覺規範），同樣待齊審閱、未生效。
+  - `sites.json`、`breakpoints.json`、`logo/` 已建立（第 15 節第 2 步完成）：`sites.json` 只收 6 站，含各站識別色（`brand`＋`colorId`）、簡短描述、導覽圖示（`icon`）與是否納入導覽（`inNav`）；`breakpoints.json` 為斷點唯一正式來源（`chi-breakpoint-md` 768、`chi-breakpoint-lg` 1024）；`logo/` 為向量正本 `logo.svg` 加六站 × 白／黑 C 的 PNG（站點 ID 命名）。`icons.svg` 已建立（第 15 節第 3 步完成）：Lucide 1.70.0，87 個 symbol，命名用 Lucide 原名。`theme.js` 已建立（第 15 節第 4 步完成）：三態 system／light／dark、key 為 `chi-theme-mode`、預設 system。`tokens.css` 已建立（第 15 節第 5 步完成）：視覺 token 唯一來源，淺深兩套配對，全部 56 組對比直接讀檔驗算通過。`components.css`、`navigation.css`、`header.html`、`sidebar.css`、`sidebar.js`、`sidebar.html` 已建立（第 15 節第 6 步完成）：元件樣式、header 與跨站導覽、頁尾與 header 模板、側邊欄版式（第 8 節）；元件展示頁以瀏覽器實測淺深兩套、截圖核對。`template/` 已建立（第 15 節第 7 步完成）：新站唯一起點，含 `index.html` 起始頁、`states.html` 四種資料狀態範例頁、`sidebar.html` 側邊欄版式起始頁、`release.json` 範本與 `README.md` 使用說明；共用件在模板內以相對路徑引用（repo 內預覽用），正式站改為釘版引用。`preview.html`、`RELEASE.md`、`scripts/check-breakpoints.mjs`、`scripts/check-integrity.mjs`、`scripts/generate-navigation.mjs`、`hashes.json`、`.github/workflows/check.yml` 已建立（第 15 節第 8 步完成）：預覽頁（第 13 節維度覆蓋＋驗收紀錄表格式）、發佈流程文件、sites.json 導覽生成／一致性檢查、斷點檢查與共用件一致性／hash 檢查、共用件 SHA-256 清單、CI；三支檢查腳本皆已由 GitHub Actions 實際執行，最近一次 check 全部通過。本輪未建立任何正式 Release Tag（規範仍待齊審閱，首次正式版號待齊定案）。
   - 交叉一致性審查表共 18 列檢查項，原列 10 項待確認皆已核對為定義一致，剩餘待確認 0 項；完整 Token 角色與 CSS 變數對照表已隨 `tokens.css` 交付（本輪），對照表即檔案本身，不另存副本。
   - `release.json` ＋ CI 產生 `version.json` 的發布流程：chi-system 本身的檢查腳本與 CI 已建立（第 15 節第 8 步，見 `scripts/` 與 `.github/workflows/check.yml`），但尚未在任何一站實作或以實際 CI 驗證；本輪亦未建立任何正式 Release Tag；各站第一次依新模型發布時，須以實際部署結果回頭核對第 13、18 節的檢查是否可執行。

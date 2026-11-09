@@ -1,0 +1,512 @@
+/* chi-system sidebar.css — 側邊欄版式（SYSTEM.md 第 8 節、第 15 節第 6 步）
+ *
+ * 導覽量大的站（merch 的 7 個區段、nav 的動態分類）用側邊欄版式，不用
+ * header＋副導覽列；一站只用一種版式，不得兩種並存。側邊欄固定在左側，
+ * 品牌放側邊欄內，不另設頂部站點 header；主內容區另設頁面標頭（頁面標題
+ * ＋操作，見 sidebar.html）。本站導覽是本站自己的連結，不由 sites.json
+ * 產生；跨站連結仍在頁尾清單（由 generate-navigation.mjs 產生）。
+ * 斷點依第 4 節：@media 寫字面 px 值，緊鄰上一行寫固定格式註解，不得用 CSS 變數。
+ * 寬度：展開 248px（--chi-layout-sidebar-width），收合／圖示列 76px
+ * （--chi-layout-sidebar-collapsed-width），皆為 8px 間距基準的定值。
+ */
+
+/* ---------- 版面結構 ---------- */
+
+/* 側邊欄版式的頁面外框：側邊欄＋右側內容欄 */
+.chi-page--sidebar {
+  min-height: 100vh;
+  background-color: var(--chi-color-canvas);
+  color: var(--chi-color-text-primary);
+}
+
+/* 右側內容欄：頁面標頭＋主內容＋頁尾 */
+.chi-content {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* 頁面標頭：每頁自己的標題與操作（不是站點 header） */
+.chi-page-header {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--chi-space-3) var(--chi-space-4);
+  padding: var(--chi-space-5) var(--chi-space-4) var(--chi-space-4);
+}
+
+.chi-page-header__title {
+  margin: 0;
+  font-size: var(--chi-font-size-page-title);
+  line-height: var(--chi-line-height-page-title);
+  font-weight: var(--chi-font-weight-page-title);
+}
+
+.chi-page-header__desc {
+  margin: var(--chi-space-1) 0 0;
+  color: var(--chi-color-text-secondary);
+  font-size: var(--chi-font-size-body-small);
+  line-height: var(--chi-line-height-body-small);
+}
+
+.chi-page-header__actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--chi-space-2);
+}
+
+/* ---------- 側邊欄本體 ---------- */
+
+.chi-sidebar {
+  position: fixed;
+  z-index: 30;
+  inset: 0 auto 0 0;
+  width: var(--chi-layout-sidebar-width);
+  display: flex;
+  flex-direction: column;
+  padding: var(--chi-space-5) var(--chi-space-4) var(--chi-space-4);
+  background-color: var(--chi-color-surface);
+  border-right: 1px solid var(--chi-color-border-subtle);
+  transition: width var(--chi-duration), transform var(--chi-duration);
+}
+
+/* 品牌：logo＋站名＋副標，點擊回該站首頁 */
+.chi-sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--chi-space-3);
+  flex: none;
+  min-height: 48px;
+  padding: var(--chi-space-1) var(--chi-space-2) var(--chi-space-5);
+  color: var(--chi-color-text-primary);
+  text-decoration: none;
+}
+
+.chi-sidebar__logo {
+  width: 32px;
+  height: 32px;
+  flex: none;
+}
+
+/* logo 依主題換白／黑 C（C 顏色規則，見 logo/README.md） */
+[data-chi-theme="dark"] .chi-sidebar__logo--light {
+  display: none;
+}
+
+[data-chi-theme="light"] .chi-sidebar__logo--dark {
+  display: none;
+}
+
+.chi-sidebar__brand-copy {
+  min-width: 0;
+}
+
+.chi-sidebar__brand-name {
+  display: block;
+  font-size: var(--chi-font-size-section-title);
+  line-height: var(--chi-line-height-section-title);
+  font-weight: var(--chi-font-weight-section-title);
+}
+
+.chi-sidebar__brand-sub {
+  display: block;
+  margin-top: 2px;
+  color: var(--chi-color-text-muted);
+  font-size: var(--chi-font-size-caption);
+  line-height: var(--chi-line-height-caption);
+}
+
+/* 收合按鈕：只在桌面（>=1024px）顯示 */
+.chi-sidebar__toggle {
+  position: absolute;
+  top: var(--chi-space-5);
+  right: var(--chi-space-3);
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--chi-color-border-subtle);
+  border-radius: var(--chi-radius-md);
+  background: none;
+  color: var(--chi-color-text-secondary);
+  cursor: pointer;
+  transition:
+    color var(--chi-duration),
+    background-color var(--chi-duration);
+}
+
+.chi-sidebar__toggle:hover {
+  color: var(--chi-color-text-primary);
+  background-color: var(--chi-color-surface-sunken);
+}
+
+/* 分組標題（例如 nav 的「工作區」） */
+.chi-sidebar__caption {
+  flex: none;
+  padding: var(--chi-space-2) var(--chi-space-3);
+  color: var(--chi-color-text-muted);
+  font-size: var(--chi-font-size-caption);
+  line-height: var(--chi-line-height-caption);
+  font-weight: var(--chi-font-weight-caption);
+  letter-spacing: 0.06em;
+}
+
+/* 本站導覽：直列，連結複用 .chi-nav-link（見 navigation.css） */
+.chi-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--chi-space-1);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.chi-sidebar__nav::-webkit-scrollbar {
+  display: none;
+}
+
+.chi-sidebar__nav .chi-nav-link {
+  display: flex;
+  width: 100%;
+}
+
+/* 底部區：狀態、版本、主題切換等本站資訊，貼底 */
+.chi-sidebar__bottom {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--chi-space-2);
+  padding: var(--chi-space-4) var(--chi-space-3) var(--chi-space-1);
+  border-top: 1px solid var(--chi-color-border-subtle);
+  color: var(--chi-color-text-secondary);
+  font-size: var(--chi-font-size-body-small);
+  line-height: var(--chi-line-height-body-small);
+}
+
+.chi-sidebar__status {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: var(--chi-radius-full);
+  background-color: var(--chi-color-success);
+}
+
+.chi-sidebar__version {
+  margin-left: auto;
+  font-family: var(--chi-font-mono);
+  font-size: var(--chi-font-size-caption);
+  letter-spacing: 0.06em;
+}
+
+/* 底部主題切換按鈕（圖示鈕，見 theme.js） */
+.chi-sidebar__theme {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: var(--chi-radius-md);
+  background: none;
+  color: var(--chi-color-text-secondary);
+  cursor: pointer;
+}
+
+.chi-sidebar__theme:hover {
+  color: var(--chi-color-text-primary);
+  background-color: var(--chi-color-surface-sunken);
+}
+
+/* 漢堡按鈕：只在手機抽屜版式顯示，放在頁面標頭內 */
+.chi-sidebar__menu {
+  display: none;
+}
+
+/* 抽屜遮罩：只在手機抽屜開啟時顯示 */
+.chi-sidebar__scrim {
+  display: none;
+}
+
+/* focus 可見（與 components.css 的 focus 規則一致） */
+.chi-sidebar__toggle:focus-visible,
+.chi-sidebar__theme:focus-visible,
+.chi-sidebar__menu:focus-visible {
+  outline: var(--chi-focus-width) solid var(--chi-color-focus-ring);
+  outline-offset: var(--chi-focus-offset);
+}
+
+/* ---------- 手機（<768px）：抽屜或底部列 ---------- */
+
+/* 預設為抽屜：側邊欄藏到左邊外面，漢堡按鈕開啟 */
+.chi-sidebar {
+  transform: translateX(-102%);
+}
+
+.chi-sidebar.mobile-open {
+  transform: translateX(0);
+  box-shadow: var(--chi-shadow-overlay);
+}
+
+.chi-sidebar__scrim.visible {
+  display: block;
+  position: fixed;
+  z-index: 25;
+  inset: 0;
+  background-color: rgb(0 0 0 / 38%);
+}
+
+.chi-sidebar__menu {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--chi-size-touch-min);
+  height: var(--chi-size-touch-min);
+  flex: none;
+  border: none;
+  border-radius: var(--chi-radius-md);
+  background: none;
+  color: var(--chi-color-text-secondary);
+  cursor: pointer;
+}
+
+.chi-sidebar__menu:hover {
+  color: var(--chi-color-text-primary);
+  background-color: var(--chi-color-surface-sunken);
+}
+
+/* 底部列版式（導覽為少數固定連結時用，見第 8 節）：側邊欄變底部導覽列 */
+.chi-sidebar--bottombar {
+  inset: auto 0 0;
+  width: 100%;
+  height: auto;
+  padding: var(--chi-space-2);
+  padding-bottom: calc(var(--chi-space-2) + env(safe-area-inset-bottom));
+  border-right: none;
+  border-top: 1px solid var(--chi-color-border-subtle);
+  transform: none;
+}
+
+.chi-sidebar--bottombar .chi-sidebar__brand,
+.chi-sidebar--bottombar .chi-sidebar__toggle,
+.chi-sidebar--bottombar .chi-sidebar__caption,
+.chi-sidebar--bottombar .chi-sidebar__bottom {
+  display: none;
+}
+
+.chi-sidebar--bottombar .chi-sidebar__nav {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: var(--chi-space-1);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.chi-sidebar--bottombar .chi-sidebar__nav .chi-nav-link {
+  flex: 0 0 62px;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--chi-space-1);
+  min-height: 50px;
+  padding: var(--chi-space-1);
+  font-size: 10px;
+  line-height: 1.25;
+}
+
+.chi-sidebar--bottombar .chi-sidebar__nav .chi-nav-link span {
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 底部列版式不需漢堡與遮罩 */
+.chi-sidebar--bottombar ~ .chi-content .chi-sidebar__menu,
+.chi-sidebar--bottombar ~ .chi-sidebar__scrim {
+  display: none;
+}
+
+/* 手機版內容不留左邊距；底部列版式再留底邊距，免得內容被底列蓋住 */
+.chi-content {
+  margin-left: 0;
+}
+
+.chi-sidebar--bottombar ~ .chi-content {
+  padding-bottom: 100px;
+}
+
+/* ---------- 平板（768px–1023px）：圖示列 ---------- */
+
+/* chi-breakpoint: chi-breakpoint-md */
+@media (min-width: 768px) {
+  .chi-sidebar {
+    width: var(--chi-layout-sidebar-collapsed-width);
+    padding-inline: var(--chi-space-3);
+    transform: none;
+  }
+
+  .chi-sidebar__brand {
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  .chi-sidebar__brand-copy,
+  .chi-sidebar__caption,
+  .chi-sidebar__nav .chi-nav-link span,
+  .chi-sidebar__bottom > :not(.chi-sidebar__theme) {
+    display: none;
+  }
+
+  .chi-sidebar__toggle {
+    display: none;
+  }
+
+  .chi-sidebar__nav .chi-nav-link {
+    justify-content: center;
+    padding-inline: var(--chi-space-2);
+  }
+
+  .chi-sidebar__bottom {
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  .chi-sidebar__menu,
+  .chi-sidebar__scrim.visible {
+    display: none;
+  }
+
+  .chi-content {
+    margin-left: var(--chi-layout-sidebar-collapsed-width);
+  }
+
+  .chi-sidebar--bottombar ~ .chi-content {
+    padding-bottom: 0;
+  }
+}
+
+/* ---------- 桌面（>=1024px）：完整側邊欄，可收合 ---------- */
+
+/* chi-breakpoint: chi-breakpoint-lg */
+@media (min-width: 1024px) {
+  .chi-sidebar {
+    width: var(--chi-layout-sidebar-width);
+    padding: var(--chi-space-5) var(--chi-space-4) var(--chi-space-4);
+  }
+
+  .chi-sidebar__brand {
+    justify-content: flex-start;
+    padding: var(--chi-space-1) var(--chi-space-2) var(--chi-space-5);
+  }
+
+  .chi-sidebar__brand-copy,
+  .chi-sidebar__caption,
+  .chi-sidebar__nav .chi-nav-link span,
+  .chi-sidebar__bottom > :not(.chi-sidebar__theme) {
+    display: revert;
+  }
+
+  .chi-sidebar__toggle {
+    display: inline-flex;
+  }
+
+  .chi-sidebar__nav .chi-nav-link {
+    justify-content: flex-start;
+    padding: var(--chi-space-2) var(--chi-space-3);
+  }
+
+  .chi-sidebar__bottom {
+    justify-content: flex-start;
+  }
+
+  .chi-content {
+    margin-left: var(--chi-layout-sidebar-width);
+  }
+
+  /* 收合：76px 圖示列（與平板圖示列同貌；狀態由 sidebar.js 持久化） */
+  .chi-sidebar.is-collapsed {
+    width: var(--chi-layout-sidebar-collapsed-width);
+    padding-inline: var(--chi-space-3);
+  }
+
+  .chi-sidebar.is-collapsed .chi-sidebar__brand {
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  .chi-sidebar.is-collapsed .chi-sidebar__brand-copy,
+  .chi-sidebar.is-collapsed .chi-sidebar__caption,
+  .chi-sidebar.is-collapsed .chi-sidebar__nav .chi-nav-link span,
+  .chi-sidebar.is-collapsed .chi-sidebar__bottom > :not(.chi-sidebar__theme) {
+    display: none;
+  }
+
+  .chi-sidebar.is-collapsed .chi-sidebar__toggle {
+    right: 23px;
+    top: 80px;
+  }
+
+  .chi-sidebar.is-collapsed .chi-sidebar__nav .chi-nav-link {
+    justify-content: center;
+    padding-inline: var(--chi-space-2);
+  }
+
+  .chi-sidebar.is-collapsed .chi-sidebar__bottom {
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  .chi-sidebar.is-collapsed ~ .chi-content {
+    margin-left: var(--chi-layout-sidebar-collapsed-width);
+  }
+
+  /* 首次繪製前套用收合狀態（sidebar.js 的 <head> 片段寫入的屬性） */
+  html[data-chi-sidebar-collapsed="1"] .chi-sidebar {
+    width: var(--chi-layout-sidebar-collapsed-width);
+    padding-inline: var(--chi-space-3);
+  }
+
+  html[data-chi-sidebar-collapsed="1"] .chi-sidebar__brand {
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  html[data-chi-sidebar-collapsed="1"] .chi-sidebar__brand-copy,
+  html[data-chi-sidebar-collapsed="1"] .chi-sidebar__caption,
+  html[data-chi-sidebar-collapsed="1"] .chi-sidebar__nav .chi-nav-link span,
+  html[data-chi-sidebar-collapsed="1"] .chi-sidebar__bottom > :not(.chi-sidebar__theme) {
+    display: none;
+  }
+
+  html[data-chi-sidebar-collapsed="1"] .chi-sidebar__toggle {
+    right: 23px;
+    top: 80px;
+  }
+
+  html[data-chi-sidebar-collapsed="1"] .chi-sidebar__nav .chi-nav-link {
+    justify-content: center;
+    padding-inline: var(--chi-space-2);
+  }
+
+  html[data-chi-sidebar-collapsed="1"] .chi-sidebar__bottom {
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  html[data-chi-sidebar-collapsed="1"] .chi-sidebar ~ .chi-content {
+    margin-left: var(--chi-layout-sidebar-collapsed-width);
+  }
+}
+
+/* 減動效：收合與抽屜不做位移動畫 */
+@media (prefers-reduced-motion: reduce) {
+  .chi-sidebar,
+  .chi-content {
+    transition: none;
+  }
+}
