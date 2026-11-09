@@ -6,7 +6,7 @@
 
 | 檔案 | 用途 |
 | --- | --- |
-| `index.html` | 新站起始頁：header 四段、主內容、頁尾，全部用 chi-system 共用件 |
+| `index.html` | 新站起始頁：header＋副導覽列、主內容、頁尾，全部用 chi-system 共用件 |
 | `states.html` | 四種資料狀態範例頁：載入、空、錯誤、成功（第 9 節） |
 | `release.json` | 發布 manifest 範本（第 13 節）：本站版本、所釘 chi-system 版本 |
 | `README.md` | 本文件 |

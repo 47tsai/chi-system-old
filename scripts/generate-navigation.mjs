@@ -1,5 +1,7 @@
 // chi-system scripts/generate-navigation.mjs
 // Generate the shared-site navigation and footer from sites.json.
+// The navigation region is the subnav cross-site group (.chi-subnav__group
+// inside .chi-subnav), not a dropdown; the footer region is .chi-footer__sites.
 // Run: node scripts/generate-navigation.mjs (write) or --check (CI verification).
 
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -34,18 +36,9 @@ const escapeHtml = (value) => String(value)
 
 function navigation(iconPrefix) {
   return `<!-- CHI:SITES:NAV:START -->
-        <details class="chi-header__sites">
-          <summary class="chi-sites__button" aria-label="其他 Chi 網站">
-            <svg class="chi-icon" aria-hidden="true"><use href="${iconPrefix}icons.svg#layout-grid"></use></svg>
-            <span>其他站</span>
-          </summary>
-          <div class="chi-sites__panel">
-${included.map((site) => `            <a class="chi-sites__item" data-site-id="${escapeHtml(site.id)}" href="${escapeHtml(site.url)}">
-              <svg class="chi-icon" aria-hidden="true"><use href="${iconPrefix}icons.svg#${escapeHtml(site.icon)}"></use></svg>
-              <span><span class="chi-sites__name">${escapeHtml(site.name)}</span><br><span class="chi-sites__desc">${escapeHtml(site.description)}</span></span>
-            </a>`).join(String.fromCharCode(10))}
-          </div>
-        </details>
+        <div class="chi-subnav__group">
+${included.map((site) => `          <a class="chi-nav-link" data-site-id="${escapeHtml(site.id)}" href="${escapeHtml(site.url)}"><svg class="chi-icon" aria-hidden="true"><use href="${iconPrefix}icons.svg#${escapeHtml(site.icon)}"></use></svg>${escapeHtml(site.name)}</a>`).join(String.fromCharCode(10))}
+        </div>
         <!-- CHI:SITES:NAV:END -->`;
 }
 

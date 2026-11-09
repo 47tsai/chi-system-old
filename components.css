@@ -130,6 +130,24 @@
   filter: brightness(0.85);
 }
 
+/* 按鈕長短文字：手機版顯示短文字，桌面以上顯示完整文字。
+   用法：<span class="chi-btn__full">使用 Chi Auth 登入</span><span class="chi-btn__short">登入</span>。
+   header 固定 60px 不換行，完整文字在手機版會把整列撐出畫面時用（fg 站實證）。 */
+.chi-btn__full {
+  display: none;
+}
+
+/* chi-breakpoint: chi-breakpoint-md */
+@media (min-width: 768px) {
+  .chi-btn__full {
+    display: inline;
+  }
+
+  .chi-btn__short {
+    display: none;
+  }
+}
+
 /* disabled：降明度並移除互動提示（DESIGN.md 7.7） */
 .chi-btn:disabled {
   opacity: 0.5;

@@ -6,7 +6,7 @@ Chi 生態系共用設計系統的 canonical 來源：總規範與共用件都�
 
 ## 狀態
 
-- `SYSTEM.md` v1.20 與 `DESIGN.md` v2.14：皆為審查稿，**待齊審閱、未生效**。
+- `SYSTEM.md` v1.21 與 `DESIGN.md` v2.15：皆為審查稿，**待齊審閱、未生效**。
 - 共用件已依 `SYSTEM.md` 第 15 節完成至第 8 步預覽頁、版本發佈／hash 檢查／CI：`sites.json`、`logo/`、`breakpoints.json`、`icons.svg`、`theme.js`、`tokens.css`、`components.css`、`navigation.css`、`header.html`、`example.html`、`template/`、`preview.html`、`RELEASE.md`、`scripts/`、`hashes.json`、`.github/workflows/check.yml`。第 9 步逐站遷移尚未開始；尚未建立任何正式 Release Tag。
 
 ## 內容
@@ -24,8 +24,8 @@ Chi 生態系共用設計系統的 canonical 來源：總規範與共用件都�
 | `theme.js` | 三態主題切換（`chi-theme-mode`） |
 | `tokens.css` | 視覺 token 唯一來源（淺深兩套） |
 | `components.css` | 元件樣式（按鈕、表單、卡片、表格、徽章、對話框、資料狀態） |
-| `navigation.css` | header、跨站導覽、頁尾樣式 |
-| `header.html` | header 模板（四段結構） |
+| `navigation.css` | header、副導覽列、頁尾樣式 |
+| `header.html` | header＋副導覽列模板 |
 | `example.html` | 元件與 header 範例頁 |
 | `template/` | 新站模板（起始頁、四種資料狀態範例頁、`release.json` 範本、使用說明） |
 | `preview.html` | 預覽頁：發版驗收（token、元件、主題、寬度、資料狀態、灰階檢查、驗收紀錄表） |

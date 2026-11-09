@@ -1,8 +1,10 @@
-/* chi-system navigation.css — header、跨站導覽與頁尾（SYSTEM.md 第 8 節、第 15 節第 6 步）
+/* chi-system navigation.css — header、副導覽列與頁尾（SYSTEM.md 第 8 節、第 15 節第 6 步）
  *
- * Header 固定四段、順序一致（SYSTEM.md 第 8 節）：1. Logo + 站名、2. 本站主要導覽、
- * 3. 跨站導覽入口（由 sites.json 產生）、4. 主題切換按鈕。各站不得自製另一種版式。
- * 跨站導覽與頁尾連結一律由 sites.json 產生，各站程式裡不得再出現手寫的站點 URL 清單。
+ * Header 只放三樣、順序一致（SYSTEM.md 第 8 節）：1. Logo + 站名、2. 主題切換按鈕、
+ * 3. 本站操作（例如登入；沒有就不放）。導覽不進 header：本站導覽與跨站導覽放在
+ * header 下方獨立一列（.chi-subnav），手機版橫向捲動；沒有導覽的站直接省略副導覽列整段。
+ * 各站不得自製另一種版式。跨站導覽與頁尾連結一律由 sites.json 產生，各站程式裡
+ * 不得再出現手寫的站點 URL 清單。
  * 斷點依第 4 節：@media 寫字面 px 值，緊鄰上一行寫固定格式註解，不得用 CSS 變數。
  */
 
@@ -90,30 +92,11 @@
   display: none;
 }
 
-/* 2. 本站主要導覽 */
-/* 本站導覽：手機版橫向捲動，header、導覽與主要操作保持可用，不得整頁水平捲動 */
-.chi-header__nav {
-  display: flex;
+/* 導覽連結（副導覽列本站組與跨站組共用） */
+.chi-nav-link {
+  display: inline-flex;
   align-items: center;
   gap: var(--chi-space-1);
-  min-width: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
-  flex: 1;
-}
-
-/* chi-breakpoint: chi-breakpoint-md */
-@media (min-width: 768px) {
-  .chi-header__nav {
-    flex: none;
-  }
-}
-
-.chi-header__nav::-webkit-scrollbar {
-  display: none;
-}
-
-.chi-nav-link {
   flex: none;
   padding: var(--chi-space-2) var(--chi-space-3);
   border-radius: var(--chi-radius-md);
@@ -141,115 +124,9 @@
   border-radius: var(--chi-radius-md) var(--chi-radius-md) 0 0;
 }
 
-/* 3. 跨站導覽入口：由 sites.json 產生；無 JS 時以 <details> 開合 */
-.chi-header__sites {
-  margin-left: auto;
-  position: relative;
-  flex: none;
-}
-
-.chi-sites__button {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--chi-space-2);
-  min-height: var(--chi-size-touch-min);
-  padding: 0 var(--chi-space-3);
-  border: 1px solid transparent;
-  border-radius: var(--chi-radius-md);
-  background: none;
-  color: var(--chi-color-text-secondary);
-  font-family: var(--chi-font-sans);
-  font-size: var(--chi-font-size-label);
-  line-height: var(--chi-line-height-label);
-  font-weight: var(--chi-font-weight-label);
-  cursor: pointer;
-  list-style: none;
-  transition:
-    color var(--chi-duration),
-    background-color var(--chi-duration);
-}
-
-/* 手機版只留圖示，文字隱藏 */
-.chi-sites__button span {
-  display: none;
-}
-
-/* chi-breakpoint: chi-breakpoint-md */
-@media (min-width: 768px) {
-  .chi-sites__button span {
-    display: inline;
-  }
-}
-
-.chi-sites__button::-webkit-details-marker {
-  display: none;
-}
-
-.chi-sites__button:hover {
-  color: var(--chi-color-text-primary);
-  background-color: var(--chi-color-surface-sunken);
-}
-
-.chi-sites__panel {
-  position: absolute;
-  right: 0;
-  top: calc(100% + 8px);
-  width: min(300px, calc(100vw - 32px));
-  padding: var(--chi-space-2);
-  border: 1px solid var(--chi-color-border-subtle);
-  border-radius: var(--chi-radius-lg);
-  background-color: var(--chi-color-surface-raised);
-  box-shadow: var(--chi-shadow-raised);
-}
-
-.chi-sites__item {
-  display: flex;
-  align-items: center;
-  gap: var(--chi-space-3);
-  padding: var(--chi-space-2) var(--chi-space-3);
-  border-radius: var(--chi-radius-md);
-  color: var(--chi-color-text-secondary);
-  text-decoration: none;
-  transition: background-color var(--chi-duration);
-}
-
-.chi-sites__item:hover {
-  background-color: var(--chi-color-surface-sunken);
-  color: var(--chi-color-text-primary);
-}
-
-.chi-sites__item .chi-icon {
-  color: var(--chi-color-text-muted);
-}
-
-.chi-sites__name {
-  font-size: var(--chi-font-size-label);
-  line-height: var(--chi-line-height-label);
-  font-weight: var(--chi-font-weight-label);
-  color: var(--chi-color-text-primary);
-}
-
-.chi-sites__desc {
-  font-size: var(--chi-font-size-caption);
-  line-height: var(--chi-line-height-caption);
-  color: var(--chi-color-text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* 目前所在站：accent 左標記加字重，不只靠顏色 */
-.chi-sites__item[aria-current="page"] {
-  box-shadow: inset 3px 0 0 var(--chi-color-accent);
-}
-
-.chi-sites__item[aria-current="page"] .chi-sites__name {
-  font-weight: 700;
-  color: var(--chi-color-accent);
-}
-
-/* 4. 主題切換按鈕（三態，見 theme.js） */
+/* 2. 主題切換按鈕（三態，見 theme.js）：margin-left: auto 把主題切換與本站操作推到右側 */
 .chi-header__theme {
+  margin-left: auto;
   flex: none;
   display: inline-flex;
   align-items: center;
@@ -269,6 +146,50 @@
 .chi-header__theme:hover {
   color: var(--chi-color-text-primary);
   background-color: var(--chi-color-surface-sunken);
+}
+
+/* ---------- 副導覽列 ---------- */
+/* header 下方獨立一列：本站導覽＋跨站導覽（跨站組由 sites.json 產生，圖示＋站名）。
+   手機版橫向捲動，不得整頁水平捲動；沒有導覽的站直接省略副導覽列整段。 */
+.chi-subnav {
+  background-color: var(--chi-color-surface);
+  border-bottom: 1px solid var(--chi-color-border-subtle);
+}
+
+.chi-subnav__inner {
+  max-width: var(--chi-layout-content-max);
+  margin: 0 auto;
+  padding: var(--chi-space-2) var(--chi-space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--chi-space-4);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+/* chi-breakpoint: chi-breakpoint-md */
+@media (min-width: 768px) {
+  .chi-subnav__inner {
+    padding: var(--chi-space-2) var(--chi-space-5);
+  }
+}
+
+.chi-subnav__inner::-webkit-scrollbar {
+  display: none;
+}
+
+.chi-subnav__group {
+  display: flex;
+  align-items: center;
+  gap: var(--chi-space-1);
+  flex: none;
+}
+
+.chi-subnav__divider {
+  flex: none;
+  align-self: stretch;
+  width: 1px;
+  background-color: var(--chi-color-border-subtle);
 }
 
 /* ---------- 頁尾 ---------- */

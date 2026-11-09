@@ -25,59 +25,40 @@
       <div class="chi-header__inner">
         <!-- 1. Logo + 站名，點擊回該站首頁 -->
         <a class="chi-header__brand" href="/">
-          <img class="chi-header__logo chi-header__logo--light" src="../logo/chi-b.png" alt="站名" width="32" height="32">
-          <img class="chi-header__logo chi-header__logo--dark" src="../logo/chi-w.png" alt="站名" width="32" height="32">
+          <img class="chi-header__logo chi-header__logo--light" src="../logo/chi-b.png" alt="Chi" width="32" height="32">
+          <img class="chi-header__logo chi-header__logo--dark" src="../logo/chi-w.png" alt="Chi" width="32" height="32">
           <span>站名</span>
         </a>
 
-        <!-- 2. 本站主要導覽：目前頁加 aria-current="page" -->
-        <nav class="chi-header__nav" aria-label="本站導覽">
-          <a class="chi-nav-link" href="/" aria-current="page">首頁</a>
-          <a class="chi-nav-link" href="/list">清單</a>
-          <a class="chi-nav-link" href="/about">關於</a>
-        </nav>
-
-<!-- CHI:SITES:NAV:START -->
-        <details class="chi-header__sites">
-          <summary class="chi-sites__button" aria-label="其他 Chi 網站">
-            <svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#layout-grid"></use></svg>
-            <span>其他站</span>
-          </summary>
-          <div class="chi-sites__panel">
-            <a class="chi-sites__item" data-site-id="chi" href="https://chi.qzz.io/">
-              <svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#house"></use></svg>
-              <span><span class="chi-sites__name">Chi 主站</span><br><span class="chi-sites__desc">Chi 的個人站：文章、moments 與音樂</span></span>
-            </a>
-            <a class="chi-sites__item" data-site-id="fg" href="https://fg.chi.qzz.io/">
-              <svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#gamepad-2"></use></svg>
-              <span><span class="chi-sites__name">Free Game</span><br><span class="chi-sites__desc">免費遊戲資訊、領取追蹤與通知</span></span>
-            </a>
-            <a class="chi-sites__item" data-site-id="merch" href="https://merch.chi.qzz.io/">
-              <svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#shopping-bag"></use></svg>
-              <span><span class="chi-sites__name">Chi Merch</span><br><span class="chi-sites__desc">1/8 模型收藏管理與追蹤</span></span>
-            </a>
-            <a class="chi-sites__item" data-site-id="nav" href="https://nav.chi.qzz.io/">
-              <svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#compass"></use></svg>
-              <span><span class="chi-sites__name">Chi Nav</span><br><span class="chi-sites__desc">書籤整理與常用網站導覽</span></span>
-            </a>
-            <a class="chi-sites__item" data-site-id="h" href="https://h.chi.qzz.io/">
-              <svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#wrench"></use></svg>
-              <span><span class="chi-sites__name">Chi Tools</span><br><span class="chi-sites__desc">小工具箱：碼錶、同步工具等</span></span>
-            </a>
-            <a class="chi-sites__item" data-site-id="status" href="https://status.chi.qzz.io/">
-              <svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#activity"></use></svg>
-              <span><span class="chi-sites__name">Chi Status</span><br><span class="chi-sites__desc">服務與網站可用性狀態監控</span></span>
-            </a>
-          </div>
-        </details>
-        <!-- CHI:SITES:NAV:END -->
-
-        <!-- 4. 主題切換按鈕（三態） -->
-        <button class="chi-header__theme" type="button" data-chi-theme-toggle aria-label="切換主題（目前：跟隨系統）">
+        <!-- 2. 主題切換按鈕（三態，見 theme.js） -->
+        <button class="chi-header__theme" type="button" data-chi-theme-toggle aria-label="目前色彩模式：跟隨系統，點擊切換">
           <svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#sun-moon"></use></svg>
         </button>
       </div>
     </header>
+
+    <!-- 副導覽列：導覽不進 header，放在 header 下方獨立一列（SYSTEM.md 第 8 節） -->
+    <nav class="chi-subnav" aria-label="網站導覽">
+      <div class="chi-subnav__inner">
+        <!-- 本站導覽：目前頁加 aria-current="page" -->
+        <div class="chi-subnav__group">
+          <a class="chi-nav-link" href="/" aria-current="page">首頁</a>
+          <a class="chi-nav-link" href="/list">清單</a>
+          <a class="chi-nav-link" href="/about">關於</a>
+        </div>
+        <span class="chi-subnav__divider" aria-hidden="true"></span>
+        <!-- CHI:SITES:NAV:START -->
+        <div class="chi-subnav__group">
+          <a class="chi-nav-link" data-site-id="chi" href="https://chi.qzz.io/"><svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#house"></use></svg>Chi 主站</a>
+          <a class="chi-nav-link" data-site-id="fg" href="https://fg.chi.qzz.io/"><svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#gamepad-2"></use></svg>Free Game</a>
+          <a class="chi-nav-link" data-site-id="merch" href="https://merch.chi.qzz.io/"><svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#shopping-bag"></use></svg>Chi Merch</a>
+          <a class="chi-nav-link" data-site-id="nav" href="https://nav.chi.qzz.io/"><svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#compass"></use></svg>Chi Nav</a>
+          <a class="chi-nav-link" data-site-id="h" href="https://h.chi.qzz.io/"><svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#wrench"></use></svg>Chi Tools</a>
+          <a class="chi-nav-link" data-site-id="status" href="https://status.chi.qzz.io/"><svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#activity"></use></svg>Chi Status</a>
+        </div>
+        <!-- CHI:SITES:NAV:END -->
+      </div>
+    </nav>
 
     <main class="chi-main">
       <div class="chi-container">
