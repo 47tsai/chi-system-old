@@ -2,7 +2,7 @@
   "files": {
     "breakpoints.json": "sha256:78d3dc36ee73f569a7f8629506b15830dfdd17b2cbe5478a7c7d78f8b8ce9938",
     "components.css": "sha256:1d96953083b88b93e445d7bc33c0caa8bc5d658cb64380552a1441451b851c88",
-    "header.html": "sha256:64f825792e9026aeef597f25029d54ffba0d695ed1ef585de5e400156817a784",
+    "header.html": "sha256:1fa9eaa8033da83f1f822289318e46755d4d0e8b91f4386f08e129aa28df232f",
     "icons.svg": "sha256:5c0244b901e32a449dd6a8ad277ce3bab7d45b44c68864538afbbe59cc212dbd",
     "logo/README.md": "sha256:4d0c44d359e1b249ef7fd4c8908eed7856614c6d3550bc0f0b43c7e2d7bfccf5",
     "logo/black-w.png": "sha256:58bf0450389943fc9f5cc85302c9fab59c47e81bcb541f85e5c4025d75f695dd",
