@@ -16,7 +16,7 @@
 
 1. **決定版本號**：依上列規則判定級別，寫進變更紀錄（SYSTEM.md 當輪修訂表）與相容聲明。
 2. **預覽頁驗收**：在 `preview.html` 依第 13 節維度覆蓋逐項檢視（token、元件全集、互動狀態、主題、寬度、版面與資料狀態、灰階檢查），並在頁尾驗收紀錄表填寫結果。預覽頁未達要求，該版本不得發佈。
-3. **檢查全綠**：`node scripts/check-breakpoints.mjs` 與 `node scripts/check-integrity.mjs` 皆通過（CI 同樣會跑，見下方）。
+3. **檢查全綠**：`node scripts/generate-navigation.mjs --check`、`node scripts/check-breakpoints.mjs` 與 `node scripts/check-integrity.mjs` 皆通過（CI 同樣會跑，見下方）。
 4. **更新 hash 清單**：若本輪改了任何共用件，執行 `node scripts/check-integrity.mjs --write` 重新產生 `hashes.json`，與改動一併提交。檢查失敗時不得手動改副本湊出相同結果。
 5. **建立 Tag**：對發布基準 commit 建立 `vMAJOR.MINOR.PATCH` Tag。Tag 一經建立即不可改寫。
 6. **部署**：GitHub Pages 隨 main 分支自動部署；確認 `preview.html` 與 `example.html` 在線上正常顯示。
@@ -32,6 +32,7 @@
 
 `.github/workflows/check.yml`：push 到 main 與 pull request 時執行。
 
+- `node scripts/generate-navigation.mjs --check`：依 `sites.json` 驗證 header 與模板的跨站導覽、頁尾產物一致性（第 8 節）。
 - `node scripts/check-breakpoints.mjs`：斷點檢查（第 4 節）。
 - `node scripts/check-integrity.mjs`：共用件一致性與 hash 檢查（第 13 節）。
 
@@ -46,6 +47,7 @@
 | 檔案 | 用途 |
 | --- | --- |
 | `preview.html` | 預覽頁與驗收紀錄表格式（發版門檻） |
+| `scripts/generate-navigation.mjs` | 依 `sites.json` 產生並檢查跨站導覽與頁尾 |
 | `scripts/check-breakpoints.mjs` | 斷點檢查 |
 | `scripts/check-integrity.mjs` | 一致性與 hash 檢查（`--write` 產生 `hashes.json`） |
 | `hashes.json` | 共用件 SHA-256 清單（供各站驗證） |
