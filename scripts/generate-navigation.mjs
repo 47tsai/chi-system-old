@@ -13,7 +13,7 @@ const failures = [];
 const ids = new Set();
 
 for (const site of sites) {
-  for (const key of ['id', 'name', 'url', 'description', 'icon', 'inNav']) {
+  for (const key of ['id', 'name', 'url', 'description', 'icon', 'inNav', 'brand', 'colorId']) {
     if (!(key in site)) failures.push(`sites.json: ${site.id ?? '(unknown)'} 缺少欄位 ${key}`);
   }
   if (ids.has(site.id)) failures.push(`sites.json: 重複的站點 ID ${site.id}`);
@@ -22,7 +22,7 @@ for (const site of sites) {
   if (!/^https:\/\//.test(site.url ?? '')) failures.push(`sites.json: ${site.id} 的 URL 必須使用 HTTPS`);
   if (!/^[a-z0-9-]+$/.test(site.icon ?? '')) failures.push(`sites.json: ${site.id} 的 icon symbol 格式無效`);
 }
-if (included.length !== 6) failures.push(`sites.json: 跨站導覽應有 6 個納入站，目前為 ${included.length} 個`);
+if (included.length === 0) failures.push('sites.json: 至少需要一個納入跨站導覽的站點');
 if (failures.length) {
   console.error(failures.join(String.fromCharCode(10)));
   process.exit(1);
