@@ -3,7 +3,7 @@
     "breakpoints.json": "sha256:78d3dc36ee73f569a7f8629506b15830dfdd17b2cbe5478a7c7d78f8b8ce9938",
     "components.css": "sha256:c6c8aa6483808d2a42ffa727415858c09a641983f33703efc5c8ca3fe3444ae6",
     "header.html": "sha256:10b23da703720956850a7c15df42825e2b6f74e2b58eb4b8b500b2bfe4394d37",
-    "icons.svg": "sha256:5c0244b901e32a449dd6a8ad277ce3bab7d45b44c68864538afbbe59cc212dbd",
+    "icons.svg": "sha256:48dc42ccb285ccdd0f26fa09b977535584ea4d2b307e9ecdc74c331f3b722af8",
     "logo/README.md": "sha256:4d0c44d359e1b249ef7fd4c8908eed7856614c6d3550bc0f0b43c7e2d7bfccf5",
     "logo/black-w.png": "sha256:58bf0450389943fc9f5cc85302c9fab59c47e81bcb541f85e5c4025d75f695dd",
     "logo/chi-b.png": "sha256:0db649ecc35ade8a8cd48fa98fc49bdaf33be5bed42602aabb7aa29846a18607",
@@ -21,11 +21,11 @@
     "logo/status-w.png": "sha256:1ba5ad8dab608105bcb48ea4979f9864ca3b537bf4d62b905170600e256e4cd6",
     "logo/white-b.png": "sha256:5166e1d550540a8cf39329f6099f98e4ce571500f7188e4ece843d453e290ded",
     "navigation.css": "sha256:187bd3ef530a8a72310909dd5f18689a360dd338d55db38c7efc474fd96a052a",
-    "sidebar.css": "sha256:16ebf06ccab70a3f2dcbbf7311cd95f94b74cae38cec473b89c764c28eca7be6",
-    "sidebar.html": "sha256:70bf03d1a5e2e47e229e04e5f9235b66e37ebb2cd0df8432d4eb11fc860c46b4",
-    "sidebar.js": "sha256:8cba3b3c4f5f4ab8842e248883bc99475426535289bd9ccf107e40dc627402f6",
+    "sidebar.css": "sha256:3297489d77e751fd83c7c50d4f56600ad4a3545801d0d9dd488f4df55e503fef",
+    "sidebar.html": "sha256:a2004bb625c3fcf17a13c859383114616ad3212efd162500828bed0b8b5b7e3b",
+    "sidebar.js": "sha256:a24b015f72bb297ca1af6d565307d7cfb6cac5fe8fc7843f2d9be57288783be2",
     "sites.json": "sha256:eb21bb6f9ae04e99dbebb7ef967de1828578a5045e699e01fca82cbece4658d3",
     "theme.js": "sha256:f748221294ba43923287d0930382badcd03869a943f0834d91a37c25e9ed1995",
-    "tokens.css": "sha256:6af14c6aa339be290d0a1fb8a52c7176a125468061f2e59f8821a3422a9d30bb"
+    "tokens.css": "sha256:444f8ddeeaf553b01d8d936207fe4351142978fa2fb870344844a30d6eea279e"
   }
 }

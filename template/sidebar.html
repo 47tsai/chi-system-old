@@ -3,22 +3,25 @@
   用法：導覽量大的站複製此檔為本站頁面的起點，再依本站調整。
   - 側邊欄版式與 header＋副導覽列版式二選一，不得並存；本站導覽連結換成你站的內容。
     跨站導覽不在側邊欄內，跨站連結在頁尾清單（由 sites.json 產生，不得手寫站點 URL 清單）。
-  - 手機版預設為抽屜；導覽為少數固定連結時，在 <aside> 加 chi-sidebar--bottombar 改為底部列。
+  - 收合開關在頁面標頭（panel-left 圖示）：桌面版收合為圖示列、手機版開抽屜；
+    平板圖示列不可展開，開關隱藏。手機版預設為抽屜；導覽為少數固定連結時，
+    在 <aside> 加 chi-sidebar--bottombar 改為底部列。
   - sidebar.js 須同步引入 <head>，<script> 標籤帶 data-chi-sidebar-key="chi-<站點>-sidebar-collapsed"。
   - logo 檔名依站點 ID（見 logo/README.md）；淺色用黑 C（-b.png）、深色用白 C（-w.png），
     兩張圖都放，由 sidebar.css 依 data-chi-theme 切換。
   - theme.js 必須同步放在 <head>、樣式表之前，才能防閃爍；以下 href 皆為相對路徑示意，
     正式站請改為釘版的 chi-system 引用（第 13 節）。
   - 頁尾版本識別（.chi-footer__meta）由本站部署產物 version.json 注入，見第 13 節。
+  - 本檔以 Chi Merch 為示範站（merch 的 7 個區段），正式站換成自己的品牌與導覽。
 -->
 <html lang="zh-Hant" data-chi-theme="light" data-chi-theme-mode="system">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <title>頁面標題 — 站名</title>
+  <title>收藏 — Chi Merch</title>
   <script src="../theme.js"></script>
-  <script src="../sidebar.js" data-chi-sidebar-key="chi-<站點>-sidebar-collapsed"></script>
+  <script src="../sidebar.js" data-chi-sidebar-key="chi-merch-sidebar-collapsed"></script>
   <link rel="stylesheet" href="../tokens.css">
   <link rel="stylesheet" href="../components.css">
   <link rel="stylesheet" href="../navigation.css">
@@ -26,40 +29,39 @@
 </head>
 <body>
   <div class="chi-page--sidebar">
-    <aside class="chi-sidebar" data-chi-sidebar-key="chi-<站點>-sidebar-collapsed">
+    <aside class="chi-sidebar" data-chi-sidebar-key="chi-merch-sidebar-collapsed">
       <!-- 品牌：logo＋站名＋副標，點擊回該站首頁 -->
-      <a class="chi-sidebar__brand" href="/">
-        <img class="chi-sidebar__logo chi-sidebar__logo--light" src="../logo/chi-b.png" alt="Chi" width="32" height="32">
-        <img class="chi-sidebar__logo chi-sidebar__logo--dark" src="../logo/chi-w.png" alt="Chi" width="32" height="32">
+      <a class="chi-sidebar__brand" href="#/">
+        <img class="chi-sidebar__logo chi-sidebar__logo--light" src="../logo/merch-b.png" alt="Chi Merch" width="32" height="32">
+        <img class="chi-sidebar__logo chi-sidebar__logo--dark" src="../logo/merch-w.png" alt="Chi Merch" width="32" height="32">
         <span class="chi-sidebar__brand-copy">
-          <span class="chi-sidebar__brand-name">站名</span>
-          <span class="chi-sidebar__brand-sub">副標</span>
+          <span class="chi-sidebar__brand-name">Chi Merch</span>
+          <span class="chi-sidebar__brand-sub">Personal Collection</span>
         </span>
       </a>
 
-      <!-- 收合按鈕（只在桌面顯示，見 sidebar.js） -->
-      <button class="chi-sidebar__toggle" type="button" data-chi-sidebar-toggle aria-expanded="true" aria-label="收合側邊欄" title="收合側邊欄">
-        <svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#chevron-left"></use></svg>
-      </button>
-
-      <!-- 分組標題 -->
-      <div class="chi-sidebar__caption">工作區</div>
-
-      <!-- 本站導覽：目前頁加 aria-current="page" -->
+      <!-- 本站導覽：分組＋連結，目前頁加 aria-current="page"；title 是圖示列的懸停提示 -->
       <nav class="chi-sidebar__nav" aria-label="本站導覽">
-        <a class="chi-nav-link" href="/" aria-current="page"><svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#house"></use></svg><span>首頁</span></a>
-        <a class="chi-nav-link" href="/list"><svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#list"></use></svg><span>清單</span></a>
-        <a class="chi-nav-link" href="/about"><svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#info"></use></svg><span>關於</span></a>
+        <div class="chi-sidebar__group">
+          <div class="chi-sidebar__group-label">收藏</div>
+          <a class="chi-nav-link" href="#/" title="首頁"><svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#house"></use></svg><span>首頁</span></a>
+          <a class="chi-nav-link" href="#/collection" aria-current="page" title="收藏"><svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#shopping-bag"></use></svg><span>收藏</span></a>
+          <a class="chi-nav-link" href="#/stats" title="統計"><svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#chart-column"></use></svg><span>統計</span></a>
+          <a class="chi-nav-link" href="#/add" title="新增"><svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#plus"></use></svg><span>新增</span></a>
+          <a class="chi-nav-link" href="#/manage" title="管理"><svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#archive"></use></svg><span>管理</span></a>
+          <a class="chi-nav-link" href="#/shipping" title="運費"><svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#truck"></use></svg><span>運費</span></a>
+          <a class="chi-nav-link" href="#/settings" title="設定"><svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#settings"></use></svg><span>設定</span></a>
+        </div>
       </nav>
 
       <!-- 底部：狀態、主題切換、版本 -->
-      <div class="chi-sidebar__bottom">
+      <div class="chi-sidebar__footer">
         <span class="chi-sidebar__status" aria-hidden="true"></span>
-        <span>本站狀態</span>
+        <span>同步正常</span>
         <button class="chi-sidebar__theme" type="button" data-chi-theme-toggle aria-label="目前色彩模式：跟隨系統，點擊切換">
           <svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#sun-moon"></use></svg>
         </button>
-        <span class="chi-sidebar__version">SIDEBAR</span>
+        <span class="chi-sidebar__version">MERCH</span>
       </div>
     </aside>
 
@@ -67,25 +69,24 @@
 
     <div class="chi-content">
       <header class="chi-page-header">
-        <button class="chi-sidebar__menu" type="button" data-chi-sidebar-menu aria-expanded="false" aria-label="開啟導覽選單">
-          <svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#menu"></use></svg>
+        <button class="chi-sidebar__trigger" type="button" data-chi-sidebar-toggle aria-expanded="true" aria-label="收合側邊欄" title="收合側邊欄">
+          <svg class="chi-icon" aria-hidden="true"><use href="../icons.svg#panel-left"></use></svg>
         </button>
         <div>
-          <h1 class="chi-page-header__title">頁面主標題</h1>
-          <p class="chi-page-header__desc">頁面說明放在這裡。</p>
+          <h1 class="chi-page-header__title">收藏</h1>
+          <p class="chi-page-header__desc">148 件收藏 · 12 件待到貨 · 累計支出 NT$14,320</p>
         </div>
         <div class="chi-page-header__actions">
-          <button class="chi-btn chi-btn--primary" type="button">主要操作</button>
+          <button class="chi-btn chi-btn--primary" type="button">新增收藏</button>
         </div>
       </header>
 
       <main class="chi-main">
         <div class="chi-container">
-          <!-- 頁面內容：示範卡片，正式站換成本站內容 -->
+          <!-- 頁面內容 -->
           <div class="chi-card">
-            <h2 class="chi-card__title">側邊欄版式示範</h2>
-            <p>桌面收合按鈕在側邊欄右上角；平板為 76px 圖示列；手機預設為抽屜，
-            在 &lt;aside&gt; 加 chi-sidebar--bottombar 可改為底部列（見第 8 節）。</p>
+            <h2 class="chi-card__title">收藏概覽</h2>
+            <p>這裡放本站的頁面內容。側邊欄版式示範：桌面點頁面標頭的開關收合為圖示列（Cmd／Ctrl＋B 也可切換）；平板為 72px 圖示列；手機版開關開抽屜，在 &lt;aside&gt; 加 chi-sidebar--bottombar 可改為底部列（見第 8 節）。</p>
           </div>
         </div>
       </main>
@@ -101,7 +102,7 @@
             <li><a data-site-id="h" href="https://h.chi.qzz.io/">Chi Tools</a></li>
             <li><a data-site-id="status" href="https://status.chi.qzz.io/">Chi Status</a></li>
           </ul>
-          <p class="chi-footer__meta">站名 · 版本 0.0.0 · 0000000</p>
+          <p class="chi-footer__meta">Chi Merch · 版本 0.0.0 · 0000000</p>
         </div>
       </footer>
     </div>

@@ -6,7 +6,7 @@ Chi 生態系共用設計系統的 canonical 來源：總規範與共用件都�
 
 ## 狀態
 
-- `SYSTEM.md` v1.22 與 `DESIGN.md` v2.16：皆為審查稿，**待齊審閱、未生效**。
+- `SYSTEM.md` v1.23 與 `DESIGN.md` v2.17：皆為審查稿，**待齊審閱、未生效**。
 - 共用件已依 `SYSTEM.md` 第 15 節完成至第 8 步預覽頁、版本發佈／hash 檢查／CI：`sites.json`、`logo/`、`breakpoints.json`、`icons.svg`、`theme.js`、`tokens.css`、`components.css`、`navigation.css`、`header.html`、`sidebar.css`、`sidebar.js`、`sidebar.html`、`example.html`、`template/`、`preview.html`、`RELEASE.md`、`scripts/`、`hashes.json`、`.github/workflows/check.yml`。第 9 步逐站遷移尚未開始；尚未建立任何正式 Release Tag。
 
 ## 內容
@@ -20,7 +20,7 @@ Chi 生態系共用設計系統的 canonical 來源：總規範與共用件都�
 | `sites.json` | 納入統一的六站 registry（站點 ID、站名、網址、描述、圖示、識別色） |
 | `logo/` | 各站 logo（向量正本 `logo.svg`＋六站 × 白／黑 C 的 PNG） |
 | `breakpoints.json` | 斷點唯一正式來源（768／1024） |
-| `icons.svg` | Lucide 圖示 sprite（87 個 symbol） |
+| `icons.svg` | Lucide 圖示 sprite（88 個 symbol） |
 | `theme.js` | 三態主題切換（`chi-theme-mode`） |
 | `tokens.css` | 視覺 token 唯一來源（淺深兩套） |
 | `components.css` | 元件樣式（按鈕、表單、卡片、表格、徽章、對話框、資料狀態） |
