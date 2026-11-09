@@ -14,6 +14,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: sites.json 導覽生成一致性檢查（SYSTEM.md 第 8 節）
+        run: node scripts/generate-navigation.mjs --check
       - name: 斷點檢查（SYSTEM.md 第 4 節）
         run: node scripts/check-breakpoints.mjs
       - name: 共用件一致性與 hash 檢查（SYSTEM.md 第 13 節）
