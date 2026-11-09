@@ -24,7 +24,7 @@ for (const site of sites) {
 }
 if (included.length !== 6) failures.push(`sites.json: 跨站導覽應有 6 個納入站，目前為 ${included.length} 個`);
 if (failures.length) {
-  console.error(failures.join('\\n'));
+  console.error(failures.join(String.fromCharCode(10)));
   process.exit(1);
 }
 
@@ -43,7 +43,7 @@ function navigation(iconPrefix) {
 ${included.map((site) => `            <a class="chi-sites__item" data-site-id="${escapeHtml(site.id)}" href="${escapeHtml(site.url)}">
               <svg class="chi-icon" aria-hidden="true"><use href="${iconPrefix}icons.svg#${escapeHtml(site.icon)}"></use></svg>
               <span><span class="chi-sites__name">${escapeHtml(site.name)}</span><br><span class="chi-sites__desc">${escapeHtml(site.description)}</span></span>
-            </a>`).join('\\n')}
+            </a>`).join(String.fromCharCode(10))}
           </div>
         </details>
         <!-- CHI:SITES:NAV:END -->`;
@@ -52,7 +52,7 @@ ${included.map((site) => `            <a class="chi-sites__item" data-site-id="$
 function footer() {
   return `<!-- CHI:SITES:FOOTER:START -->
         <ul class="chi-footer__sites">
-${included.map((site) => `          <li><a data-site-id="${escapeHtml(site.id)}" href="${escapeHtml(site.url)}">${escapeHtml(site.name)}</a></li>`).join('\\n')}
+${included.map((site) => `          <li><a data-site-id="${escapeHtml(site.id)}" href="${escapeHtml(site.url)}">${escapeHtml(site.name)}</a></li>`).join(String.fromCharCode(10))}
         </ul>
         <!-- CHI:SITES:FOOTER:END -->`;
 }
@@ -84,7 +84,7 @@ for (const target of targets) {
   }
 }
 if (failures.length) {
-  console.error(failures.join('\\n'));
+  console.error(failures.join(String.fromCharCode(10)));
   process.exit(1);
 }
 console.log(check ? 'sites.json 導覽一致性檢查通過' : '已依 sites.json 產生 header.html 與 template/index.html 的導覽');
