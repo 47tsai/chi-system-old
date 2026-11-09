@@ -4,8 +4,7 @@
   - 側邊欄版式與 header＋副導覽列版式二選一，不得並存；本站導覽連結換成你站的內容。
     跨站導覽不在側邊欄內，跨站連結在頁尾清單（由 sites.json 產生，不得手寫站點 URL 清單）。
   - 收合開關在頁面標頭（panel-left 圖示）：桌面版收合為圖示列、手機版開抽屜；
-    平板圖示列不可展開，開關隱藏。手機版預設為抽屜；導覽為少數固定連結時，
-    在 <aside> 加 chi-sidebar--bottombar 改為底部列。
+    平板與桌面皆可由頁面標頭開關收合；手機版一律使用抽屜。
   - sidebar.js 須同步引入 <head>，<script> 標籤帶 data-chi-sidebar-key="chi-<站點>-sidebar-collapsed"。
   - logo 檔名依站點 ID（見 logo/README.md）；淺色用黑 C（-b.png）、深色用白 C（-w.png），
     兩張圖都放，由 sidebar.css 依 data-chi-theme 切換。
@@ -29,7 +28,7 @@
 </head>
 <body>
   <div class="chi-page--sidebar">
-    <aside class="chi-sidebar" data-chi-sidebar-key="chi-merch-sidebar-collapsed">
+    <aside id="chi-sidebar" class="chi-sidebar" data-chi-sidebar-key="chi-merch-sidebar-collapsed">
       <!-- 品牌：logo＋站名＋副標，點擊回該站首頁 -->
       <a class="chi-sidebar__brand" href="#/">
         <img class="chi-sidebar__logo chi-sidebar__logo--light" src="./logo/merch-b.png" alt="Chi Merch" width="32" height="32">
@@ -43,7 +42,7 @@
       <!-- 本站導覽：分組＋連結，目前頁加 aria-current="page"；title 是圖示列的懸停提示 -->
       <nav class="chi-sidebar__nav" aria-label="本站導覽">
         <div class="chi-sidebar__group">
-          <div class="chi-sidebar__group-label">收藏</div>
+          <div class="chi-sidebar__group-label">工作區</div>
           <a class="chi-nav-link" href="#/" title="首頁"><svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#house"></use></svg><span>首頁</span></a>
           <a class="chi-nav-link" href="#/collection" aria-current="page" title="收藏"><svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#shopping-bag"></use></svg><span>收藏</span></a>
           <a class="chi-nav-link" href="#/stats" title="統計"><svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#chart-column"></use></svg><span>統計</span></a>
@@ -54,14 +53,15 @@
         </div>
       </nav>
 
-      <!-- 底部：狀態、主題切換、版本 -->
+      <!-- 底部：同步狀態與主題設定；版本資訊統一留在頁尾 -->
       <div class="chi-sidebar__footer">
-        <span class="chi-sidebar__status" aria-hidden="true"></span>
-        <span>同步正常</span>
+        <div class="chi-sidebar__status-group">
+          <span class="chi-sidebar__status" aria-hidden="true"></span>
+          <span class="chi-sidebar__status-copy">同步正常</span>
+        </div>
         <button class="chi-sidebar__theme" type="button" data-chi-theme-toggle aria-label="目前色彩模式：跟隨系統，點擊切換">
           <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#sun-moon"></use></svg>
         </button>
-        <span class="chi-sidebar__version">MERCH</span>
       </div>
     </aside>
 
@@ -69,7 +69,7 @@
 
     <div class="chi-content">
       <header class="chi-page-header">
-        <button class="chi-sidebar__trigger" type="button" data-chi-sidebar-toggle aria-expanded="true" aria-label="收合側邊欄" title="收合側邊欄">
+        <button class="chi-sidebar__trigger" type="button" data-chi-sidebar-toggle aria-controls="chi-sidebar" aria-expanded="true" aria-label="收合側邊欄" title="收合側邊欄">
           <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#panel-left"></use></svg>
         </button>
         <div>
@@ -86,7 +86,7 @@
           <!-- 頁面內容 -->
           <div class="chi-card">
             <h2 class="chi-card__title">收藏概覽</h2>
-            <p>這裡放本站的頁面內容。側邊欄版式示範：桌面點頁面標頭的開關收合為圖示列（Cmd／Ctrl＋B 也可切換）；平板為 72px 圖示列；手機版開關開抽屜，在 &lt;aside&gt; 加 chi-sidebar--bottombar 可改為底部列（見第 8 節）。</p>
+            <p>這裡放本站的頁面內容。側邊欄版式示範：桌面點頁面標頭的開關收合為圖示列（Cmd／Ctrl＋B 也可切換）；平板與桌面可自由收合；手機版使用抽屜，所有導覽項目都保留完整標籤。</p>
           </div>
         </div>
       </main>
