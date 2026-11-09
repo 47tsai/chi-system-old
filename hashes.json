@@ -1,4 +1,3 @@
-{
   "files": {
     "breakpoints.json": "sha256:78d3dc36ee73f569a7f8629506b15830dfdd17b2cbe5478a7c7d78f8b8ce9938",
     "components.css": "sha256:c6c8aa6483808d2a42ffa727415858c09a641983f33703efc5c8ca3fe3444ae6",
@@ -21,9 +20,9 @@
     "logo/status-w.png": "sha256:1ba5ad8dab608105bcb48ea4979f9864ca3b537bf4d62b905170600e256e4cd6",
     "logo/white-b.png": "sha256:5166e1d550540a8cf39329f6099f98e4ce571500f7188e4ece843d453e290ded",
     "navigation.css": "sha256:187bd3ef530a8a72310909dd5f18689a360dd338d55db38c7efc474fd96a052a",
-    "sidebar.css": "sha256:3297489d77e751fd83c7c50d4f56600ad4a3545801d0d9dd488f4df55e503fef",
-    "sidebar.html": "sha256:a2004bb625c3fcf17a13c859383114616ad3212efd162500828bed0b8b5b7e3b",
-    "sidebar.js": "sha256:a24b015f72bb297ca1af6d565307d7cfb6cac5fe8fc7843f2d9be57288783be2",
+    "sidebar.css": "sha256:a5aca3ddbd6c4747a780d16caac2dbe7324d4b6e627c1d0c97974873c7f60753",
+    "sidebar.html": "sha256:64725edb47e5ca1e9a62a8b3d2844a9658dbcd8dc23e3c75add429d63ffc0b46",
+    "sidebar.js": "sha256:d21393ed0e2c00240b3f740d2ddcb1493b4d5ab128f6ba971f798d0c86bc8f36",
     "sites.json": "sha256:eb21bb6f9ae04e99dbebb7ef967de1828578a5045e699e01fca82cbece4658d3",
     "theme.js": "sha256:f748221294ba43923287d0930382badcd03869a943f0834d91a37c25e9ed1995",
     "tokens.css": "sha256:444f8ddeeaf553b01d8d936207fe4351142978fa2fb870344844a30d6eea279e"
