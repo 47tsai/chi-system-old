@@ -12,7 +12,7 @@
 
 ## 狀態
 
-- `SYSTEM.md`（v1.18）與 `DESIGN.md`（v2.12）目前都是審查稿，待齊審閱、未生效。不得自行宣布生效。
+- `SYSTEM.md`（v1.19）與 `DESIGN.md`（v2.12）目前都是審查稿，待齊審閱、未生效。不得自行宣布生效。
 - 任何人（含 AI）不得在未經 `SYSTEM.md` 第 19 節程序時，直接修改規範去配合既有實作；這類修改視同未經確認的規範變更，審閱時應退回。
 
 ## 工作流程
@@ -56,4 +56,4 @@
 | `DESIGN.md` | 設計語言：方向、原則、語意層級、理由與示例 |
 | `AGENTS.md` | 本文件：AI 與協作者在 repo 內的工作規則 |
 | `README.md` | repo 說明：用途、狀態、內容、建置順序 |
-| `sites.json`、`logo/`、`breakpoints.json`、`icons.svg`、`theme.js`、`tokens.css`、`components.css`、`navigation.css`、`template/` | 依第 15 節順序建立（未完成前不存在） |
+| `sites.json`、`logo/`、`breakpoints.json`、`icons.svg`、`theme.js`、`tokens.css`、`components.css`、`navigation.css`、`header.html`、`example.html`、`template/`、`preview.html`、`RELEASE.md`、`scripts/`、`hashes.json`、`.github/workflows/check.yml` | 依第 15 節順序建立（未完成前不存在） |

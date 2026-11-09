@@ -1,0 +1,466 @@
+<!doctype html>
+<!-- chi-system preview.html — 預覽頁（SYSTEM.md 第 13 節、第 15 節第 8 步）
+  發版門檻：每次發版前在此驗收；預覽頁未達第 13 節維度覆蓋要求，該版本不得發佈。
+  驗收原則是每個維度完整覆蓋，不是笛卡兒積全組合；每個元件只驗它實際適用的狀態，
+  不適用的組合在頁尾驗收紀錄表註明「不適用」及原因。
+  本頁用正本實作（tokens.css、components.css、navigation.css、theme.js、icons.svg），
+  資料為假資料；不得另做一份「預覽專用」的近似樣式。
+  互動狀態說明：hover／active 以實際滑鼠操作檢視；focus-visible 請用 Tab 鍵實際走一遍，
+  不得只看靜態截圖示意。淺深並排對照見「主題」一節。
+-->
+<html lang="zh-Hant" data-chi-theme="light" data-chi-theme-mode="system">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>預覽 — chi-system</title>
+  <script>
+    try {
+      var q = new URLSearchParams(location.search).get('theme');
+      if (q === 'dark' || q === 'light') localStorage.setItem('chi-theme-mode', q);
+    } catch (e) {}
+  </script>
+  <script src="./theme.js"></script>
+  <link rel="stylesheet" href="./tokens.css">
+  <link rel="stylesheet" href="./components.css">
+  <link rel="stylesheet" href="./navigation.css">
+  <style>
+    /* 以下只供本頁使用，不進共用 CSS */
+    .preview-section { margin: 48px 0; }
+    .preview-section > h2 { font-size: 20px; margin: 0 0 8px; }
+    .preview-section > p { margin: 0 0 16px; }
+    .preview-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 12px 0; }
+    .preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    .preview-swatch { display: inline-block; width: 16px; height: 16px; border: 1px solid var(--chi-color-border-strong); border-radius: 4px; vertical-align: -3px; margin-right: 6px; }
+    .preview-duo { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .preview-theme-box { border: 1px solid var(--chi-color-border-subtle); border-radius: 12px; padding: 16px; }
+    .preview-grayscale { filter: grayscale(1); }
+    .preview-width-frame { border: 1px solid var(--chi-color-border-strong); border-radius: 8px; overflow: hidden; margin: 12px 0; }
+    .preview-width-frame iframe { display: block; border: 0; height: 480px; }
+    .preview-bar { height: 16px; background: var(--chi-color-accent); border-radius: 4px; }
+    .preview-shadow-box { background: var(--chi-color-surface); border: 1px solid var(--chi-color-border-subtle); border-radius: 12px; padding: 16px; }
+  </style>
+</head>
+<body>
+  <div class="chi-page">
+    <header class="chi-header">
+      <div class="chi-header__inner">
+        <a class="chi-header__brand" href="/">
+          <img class="chi-header__logo chi-header__logo--light" src="./logo/chi-b.png" alt="Chi" width="32" height="32">
+          <img class="chi-header__logo chi-header__logo--dark" src="./logo/chi-w.png" alt="Chi" width="32" height="32">
+          <span>Chi</span>
+        </a>
+        <nav class="chi-header__nav" aria-label="本站導覽">
+          <a class="chi-nav-link" href="/" aria-current="page">首頁</a>
+          <a class="chi-nav-link" href="/list">清單</a>
+          <a class="chi-nav-link" href="/about">關於</a>
+        </nav>
+        <details class="chi-header__sites">
+          <summary class="chi-sites__button" aria-label="其他 Chi 網站">
+            <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#layout-grid"></use></svg>
+            <span>其他站</span>
+          </summary>
+          <div class="chi-sites__panel">
+            <a class="chi-sites__item" href="https://chi.qzz.io" aria-current="page">
+              <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#house"></use></svg>
+              <span><span class="chi-sites__name">Chi</span><br><span class="chi-sites__desc">個人站</span></span>
+            </a>
+            <a class="chi-sites__item" href="https://fg.chi.qzz.io">
+              <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#gamepad-2"></use></svg>
+              <span><span class="chi-sites__name">Free Game</span><br><span class="chi-sites__desc">免費遊戲資訊</span></span>
+            </a>
+            <a class="chi-sites__item" href="https://merch.chi.qzz.io">
+              <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#shopping-bag"></use></svg>
+              <span><span class="chi-sites__name">收藏</span><br><span class="chi-sites__desc">模型與收藏紀錄</span></span>
+            </a>
+            <a class="chi-sites__item" href="https://nav.chi.qzz.io">
+              <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#compass"></use></svg>
+              <span><span class="chi-sites__name">導覽</span><br><span class="chi-sites__desc">常用連結導覽</span></span>
+            </a>
+            <a class="chi-sites__item" href="https://h.chi.qzz.io">
+              <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#wrench"></use></svg>
+              <span><span class="chi-sites__name">工具</span><br><span class="chi-sites__desc">實用小工具</span></span>
+            </a>
+            <a class="chi-sites__item" href="https://status.chi.qzz.io">
+              <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#activity"></use></svg>
+              <span><span class="chi-sites__name">狀態</span><br><span class="chi-sites__desc">服務狀態監控</span></span>
+            </a>
+          </div>
+        </details>
+        <button class="chi-header__theme" type="button" data-chi-theme-toggle aria-label="目前色彩模式：跟隨系統，點擊切換">
+          <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#sun-moon"></use></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="chi-main">
+      <div class="chi-container">
+        <h1 style="font-size:28px">預覽</h1>
+        <p>chi-system 發版前的驗收頁。發版流程見 <a href="./RELEASE.md">RELEASE.md</a>；驗收紀錄表在頁尾。元件快速範例見 <a href="./example.html">example.html</a>，新站起點見 <a href="./template/">template/</a>。</p>
+
+        <section class="preview-section" id="tokens">
+          <h2>Token：顏色</h2>
+          <p>全部顏色 token 的淺色／深色配對。對比值由 tokens.css 直接讀取、依 WCAG 2.2 重新驗算（一般文字 4.5:1、focus 等非文字 3:1，不四捨五入）。text-disabled 不在對比表內：僅限真正不可操作的元件，適用 WCAG inactive 豁免。</p>
+          <div class="chi-table-wrap">
+            <table class="chi-table">
+              <thead><tr><th>Token</th><th>淺色</th><th>深色</th></tr></thead>
+              <tbody>
+<tr><td><code>--chi-color-canvas</code></td><td><span class="preview-swatch" style="background:#f7f8fa"></span><code>#f7f8fa</code></td><td><span class="preview-swatch" style="background:#131519"></span><code>#131519</code></td></tr>
+<tr><td><code>--chi-color-surface</code></td><td><span class="preview-swatch" style="background:#ffffff"></span><code>#ffffff</code></td><td><span class="preview-swatch" style="background:#1b1e24"></span><code>#1b1e24</code></td></tr>
+<tr><td><code>--chi-color-surface-raised</code></td><td><span class="preview-swatch" style="background:#ffffff"></span><code>#ffffff</code></td><td><span class="preview-swatch" style="background:#23272f"></span><code>#23272f</code></td></tr>
+<tr><td><code>--chi-color-surface-sunken</code></td><td><span class="preview-swatch" style="background:#edf0f4"></span><code>#edf0f4</code></td><td><span class="preview-swatch" style="background:#0d0f12"></span><code>#0d0f12</code></td></tr>
+<tr><td><code>--chi-color-text-primary</code></td><td><span class="preview-swatch" style="background:#17191f"></span><code>#17191f</code></td><td><span class="preview-swatch" style="background:#f2f4f7"></span><code>#f2f4f7</code></td></tr>
+<tr><td><code>--chi-color-text-secondary</code></td><td><span class="preview-swatch" style="background:#4a5568"></span><code>#4a5568</code></td><td><span class="preview-swatch" style="background:#b9c0cc"></span><code>#b9c0cc</code></td></tr>
+<tr><td><code>--chi-color-text-muted</code></td><td><span class="preview-swatch" style="background:#5f6b7a"></span><code>#5f6b7a</code></td><td><span class="preview-swatch" style="background:#8b94a1"></span><code>#8b94a1</code></td></tr>
+<tr><td><code>--chi-color-text-disabled</code></td><td><span class="preview-swatch" style="background:#9aa3af"></span><code>#9aa3af</code></td><td><span class="preview-swatch" style="background:#5c6570"></span><code>#5c6570</code></td></tr>
+<tr><td><code>--chi-color-border-subtle</code></td><td><span class="preview-swatch" style="background:#e2e6ec"></span><code>#e2e6ec</code></td><td><span class="preview-swatch" style="background:#2a2f38"></span><code>#2a2f38</code></td></tr>
+<tr><td><code>--chi-color-border-strong</code></td><td><span class="preview-swatch" style="background:#c6cdd6"></span><code>#c6cdd6</code></td><td><span class="preview-swatch" style="background:#3d434e"></span><code>#3d434e</code></td></tr>
+<tr><td><code>--chi-color-accent</code></td><td><span class="preview-swatch" style="background:#2563eb"></span><code>#2563eb</code></td><td><span class="preview-swatch" style="background:#6b9bff"></span><code>#6b9bff</code></td></tr>
+<tr><td><code>--chi-color-accent-hover</code></td><td><span class="preview-swatch" style="background:#1d4ed8"></span><code>#1d4ed8</code></td><td><span class="preview-swatch" style="background:#84adff"></span><code>#84adff</code></td></tr>
+<tr><td><code>--chi-color-accent-active</code></td><td><span class="preview-swatch" style="background:#1e40af"></span><code>#1e40af</code></td><td><span class="preview-swatch" style="background:#4a88fc"></span><code>#4a88fc</code></td></tr>
+<tr><td><code>--chi-color-on-accent</code></td><td><span class="preview-swatch" style="background:#ffffff"></span><code>#ffffff</code></td><td><span class="preview-swatch" style="background:#131519"></span><code>#131519</code></td></tr>
+<tr><td><code>--chi-color-focus-ring</code></td><td><span class="preview-swatch" style="background:#2563eb"></span><code>#2563eb</code></td><td><span class="preview-swatch" style="background:#6b9bff"></span><code>#6b9bff</code></td></tr>
+<tr><td><code>--chi-color-success</code></td><td><span class="preview-swatch" style="background:#05834e"></span><code>#05834e</code></td><td><span class="preview-swatch" style="background:#099d59"></span><code>#099d59</code></td></tr>
+<tr><td><code>--chi-color-success-bg</code></td><td><span class="preview-swatch" style="background:#ebf5f1"></span><code>#ebf5f1</code></td><td><span class="preview-swatch" style="background:#12231f"></span><code>#12231f</code></td></tr>
+<tr><td><code>--chi-color-success-strong</code></td><td><span class="preview-swatch" style="background:#046f42"></span><code>#046f42</code></td><td><span class="preview-swatch" style="background:#099d59"></span><code>#099d59</code></td></tr>
+<tr><td><code>--chi-color-warning</code></td><td><span class="preview-swatch" style="background:#9e6600"></span><code>#9e6600</code></td><td><span class="preview-swatch" style="background:#ba7c00"></span><code>#ba7c00</code></td></tr>
+<tr><td><code>--chi-color-warning-bg</code></td><td><span class="preview-swatch" style="background:#f7f3eb"></span><code>#f7f3eb</code></td><td><span class="preview-swatch" style="background:#241f16"></span><code>#241f16</code></td></tr>
+<tr><td><code>--chi-color-warning-strong</code></td><td><span class="preview-swatch" style="background:#865700"></span><code>#865700</code></td><td><span class="preview-swatch" style="background:#ba7c00"></span><code>#ba7c00</code></td></tr>
+<tr><td><code>--chi-color-danger</code></td><td><span class="preview-swatch" style="background:#d73220"></span><code>#d73220</code></td><td><span class="preview-swatch" style="background:#fc432e"></span><code>#fc432e</code></td></tr>
+<tr><td><code>--chi-color-danger-bg</code></td><td><span class="preview-swatch" style="background:#fcefed"></span><code>#fcefed</code></td><td><span class="preview-swatch" style="background:#2a1a1b"></span><code>#2a1a1b</code></td></tr>
+<tr><td><code>--chi-color-danger-strong</code></td><td><span class="preview-swatch" style="background:#b72a1b"></span><code>#b72a1b</code></td><td><span class="preview-swatch" style="background:#fc432e"></span><code>#fc432e</code></td></tr>
+<tr><td><code>--chi-color-info</code></td><td><span class="preview-swatch" style="background:#3b63fb"></span><code>#3b63fb</code></td><td><span class="preview-swatch" style="background:#5681ff"></span><code>#5681ff</code></td></tr>
+<tr><td><code>--chi-color-info-bg</code></td><td><span class="preview-swatch" style="background:#eff3ff"></span><code>#eff3ff</code></td><td><span class="preview-swatch" style="background:#1a2030"></span><code>#1a2030</code></td></tr>
+<tr><td><code>--chi-color-info-strong</code></td><td><span class="preview-swatch" style="background:#3254d5"></span><code>#3254d5</code></td><td><span class="preview-swatch" style="background:#5681ff"></span><code>#5681ff</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="chi-table-wrap" style="margin-top:16px">
+            <table class="chi-table">
+              <thead><tr><th>前景 / 背景</th><th>淺色對比</th><th>深色對比</th></tr></thead>
+              <tbody>
+<tr><td>text-primary / canvas</td><td>16.53:1 達標</td><td>16.59:1 達標</td></tr>
+<tr><td>text-primary / surface</td><td>17.57:1 達標</td><td>15.15:1 達標</td></tr>
+<tr><td>text-primary / surface-sunken</td><td>15.37:1 達標</td><td>17.42:1 達標</td></tr>
+<tr><td>text-secondary / canvas</td><td>7.08:1 達標</td><td>9.99:1 達標</td></tr>
+<tr><td>text-secondary / surface</td><td>7.53:1 達標</td><td>9.12:1 達標</td></tr>
+<tr><td>text-secondary / surface-sunken</td><td>6.58:1 達標</td><td>10.49:1 達標</td></tr>
+<tr><td>text-muted / canvas</td><td>5.11:1 達標</td><td>5.96:1 達標</td></tr>
+<tr><td>text-muted / surface</td><td>5.43:1 達標</td><td>5.44:1 達標</td></tr>
+<tr><td>text-muted / surface-sunken</td><td>4.75:1 達標</td><td>6.26:1 達標</td></tr>
+<tr><td>accent（連結文字）/ canvas</td><td>4.86:1 達標</td><td>6.75:1 達標</td></tr>
+<tr><td>accent（連結文字）/ surface</td><td>5.17:1 達標</td><td>6.17:1 達標</td></tr>
+<tr><td>on-accent / accent</td><td>5.17:1 達標</td><td>6.75:1 達標</td></tr>
+<tr><td>on-accent / accent-hover</td><td>6.70:1 達標</td><td>8.18:1 達標</td></tr>
+<tr><td>on-accent / accent-active</td><td>8.72:1 達標</td><td>5.41:1 達標</td></tr>
+<tr><td>success（狀態文字）/ canvas</td><td>4.53:1 達標</td><td>5.20:1 達標</td></tr>
+<tr><td>success-strong / success-bg（徽章文字）</td><td>5.62:1 達標</td><td>4.65:1 達標</td></tr>
+<tr><td>success / success-bg（為何需要 -strong）</td><td>4.32:1 未達標</td><td>4.65:1 達標</td></tr>
+<tr><td>warning（狀態文字）/ canvas</td><td>4.54:1 達標</td><td>5.20:1 達標</td></tr>
+<tr><td>warning-strong / warning-bg（徽章文字）</td><td>5.62:1 達標</td><td>4.66:1 達標</td></tr>
+<tr><td>warning / warning-bg（為何需要 -strong）</td><td>4.36:1 未達標</td><td>4.66:1 達標</td></tr>
+<tr><td>danger（狀態文字）/ canvas</td><td>4.53:1 達標</td><td>5.21:1 達標</td></tr>
+<tr><td>danger-strong / danger-bg（徽章文字）</td><td>5.57:1 達標</td><td>4.74:1 達標</td></tr>
+<tr><td>danger / danger-bg（為何需要 -strong）</td><td>4.28:1 未達標</td><td>4.74:1 達標</td></tr>
+<tr><td>info（狀態文字）/ canvas</td><td>4.53:1 達標</td><td>5.20:1 達標</td></tr>
+<tr><td>info-strong / info-bg（徽章文字）</td><td>5.63:1 達標</td><td>4.62:1 達標</td></tr>
+<tr><td>info / info-bg（為何需要 -strong）</td><td>4.34:1 未達標</td><td>4.62:1 達標</td></tr>
+<tr><td>focus-ring / canvas</td><td>4.86:1 達標</td><td>6.75:1 達標</td></tr>
+<tr><td>focus-ring / surface</td><td>5.17:1 達標</td><td>6.17:1 達標</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>「為何需要 -strong」列的淺色未達標是預期的設計依據：語意色 900 本色配淡背景在淺色只有約 4.3:1，未達 AA，故徽章文字改用同色相加深 15% 的 -strong（約 5.6:1）。</p>
+        </section>
+
+        <section class="preview-section" id="tokens-other">
+          <h2>Token：間距、圓角、字級、陰影</h2>
+          <p>以下皆引用 tokens.css 的變數，非寫死數值。</p>
+          <h3 style="font-size:16px">間距（8px 基準）</h3>
+          <div class="preview-row"><span>section 48px</span><div class="preview-bar" style="width:48px"></div><span>group 24px</span><div class="preview-bar" style="width:24px"></div><span>item 16px</span><div class="preview-bar" style="width:16px"></div><span>inline 8px</span><div class="preview-bar" style="width:8px"></div></div>
+          <h3 style="font-size:16px">圓角</h3>
+          <div class="preview-row">
+            <div style="width:64px;height:64px;background:var(--chi-color-surface-raised);border:1px solid var(--chi-color-border-subtle);border-radius:var(--chi-radius-sm)"></div>
+            <div style="width:64px;height:64px;background:var(--chi-color-surface-raised);border:1px solid var(--chi-color-border-subtle);border-radius:var(--chi-radius-md)"></div>
+            <div style="width:64px;height:64px;background:var(--chi-color-surface-raised);border:1px solid var(--chi-color-border-subtle);border-radius:var(--chi-radius-lg)"></div>
+            <div style="width:64px;height:64px;background:var(--chi-color-surface-raised);border:1px solid var(--chi-color-border-subtle);border-radius:var(--chi-radius-xl)"></div>
+            <div style="width:64px;height:64px;background:var(--chi-color-surface-raised);border:1px solid var(--chi-color-border-subtle);border-radius:var(--chi-radius-full)"></div>
+          </div>
+          <h3 style="font-size:16px">字級</h3>
+          <p style="font-size:var(--chi-font-size-display);line-height:var(--chi-line-height-display);font-weight:var(--chi-font-weight-display)">Display 36px</p>
+          <p style="font-size:var(--chi-font-size-page-title);line-height:var(--chi-line-height-page-title);font-weight:var(--chi-font-weight-page-title)">頁面標題 28px</p>
+          <p style="font-size:var(--chi-font-size-section-title);line-height:var(--chi-line-height-section-title);font-weight:var(--chi-font-weight-section-title)">段落標題 20px</p>
+          <p style="font-size:var(--chi-font-size-body);line-height:var(--chi-line-height-body)">內文 16px：元件、token 與行為必須是正本實作，不得另做一份預覽專用的近似樣式。</p>
+          <p style="font-size:var(--chi-font-size-body-small);line-height:var(--chi-line-height-body-small)">內文小 14px</p>
+          <p style="font-size:var(--chi-font-size-caption);line-height:var(--chi-line-height-caption)">說明文字 12px</p>
+          <h3 style="font-size:16px">陰影</h3>
+          <div class="preview-row">
+            <div class="preview-shadow-box" style="box-shadow:var(--chi-shadow-whisper)">whisper</div>
+            <div class="preview-shadow-box" style="box-shadow:var(--chi-shadow-raised)">raised</div>
+            <div class="preview-shadow-box" style="box-shadow:var(--chi-shadow-overlay)">overlay</div>
+          </div>
+        </section>
+
+        <section class="preview-section" id="components">
+          <h2>元件全集</h2>
+          <p>第 9 節列名的每個元件都有實例。互動狀態：預設、disabled、selected／checked 在此直接可見；hover／active 請以滑鼠實際操作；focus-visible 請用 Tab 鍵實際走一遍，確認焦點框可見且對比達標。不適用的狀態見頁尾驗收紀錄表。</p>
+
+          <h3 style="font-size:16px">按鈕</h3>
+          <div class="preview-row">
+            <button class="chi-btn chi-btn--primary" type="button">主要操作</button>
+            <button class="chi-btn chi-btn--secondary" type="button">次要操作</button>
+            <button class="chi-btn chi-btn--ghost" type="button">幽靈操作</button>
+            <button class="chi-btn chi-btn--danger" type="button">危險操作</button>
+            <button class="chi-btn chi-btn--primary chi-btn--sm" type="button">小按鈕</button>
+            <button class="chi-btn chi-btn--primary" type="button" disabled>停用</button>
+          </div>
+
+          <h3 style="font-size:16px">表單欄位</h3>
+          <div class="preview-row" style="align-items:flex-start">
+            <div class="chi-field" style="flex:1;min-width:220px">
+              <label class="chi-field__label" for="p-name">名稱</label>
+              <input class="chi-input" id="p-name" type="text" placeholder="請輸入名稱">
+              <p class="chi-field__hint">說明文字：這是提示。</p>
+            </div>
+            <div class="chi-field chi-field--error" style="flex:1;min-width:220px">
+              <label class="chi-field__label" for="p-mail">電子郵件</label>
+              <input class="chi-input" id="p-mail" type="email" value="not-an-email">
+              <p class="chi-field__error"><svg class="chi-icon chi-icon--sm" aria-hidden="true"><use href="./icons.svg#circle-x"></use></svg>格式不正確，請檢查後再試。</p>
+            </div>
+          </div>
+          <div class="preview-row" style="align-items:flex-start">
+            <div class="chi-field" style="flex:1;min-width:220px">
+              <label class="chi-field__label" for="p-sel">選單</label>
+              <div class="chi-select-wrap">
+                <select class="chi-select" id="p-sel">
+                  <option>選項一</option>
+                  <option>選項二</option>
+                  <option>選項三</option>
+                </select>
+                <svg class="chi-icon" aria-hidden="true"><use href="./icons.svg#chevron-down"></use></svg>
+              </div>
+            </div>
+            <div class="chi-field" style="flex:1;min-width:220px">
+              <label class="chi-field__label" for="p-note">備註</label>
+              <textarea class="chi-textarea" id="p-note" placeholder="多行輸入"></textarea>
+            </div>
+          </div>
+          <div class="preview-row">
+            <label class="chi-check"><input class="chi-check__input" type="checkbox" checked>已勾選</label>
+            <label class="chi-check"><input class="chi-check__input" type="checkbox">未勾選</label>
+            <label class="chi-check"><input class="chi-check__input" type="checkbox" disabled>停用</label>
+            <label class="chi-radio"><input class="chi-radio__input" type="radio" name="pr" checked>選項 A</label>
+            <label class="chi-radio"><input class="chi-radio__input" type="radio" name="pr">選項 B</label>
+            <label class="chi-switch"><input class="chi-switch__input" type="checkbox" checked>開啟</label>
+            <label class="chi-switch"><input class="chi-switch__input" type="checkbox">關閉</label>
+          </div>
+
+          <h3 style="font-size:16px">分頁（導覽元件）</h3>
+          <div class="chi-tabs" role="tablist">
+            <button class="chi-tab" role="tab" aria-selected="true" type="button">全部</button>
+            <button class="chi-tab" role="tab" aria-selected="false" type="button">進行中</button>
+            <button class="chi-tab" role="tab" aria-selected="false" type="button">已完成</button>
+          </div>
+
+          <h3 style="font-size:16px">卡片與徽章</h3>
+          <div class="preview-grid">
+            <article class="chi-card">
+              <h3 class="chi-card__title">一般卡片</h3>
+              <p class="chi-card__body">卡片內文。徽章：
+                <span class="chi-badge chi-badge--success"><span class="chi-badge__dot"></span>成功</span>
+                <span class="chi-badge chi-badge--warning"><span class="chi-badge__dot"></span>異常</span>
+                <span class="chi-badge chi-badge--danger"><span class="chi-badge__dot"></span>錯誤</span>
+                <span class="chi-badge chi-badge--info"><span class="chi-badge__dot"></span>資訊</span>
+              </p>
+              <div class="chi-card__actions">
+                <button class="chi-btn chi-btn--primary chi-btn--sm" type="button">查看</button>
+                <button class="chi-btn chi-btn--ghost chi-btn--sm" type="button">更多</button>
+              </div>
+            </article>
+            <a class="chi-card chi-card--clickable" href="#">
+              <h3 class="chi-card__title">可點卡片</h3>
+              <p class="chi-card__body">整張可點，hover 有回饋。</p>
+            </a>
+          </div>
+
+          <h3 style="font-size:16px">清單與表格</h3>
+          <ul class="chi-list">
+            <li class="chi-list__item" aria-selected="true">已選取的列</li>
+            <li class="chi-list__item">一般列</li>
+            <li class="chi-list__item">一般列</li>
+          </ul>
+          <div class="chi-table-wrap" style="margin-top:16px">
+            <table class="chi-table">
+              <thead><tr><th>名稱</th><th>狀態</th><th>更新時間</th></tr></thead>
+              <tbody>
+                <tr aria-selected="true"><td>項目一</td><td>正常</td><td>2026-11-09 07:00</td></tr>
+                <tr><td>項目二</td><td>正常</td><td>2026-11-09 06:50</td></tr>
+                <tr><td>項目三</td><td>異常</td><td>2026-11-09 06:40</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 style="font-size:16px">對話框</h3>
+          <dialog class="chi-dialog" open>
+            <h3 class="chi-dialog__title">確認刪除</h3>
+            <p class="chi-dialog__body">確定要刪除這個項目嗎？這個操作無法復原。</p>
+            <div class="chi-dialog__actions">
+              <button class="chi-btn chi-btn--ghost" type="button">取消</button>
+              <button class="chi-btn chi-btn--danger" type="button">刪除</button>
+            </div>
+          </dialog>
+          <p>對話框不適用空狀態（見驗收紀錄表）。</p>
+        </section>
+
+        <section class="preview-section" id="themes">
+          <h2>主題：淺色與深色並排對照</h2>
+          <p>下方兩欄是同一組元件，分別以淺色與深色 token 渲染（容器上的 <code>data-chi-theme</code> 屬性切換，與 theme.js 寫在 html 上同一機制）。整頁切換請用 header 的主題按鈕（三態 system／light／dark），或網址加 <code>?theme=dark</code>／<code>?theme=light</code>。</p>
+          <div class="preview-duo">
+            <div class="preview-theme-box" data-chi-theme="light">
+              <h3 style="font-size:16px">淺色</h3>
+              <div class="preview-row">
+                <button class="chi-btn chi-btn--primary" type="button">主要操作</button>
+                <button class="chi-btn chi-btn--secondary" type="button">次要操作</button>
+              </div>
+              <p>內文與 <a href="#">連結文字</a>，以及
+                <span class="chi-badge chi-badge--success"><span class="chi-badge__dot"></span>成功</span>
+                <span class="chi-badge chi-badge--danger"><span class="chi-badge__dot"></span>錯誤</span>
+              </p>
+            </div>
+            <div class="preview-theme-box" data-chi-theme="dark">
+              <h3 style="font-size:16px">深色</h3>
+              <div class="preview-row">
+                <button class="chi-btn chi-btn--primary" type="button">主要操作</button>
+                <button class="chi-btn chi-btn--secondary" type="button">次要操作</button>
+              </div>
+              <p>內文與 <a href="#">連結文字</a>，以及
+                <span class="chi-badge chi-badge--success"><span class="chi-badge__dot"></span>成功</span>
+                <span class="chi-badge chi-badge--danger"><span class="chi-badge__dot"></span>錯誤</span>
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="preview-section" id="responsive">
+          <h2>響應式：三種寬度</h2>
+          <p>下方為 template 起始頁，按鈕切換檢視寬度（手機 360px、平板 768px、桌面 1024px，切換點與 breakpoints.json 一致）。請確認 header、導覽與主要操作在各寬度下可用，且無整頁水平捲動。</p>
+          <div role="group" aria-label="切換檢視寬度">
+            <button class="chi-btn chi-btn--secondary" type="button" data-width-show="360">手機 360px</button>
+            <button class="chi-btn chi-btn--secondary" type="button" data-width-show="768">平板 768px</button>
+            <button class="chi-btn chi-btn--secondary" type="button" data-width-show="1024">桌面 1024px</button>
+          </div>
+          <div class="preview-width-frame">
+            <iframe id="width-frame" src="./template/index.html" title="template 起始頁寬度對照" width="360"></iframe>
+          </div>
+        </section>
+
+        <section class="preview-section" id="data-states">
+          <h2>版面與資料狀態</h2>
+          <p>完整 header 四段結構與頁尾即本頁本身；跨站導覽由 sites.json 產生。下方為實際會載入資料的清單情境，四種狀態可切換檢視（切換按鈕僅供演示，正式站接本站資料載入邏輯）。</p>
+          <div role="group" aria-label="切換資料狀態（僅供演示）">
+            <button class="chi-btn chi-btn--secondary" type="button" data-state-show="loading">載入中</button>
+            <button class="chi-btn chi-btn--secondary" type="button" data-state-show="empty">沒有資料</button>
+            <button class="chi-btn chi-btn--secondary" type="button" data-state-show="error">載入失敗</button>
+            <button class="chi-btn chi-btn--secondary" type="button" data-state-show="success">成功</button>
+          </div>
+          <section class="chi-card" style="margin-top:16px" aria-live="polite">
+            <div class="chi-state" data-state="loading" hidden>
+              <div class="chi-spinner" role="status" aria-label="載入中" style="margin:0 auto 16px"></div>
+              <h3 class="chi-state__title">載入中</h3>
+              <p class="chi-state__desc">正在取得資料，請稍候。</p>
+            </div>
+            <div class="chi-state" data-state="empty" hidden>
+              <svg class="chi-state__icon" aria-hidden="true"><use href="./icons.svg#inbox"></use></svg>
+              <h3 class="chi-state__title">目前沒有資料</h3>
+              <p class="chi-state__desc">還沒有任何項目，先新增第一筆吧。</p>
+              <div class="chi-state__action"><button class="chi-btn chi-btn--primary" type="button">新增項目</button></div>
+            </div>
+            <div class="chi-state" data-state="error" hidden>
+              <svg class="chi-state__icon" aria-hidden="true"><use href="./icons.svg#circle-x"></use></svg>
+              <h3 class="chi-state__title">載入失敗</h3>
+              <p class="chi-state__desc">網路發生問題，請檢查連線後再試一次。</p>
+              <div class="chi-state__action"><button class="chi-btn chi-btn--secondary" type="button" data-state-show="loading">再試一次</button></div>
+            </div>
+            <div data-state="success">
+              <h3>項目清單</h3>
+              <ul class="chi-list">
+                <li class="chi-list__item"><span>項目一</span></li>
+                <li class="chi-list__item"><span>項目二</span></li>
+                <li class="chi-list__item"><span>項目三</span></li>
+              </ul>
+            </div>
+          </section>
+        </section>
+
+        <section class="preview-section" id="grayscale">
+          <h2>只靠顏色檢查：灰階仍可辨認</h2>
+          <p>下方整區以灰階呈現（<code>filter: grayscale(1)</code>）。狀態靠徽章文字與圓點、錯誤靠圖示與文字、選中靠左側標記與底色，拿掉顏色後仍可辨認。</p>
+          <div class="preview-grayscale">
+            <div class="preview-row">
+              <span class="chi-badge chi-badge--success"><span class="chi-badge__dot"></span>成功</span>
+              <span class="chi-badge chi-badge--warning"><span class="chi-badge__dot"></span>異常</span>
+              <span class="chi-badge chi-badge--danger"><span class="chi-badge__dot"></span>錯誤</span>
+              <span class="chi-badge chi-badge--info"><span class="chi-badge__dot"></span>資訊</span>
+            </div>
+            <p class="chi-field__error"><svg class="chi-icon chi-icon--sm" aria-hidden="true"><use href="./icons.svg#circle-x"></use></svg>格式不正確，請檢查後再試。</p>
+            <ul class="chi-list">
+              <li class="chi-list__item" aria-selected="true">已選取的列</li>
+              <li class="chi-list__item">一般列</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="preview-section" id="record">
+          <h2>驗收紀錄表（格式）</h2>
+          <p>每次發版在發布紀錄中附一張此表：元件、檢視過的狀態、主題、寬度、資料狀態、不適用項與原因、結果、檢視者與日期。沒有紀錄、或紀錄顯示有維度項目未覆蓋，該版本不得發佈。下方前兩列為範例（以本輪實際已驗證的項目填寫），其餘為空白格式。</p>
+          <div class="chi-table-wrap">
+            <table class="chi-table">
+              <thead><tr><th>元件</th><th>檢視過的狀態</th><th>主題</th><th>寬度</th><th>資料狀態</th><th>不適用項與原因</th><th>結果</th><th>檢視者</th><th>日期</th></tr></thead>
+              <tbody>
+                <tr><td>資料狀態（states.html）</td><td>載入、空、錯誤、成功（按鈕切換）</td><td>淺／深</td><td>桌面</td><td>四種皆有</td><td>—</td><td>通過（範例）</td><td>瀏覽器實測</td><td>2026-11-09</td></tr>
+                <tr><td>元件全集（example.html）</td><td>預設、disabled、selected／checked</td><td>淺／深</td><td>桌面</td><td>載入、空、錯誤、成功</td><td>hover／active 以實際操作檢視，未列入靜態紀錄</td><td>通過（範例）</td><td>瀏覽器實測</td><td>2026-11-09</td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="chi-footer">
+      <div class="chi-footer__inner">
+        <ul class="chi-footer__sites">
+          <li><a href="https://chi.qzz.io">Chi</a></li>
+          <li><a href="https://fg.chi.qzz.io">Free Game</a></li>
+          <li><a href="https://merch.chi.qzz.io">收藏</a></li>
+          <li><a href="https://nav.chi.qzz.io">導覽</a></li>
+          <li><a href="https://h.chi.qzz.io">工具</a></li>
+          <li><a href="https://status.chi.qzz.io">狀態</a></li>
+        </ul>
+        <p class="chi-footer__meta">Chi · 版本 0.0.0 · 0000000</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- 本頁專用的演示 script：資料狀態切換、寬度切換。正式站改為本站邏輯。 -->
+  <script>
+    (function () {
+      var blocks = document.querySelectorAll('[data-state]');
+      function show(name) {
+        blocks.forEach(function (el) { el.hidden = el.getAttribute('data-state') !== name; });
+      }
+      document.querySelectorAll('[data-state-show]').forEach(function (btn) {
+        btn.addEventListener('click', function () { show(btn.getAttribute('data-state-show')); });
+      });
+      show('success');
+      var frame = document.getElementById('width-frame');
+      document.querySelectorAll('[data-width-show]').forEach(function (btn) {
+        btn.addEventListener('click', function () { frame.setAttribute('width', btn.getAttribute('data-width-show')); });
+      });
+    })();
+  </script>
+</body>
+</html>

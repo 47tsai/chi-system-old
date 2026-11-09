@@ -6,8 +6,8 @@ Chi 生態系共用設計系統的 canonical 來源：總規範與共用件都�
 
 ## 狀態
 
-- `SYSTEM.md` v1.18 與 `DESIGN.md` v2.12：皆為審查稿，**待齊審閱、未生效**。
-- 共用件已依 `SYSTEM.md` 第 15 節完成至第 7 步 `template/`：`sites.json`、`logo/`、`breakpoints.json`、`icons.svg`、`theme.js`、`tokens.css`、`components.css`、`navigation.css`、`header.html`、`example.html`、`template/`。第 8 步預覽頁、版本發佈／hash 檢查／CI 尚未開始。
+- `SYSTEM.md` v1.19 與 `DESIGN.md` v2.12：皆為審查稿，**待齊審閱、未生效**。
+- 共用件已依 `SYSTEM.md` 第 15 節完成至第 8 步預覽頁、版本發佈／hash 檢查／CI：`sites.json`、`logo/`、`breakpoints.json`、`icons.svg`、`theme.js`、`tokens.css`、`components.css`、`navigation.css`、`header.html`、`example.html`、`template/`、`preview.html`、`RELEASE.md`、`scripts/`、`hashes.json`、`.github/workflows/check.yml`。第 9 步逐站遷移尚未開始；尚未建立任何正式 Release Tag。
 
 ## 內容
 
@@ -28,13 +28,18 @@ Chi 生態系共用設計系統的 canonical 來源：總規範與共用件都�
 | `header.html` | header 模板（四段結構） |
 | `example.html` | 元件與 header 範例頁 |
 | `template/` | 新站模板（起始頁、四種資料狀態範例頁、`release.json` 範本、使用說明） |
+| `preview.html` | 預覽頁：發版驗收（token、元件、主題、寬度、資料狀態、灰階檢查、驗收紀錄表） |
+| `RELEASE.md` | 版本發佈流程：版本判定、相容聲明、發佈步驟、各站驗證、回滾 |
+| `scripts/` | 檢查腳本：斷點檢查、共用件一致性與 hash 檢查 |
+| `hashes.json` | 共用件 SHA-256 清單（供各站驗證所釘版本） |
+| `.github/workflows/check.yml` | CI：push 與 PR 時跑兩支檢查腳本 |
 
 ## 建置順序（摘要，完整版見 `SYSTEM.md` 第 15 節）
 
 1. 規範文件、`AGENTS.md`、`README.md`（已完成）
 2. `sites.json`、`logo/`、`breakpoints.json`（已完成）
 3. `icons.svg` → `theme.js` → `tokens.css` → `components.css`／`navigation.css`／header 模板（已完成）
-4. `template/`（已完成）→ 預覽頁、版本發佈／hash 檢查／CI（下一步）
+4. `template/`（已完成）→ 預覽頁、版本發佈／hash 檢查／CI（已完成）
 5. 以上完成後，才開始逐站遷移：nav → status → fg → merch → h → chi
 
 ## 工作方式（摘要，完整版見 `AGENTS.md`）
