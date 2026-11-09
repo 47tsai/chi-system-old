@@ -1,0 +1,20 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: 斷點檢查（SYSTEM.md 第 4 節）
+        run: node scripts/check-breakpoints.mjs
+      - name: 共用件一致性與 hash 檢查（SYSTEM.md 第 13 節）
+        run: node scripts/check-integrity.mjs
