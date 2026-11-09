@@ -221,14 +221,16 @@
 
         <section class="demo-section">
           <h2>對話框（靜態展示）</h2>
-          <dialog class="chi-dialog" open>
+          <p><button class="chi-btn chi-btn--secondary" type="button" data-open-dialog="example-dialog">開啟對話框</button></p>
+          <dialog class="chi-dialog" id="example-dialog">
             <h3 class="chi-dialog__title">確認刪除</h3>
             <p class="chi-dialog__body">確定要刪除這個項目嗎？這個操作無法復原。</p>
             <div class="chi-dialog__actions">
-              <button class="chi-btn chi-btn--ghost" type="button">取消</button>
-              <button class="chi-btn chi-btn--danger" type="button">刪除</button>
+              <button class="chi-btn chi-btn--ghost" type="button" data-close-dialog>取消</button>
+              <button class="chi-btn chi-btn--danger" type="button" data-close-dialog>刪除</button>
             </div>
           </dialog>
+          <p>對話框平時為關閉狀態，須以按鈕開啟：常駐開啟的對話框會浮在頁面上層、捲動時遮住內容。</p>
         </section>
       </div>
     </main>
@@ -247,5 +249,23 @@
       </div>
     </footer>
   </div>
+
+  <!-- 本頁專用的演示 script：對話框開關。 -->
+  <script>
+    (function () {
+      document.querySelectorAll('[data-open-dialog]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var dlg = document.getElementById(btn.getAttribute('data-open-dialog'));
+          if (dlg && dlg.showModal) dlg.showModal();
+        });
+      });
+      document.querySelectorAll('[data-close-dialog]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var dlg = btn.closest('dialog');
+          if (dlg) dlg.close();
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
