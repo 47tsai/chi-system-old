@@ -11,13 +11,13 @@
  *   <script>try{var c=localStorage.getItem('chi-<站點>-sidebar-collapsed');if(c==='1'){document.documentElement.setAttribute('data-chi-sidebar-collapsed','1');}}catch(e){}</script>
  *
  * 規則（皆來自 SYSTEM.md 第 8 節）：
- * - 收合只在桌面（>=1024px）有效；平板（768–1023px）強制圖示列，手機（<768px）
- *   為抽屜或底部列，皆不讀收合狀態。CSS 以媒體查詢守住範圍，此檔不判斷寬度來套用收合。
+ * - 768px 以上使用側邊欄，可由頁面標頭開關收合為圖示列；手機（<768px）使用抽屜。
+ *   CSS 與 JS 共用 768px 邊界；手機不讀取桌面收合狀態。
  * - 收合狀態 key 為 chi-<站點>-sidebar-collapsed，值 "1" 為收合、"0" 或無值為展開；
  *   未設定 data-chi-sidebar-key 時只切換當次，不寫入 localStorage。
  * - 抽屜：頁面標頭的開關按鈕 [data-chi-sidebar-toggle] 開，遮罩 [data-chi-sidebar-scrim]
  *   點按與 Escape 關；開啟時鎖住背景捲動，關閉時焦點回到開關按鈕；視窗放大到 >=768px
- *   時自動關抽屜。底部列版式（.chi-sidebar--bottombar）不用抽屜，開關不綁定抽屜。
+ *   時自動關抽屜。手機版一律使用抽屜，不提供底部列變體。
  * - 對外 API（供框架薄包裝與除錯用）：window.ChiSidebar = { isCollapsed, setCollapsed,
  *   toggleCollapsed, openMobile, closeMobile }；收合改變時在 window 派發
  *   chi-sidebar-change 事件，detail 為 { collapsed }。
@@ -67,10 +67,6 @@
     return root.getAttribute('data-chi-sidebar-collapsed') === COLLAPSED;
   }
 
-  function isBottombar() {
-    return !!sidebar && sidebar.classList.contains('chi-sidebar--bottombar');
-  }
-
   function updateTriggerLabel() {
     if (!trigger) return;
     if (isMobile()) {
@@ -104,7 +100,7 @@
   }
 
   function openMobile() {
-    if (!sidebar || isBottombar()) return;
+    if (!sidebar) return;
     lastTrigger = document.activeElement;
     sidebar.classList.add('mobile-open');
     if (scrim) scrim.classList.add('visible');
@@ -148,27 +144,25 @@
       trigger.addEventListener('click', onTriggerClick);
     }
     updateTriggerLabel();
-    if (!isBottombar()) {
-      scrim = document.querySelector('[data-chi-sidebar-scrim]');
-      if (scrim) {
-        scrim.addEventListener('click', closeMobile);
-      }
-      document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') closeMobile();
-      });
-      window.addEventListener('resize', function () {
-        if (!isMobile()) closeMobile();
-        updateTriggerLabel();
-      });
-      document.addEventListener('keydown', function (event) {
-        if ((event.metaKey || event.ctrlKey) && (event.key === 'b' || event.key === 'B')) {
-          var target = event.target;
-          if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT' || target.isContentEditable)) return;
-          event.preventDefault();
-          onTriggerClick();
-        }
-      });
+    scrim = document.querySelector('[data-chi-sidebar-scrim]');
+    if (scrim) {
+      scrim.addEventListener('click', closeMobile);
     }
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') closeMobile();
+    });
+    window.addEventListener('resize', function () {
+      if (!isMobile()) closeMobile();
+      updateTriggerLabel();
+    });
+    document.addEventListener('keydown', function (event) {
+      if ((event.metaKey || event.ctrlKey) && (event.key === 'b' || event.key === 'B')) {
+        var target = event.target;
+        if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT' || target.isContentEditable)) return;
+        event.preventDefault();
+        onTriggerClick();
+      }
+    });
   }
 
   if (document.readyState === 'loading') {
